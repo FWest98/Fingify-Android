@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Acitivities & Fragments -->
     <string name="app_name">Fingify</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="activity_applications_title">Fingify</string>
+    <string name="activity_applications_action_newapplication">Add new account</string>
+    <string name="activity_applications_action_settings">Settings</string>
 
+    <string name="activity_preferences_title">Settings</string>
+    <string name="activity_preferences_headers_app">App settings</string>
+
+    <!-- Fingerprint authentication -->
+    <string name="fingerprint_authentication_title">Please verify to use the app</string>
+    <string name="fingerprint_authentication_not_supported">Fingerprint authentication is not supported on this device</string>
+    <string name="fingerprint_authentication_dialog_title">Fingerprint scanner</string>
+    <string name="fingerprint_authentication_dialog_message">The app found a fingerprint scanner on your device. Enable fingerprint recognition on app start?</string>
+    <string name="fingerprint_authentication_dialog_enable_button">Enable</string>
+    <string name="fingerprint_authentication_dialog_cancel_button">Cancel</string>
+    <string name="fingerprint_authentication_failed">Fingerprint authentication failed. Restart the app to try again</string>
+
+    <!-- Settings -->
+    <string name="settings_fingerprint_authentication_title">Use fingerprint scanner</string>
+    <string name="settings_fingerprint_authentication_summary">Use the fingerprint scanner to authenticate the user</string>
 </resources>

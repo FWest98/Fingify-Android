@@ -20,6 +20,7 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
     private Context context;
     private List<Application> applications;
     private List<ExtendedTotp> TOTPs;
+    private List<View> rowViews;
 
     public ApplicationsAdapter(Context context, int resource, List<Application> objects) {
         super(context, resource, objects);
@@ -29,6 +30,7 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         for(Application application : applications) {
             TOTPs.add(new ExtendedTotp(application.getSecret(), new ExtendedClock()));
         }
+        this.rowViews = new ArrayList<>(objects.size());
     }
 
     @Override
@@ -37,10 +39,27 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         View rowView = inflater.inflate(R.layout.application_list_item, parent, false);
         TextView title = (TextView) rowView.findViewById(R.id.application_item_label);
         ProgressWheel wheel = (ProgressWheel) rowView.findViewById(R.id.application_item_wheel);
+        TextView code = (TextView) rowView.findViewById(R.id.application_item_code);
 
         title.setText(applications.get(position).getLabel());
-        wheel.setProgress((int) (TOTPs.get(position).getClock().getTimeLeft() * 100));
+        code.setText(TOTPs.get(position).now());
+        wheel.setProgress((int) (TOTPs.get(position).getTimeLeft() * 100));
+
+        rowViews.add(position, rowView);
 
         return rowView;
+    }
+
+    public void updateViews() {
+        for(int i = 0; i < rowViews.size() && i < TOTPs.size(); i++) {
+            ExtendedTotp totp = TOTPs.get(i);
+            View rowView = rowViews.get(i);
+
+            if(totp.isChanged()) {
+                ((TextView) rowView.findViewById(R.id.application_item_code)).setText(totp.now());
+            }
+
+            ((ProgressWheel) rowView.findViewById(R.id.application_item_wheel)).setProgress((int) (totp.getTimeLeft() * 100));
+        }
     }
 }

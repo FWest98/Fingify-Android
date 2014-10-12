@@ -22,9 +22,13 @@ public class ExtendedClock extends Clock {
     }
 
     public double getTimeLeft() {
+        long timeLeft = getTimeToNextValue();
+        return 1 - ((double) timeLeft / (1000 * interval));
+    }
+
+    public long getTimeToNextValue() {
         Calendar calendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
-        long currentTimeSeconds = calendar.getTimeInMillis() / 1000;
-        int timeLeft = (int) currentTimeSeconds % interval;
-        return 1 - ((double) timeLeft / interval);
+        long currentTimeSeconds = calendar.getTimeInMillis();
+        return currentTimeSeconds % (interval * 1000);
     }
 }

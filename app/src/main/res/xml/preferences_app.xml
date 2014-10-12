@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:id="@+id/settings_fingerprint_authentication"
+        android:title="@string/settings_fingerprint_authentication_title"
+        android:summary="@string/settings_fingerprint_authentication_summary"
+        android:key="fingerprintAuthentication"
+        android:defaultValue="false" />
+</PreferenceScreen>

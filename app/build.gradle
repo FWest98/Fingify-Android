@@ -41,11 +41,12 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     provided 'org.projectlombok:lombok:1.14.4'
+    //compile project(':ProgressWheel')
     compile 'org.jboss.aerogear:aerogear-otp-java:1.0.0'
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'org.functionaljava:functionaljava:4.2-beta-1'
-    //compile project(':ProgressWheel')
+    compile 'com.android.support:support-v4:20.0.0'
 }
 
 retrolambda {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Activities & Fragments -->
+    <string name="app_name">Fingify</string>
+    <string name="activity_applications_title">Fingify</string>
+    <string name="activity_applications_action_newapplication">Nieuw account</string>
+    <string name="activity_applications_action_settings">Instellingen</string>
+
+    <string name="activity_preferences_title">Instellingen</string>
+    <string name="activity_preferences_headers_app">Appvoorkeuren</string>
+
+    <!-- Fingerprint authentication -->
+    <string name="fingerprint_authentication_title">Scan je vingerafdruk</string>
+    <string name="fingerprint_authentication_not_supported">Vingerafdrukcontrole niet ondersteund op dit apparaat</string>
+    <string name="fingerprint_authentication_dialog_title">Vingerafdrukcontrole</string>
+    <string name="fingerprint_authentication_dialog_message">Er is een vingerafdrukscanner gevonden op uw apparaat. Vingerafdrukcontrole tijdens het starten van de app inschakelen?</string>
+    <string name="fingerprint_authentication_dialog_enable_button">Inschakelen</string>
+    <string name="fingerprint_authentication_dialog_cancel_button">Annuleer</string>
+    <string name="fingerprint_authentication_failed">Vingerafdrukcontrole mislukt. Herstart de app om opnieuw te proberen.</string>
+
+    <!-- Settings -->
+    <string name="settings_fingerprint_authentication_title">Gebruik vingerafdrukcontrole</string>
+    <string name="settings_fingerprint_authentication_summary">Gebruik de vingerafdrukscanner om de gebruikter te controleren</string>
+</resources>
