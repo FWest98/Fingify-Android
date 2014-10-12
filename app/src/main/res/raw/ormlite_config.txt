@@ -1,0 +1,23 @@
+#
+# generated on 2014/10/11 07:01:36
+#
+# --table-start--
+dataClass=com.fwest98.fingify.Data.Application
+tableName=application
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=label
+# --field-end--
+# --field-start--
+fieldName=secret
+# --field-end--
+# --field-start--
+fieldName=type
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

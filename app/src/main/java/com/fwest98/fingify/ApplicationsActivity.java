@@ -1,17 +1,27 @@
 package com.fwest98.fingify;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fwest98.fingify.Fragments.ApplicationsFragment;
+
 
 public class ApplicationsActivity extends Activity {
+
+    private static ActionBar actionBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applications);
+
+        ActionBar actionBar = getActionBar();
+
+        getFragmentManager().beginTransaction().add(R.id.activity_container, ApplicationsFragment.newInstance()).commit();
     }
 
 
