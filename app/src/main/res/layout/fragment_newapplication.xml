@@ -4,20 +4,42 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <me.dm7.barcodescanner.zxing.ZXingScannerView
+    <me.dm7.barcodescanner.zbar.ZBarScannerView
         android:id="@+id/fragment_newapplication_barcodescanner"
         android:layout_width="300dp"
-        android:layout_height="300dp" />
+        android:layout_height="400dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Blabla"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="?android:attr/dividerHorizontal"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@android:style/DeviceDefault.Light.ButtonBar"
-        android:text="Some title"/>
+        android:orientation="horizontal"
+        android:paddingTop="0dip"
+        android:measureWithLargestChild="true">
+
+        <Button
+            android:id="@+id/fragment_newapplication_noqr"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/fragment_newapplication_noQRButton"/>
+
+        <Button
+            android:id="@+id/fragment_newapplication_cancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/fragment_newapplication_cancel"/>
+
+    </LinearLayout>
 
 </LinearLayout>

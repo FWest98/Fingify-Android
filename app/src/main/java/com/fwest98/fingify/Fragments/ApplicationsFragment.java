@@ -11,8 +11,6 @@ import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Helpers.TotpCountdown;
 import com.fwest98.fingify.R;
 
-import org.jboss.aerogear.security.otp.api.Base32;
-
 import java.util.ArrayList;
 
 public class ApplicationsFragment extends ListFragment {
@@ -71,17 +69,7 @@ public class ApplicationsFragment extends ListFragment {
 
     private void createApplicationsList() {
         /* Create dummy application list */
-        applications = new ArrayList<>();
-        applications.add(new Application("Test", Base32.random()));
-        applications.add(new Application("Test2", Base32.random()));
-        applications.add(new Application("Test", Base32.random()));
-        applications.add(new Application("Test2", Base32.random()));
-        applications.add(new Application("Test", Base32.random()));
-        applications.add(new Application("Test2", Base32.random()));
-        applications.add(new Application("Test", Base32.random()));
-        applications.add(new Application("Test2", Base32.random()));
-        applications.add(new Application("Test", Base32.random()));
-        applications.add(new Application("Test2", Base32.random()));
+        applications = Application.getApplications(getActivity());
 
         setListAdapter(new ApplicationsAdapter(getActivity(),
                 R.layout.application_list_item, applications));
@@ -89,6 +77,9 @@ public class ApplicationsFragment extends ListFragment {
         startCountdown();
     }
 
+    public void reCreateApplicationsList() {
+        createApplicationsList();
+    }
 
     @Override
     public void onResume() {

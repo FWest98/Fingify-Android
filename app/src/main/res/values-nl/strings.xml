@@ -9,6 +9,23 @@
     <string name="activity_preferences_title">Instellingen</string>
     <string name="activity_preferences_headers_app">Appvoorkeuren</string>
 
+    <string name="fragment_newapplication_noQRButton">Geen QR-code?</string>
+    <string name="fragment_newapplication_title">Scan een QR-code</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_newapplication_text">Vul een naam in voor dit account</string>
+    <string name="dialog_newapplication_appname_hint">Accountnaam</string>
+    <string name="dialog_newapplicatoin_user_text">Dit account is voor gebruiker: </string>
+    <string name="dialog_newapplication_title">Geef een accountnaam</string>
+    <string name="dialog_newapplication_submit">Toevoegen</string>
+    <string name="dialog_newapplication_cancel">Annuleer</string>
+    <string name="dialog_newapplication_error_notsupported_text">Deze techniek is nog niet ondersteund</string>
+    <string name="dialog_newapplication_error_notsupported_title">Nog niet ondersteund</string>
+    <string name="dialog_newapplicatoin_error_notsupported_cancel">Annuleer</string>
+    <string name="dialog_newapplication_error_invalid_text">Deze code is niet geldig. Probeer opnieuw</string>
+    <string name="dialog_newapplication_error_invalid_title">Ongeldige code</string>
+    <string name="dialog_newapplication_error_invalid_tryAgain">Opnieuw proberen</string>
+
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Scan je vingerafdruk</string>
     <string name="fingerprint_authentication_not_supported">Vingerafdrukcontrole niet ondersteund op dit apparaat</string>

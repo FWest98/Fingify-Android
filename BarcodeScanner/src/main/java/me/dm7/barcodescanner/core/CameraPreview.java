@@ -112,9 +112,27 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void setupCameraParameters() {
         Camera.Size optimalSize = getOptimalPreviewSize();
         Camera.Parameters parameters = mCamera.getParameters();
+
         parameters.setPreviewSize(optimalSize.width, optimalSize.height);
         mCamera.setParameters(parameters);
         adjustViewSize(optimalSize);
+    }
+
+    private Camera.Size bestSize(Camera.Parameters parameters) {
+        Camera.Size bestSize = null;
+
+        for(Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            boolean isRatio = ((float) (size.width / size.height)) == ((float) width / height);
+            boolean isBetterSize = (bestSize == null || size.width > bestSize.width);
+            boolean isFit = size.width <= width;
+
+            if(isRatio && isBetterSize && isFit) {
+                bestSize = size;
+            }
+        }
+
+        if(bestSize == null) return parameters.getSupportedPreviewSizes().get(0);
+        return bestSize;
     }
 
     private void adjustViewSize(Camera.Size cameraSize) {
@@ -122,15 +140,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         float cameraRatio = ((float) cameraSize.width) / cameraSize.height;
         float screenRatio = ((float) screenSize.x) / screenSize.y;
 
-        /*if(screenRatio > cameraRatio) {
+        if(screenRatio > cameraRatio) {
             setViewSize((int) (screenSize.y * cameraRatio), screenSize.y);
         } else {
             setViewSize(screenSize.x, (int) (screenSize.x / cameraRatio));
-        }*/
-        if(screenRatio > cameraRatio) {
-            setViewSize(screenSize.x, (int) (10 * screenSize.x));
-        } else {
-
         }
     }
 
@@ -186,8 +199,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
         Point screenResolution = DisplayUtils.getScreenResolution(getContext());
-        int w = screenResolution.x;
-        int h = screenResolution.y;
+        int w = width;
+        int h = height;
 
 
         final double ASPECT_TOLERANCE = 0.1;

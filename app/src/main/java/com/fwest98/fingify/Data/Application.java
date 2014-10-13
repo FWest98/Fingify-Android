@@ -1,8 +1,20 @@
 package com.fwest98.fingify.Data;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.fwest98.fingify.Database.DatabaseHelper;
+import com.fwest98.fingify.Database.DatabaseManager;
+import com.fwest98.fingify.Helpers.ExceptionHandler;
+import com.fwest98.fingify.R;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 
@@ -13,19 +25,90 @@ public class Application implements Serializable {
 
     @DatabaseField @Getter private String label;
     @DatabaseField @Getter private String secret;
+    @DatabaseField @Getter private String user;
     @DatabaseField @Getter private AuthenticationType type;
 
     public Application() {}
 
-    public Application(String label, String secret) {
+    public Application(String label, String secret, String user) {
         this.label = label;
         this.secret = secret;
+        this.user = user;
         this.type = AuthenticationType.TOTP;
     }
 
-    public Application(String label, String secret, AuthenticationType type) {
+    public Application(String label, String secret, String user, AuthenticationType type) {
         this.label = label;
         this.secret = secret;
         this.type = type;
+        this.user = user;
+    }
+
+    /* DB functions */
+
+    public static ArrayList<Application> getApplications(Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+
+            List<Application> result = dao.queryForAll();
+            return new ArrayList<>(result);
+        } catch (SQLException e) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_load_error), e), context, true);
+            return new ArrayList<>();
+        }
+    }
+
+    public static void addApplication(Application application, Context context) {
+        if(secretExists(application.getSecret(), context) || labelExists(application.getLabel(), context)) {
+            // This already exists
+            return;
+        }
+
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+
+            dao.create(application);
+        } catch(SQLException e) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_save_error), e), context, true);
+        }
+    }
+
+    public static boolean secretExists(String secret, Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+            List<Application> results = dao.queryForEq("secret", secret);
+            return results.size() > 0;
+        } catch (SQLException e) {
+            Log.e("ERROR", "Could not check for existing secrets", e);
+            return false;
+        }
+    }
+
+    public static boolean labelExists(String label, Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+            List<Application> results = dao.queryForEq("label", label);
+            return results.size() > 0;
+        } catch(SQLException e) {
+            Log.e("ERROR", "Could not check for existing labels", e);
+            return false;
+        }
+    }
+
+    public static void removeApplication(Application application, Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+
+            DeleteBuilder<Application, ?> deleteBuilder = dao.deleteBuilder();
+            deleteBuilder.where().eq("secret", application.getSecret());
+            deleteBuilder.delete();
+        } catch(SQLException e) {
+            Log.e("ERROR", "Could not remove application", e);
+        }
     }
 }

@@ -1,26 +1,44 @@
 package com.fwest98.fingify.Fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.fwest98.fingify.Data.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
+import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.R;
-import com.google.zxing.Result;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import java.util.Arrays;
 
-public class NewApplicationFragment extends DialogFragment implements ZXingScannerView.ResultHandler {
-    private ZXingScannerView scannerView;
+import lombok.Setter;
+import me.dm7.barcodescanner.zbar.Result;
+import me.dm7.barcodescanner.zbar.ZBarScannerView;
+
+public class NewApplicationFragment extends DialogFragment implements ZBarScannerView.ResultHandler {
+    private ZBarScannerView scannerView;
+    @Setter
+    private onResultListener listener = () -> {};
+
+    public static NewApplicationFragment newInstance(onResultListener listener) {
+        NewApplicationFragment fragment = new NewApplicationFragment();
+        fragment.setListener(listener);
+
+        return fragment;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setTitle(R.string.fragment_newapplication_title);
         return dialog;
     }
 
@@ -29,7 +47,14 @@ public class NewApplicationFragment extends DialogFragment implements ZXingScann
         super.onCreateView(inflater, container, savedInstanceState);
 
         View mainView = inflater.inflate(R.layout.fragment_newapplication, container, false);
-        scannerView = (ZXingScannerView) mainView.findViewById(R.id.fragment_newapplication_barcodescanner);
+        scannerView = (ZBarScannerView) mainView.findViewById(R.id.fragment_newapplication_barcodescanner);
+
+        scannerView.setFormats(Arrays.asList(me.dm7.barcodescanner.zbar.BarcodeFormat.QRCODE));
+
+        mainView.findViewById(R.id.fragment_newapplication_cancel).setOnClickListener(v -> dismiss());
+        mainView.findViewById(R.id.fragment_newapplication_noqr).setOnClickListener(v -> {
+            // TODO implement
+        });
 
         return mainView;
     }
@@ -51,6 +76,75 @@ public class NewApplicationFragment extends DialogFragment implements ZXingScann
 
     @Override
     public void handleResult(Result result) {
-        ExceptionHandler.handleException(new Exception("Content = " + result.getText()), getActivity(), true);
+        final Application parsedQR;
+        try {
+            parsedQR = ExtendedTotp.parseUri(result.getContents());
+        } catch(IllegalArgumentException e) {
+            if(e.getCause() != null && e.getCause() instanceof UnsupportedOperationException) { // HOTP or another code
+                // Build AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.dialog_newapplication_error_notsupported_text)
+                        .setTitle(R.string.dialog_newapplication_error_notsupported_title)
+                        .setPositiveButton(R.string.dialog_newapplicatoin_error_notsupported_cancel, (dialog, which) -> this.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                // Invalid code
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.dialog_newapplication_error_invalid_text)
+                        .setTitle(R.string.dialog_newapplication_error_invalid_title)
+                        .setPositiveButton(R.string.dialog_newapplication_error_invalid_tryAgain, (dialog, which) -> scannerView.startCamera());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            return;
+        }
+
+        if(Application.secretExists(parsedQR.getSecret(), getActivity())) {
+            // This application already exists. Notify the user
+            ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateSecret)), getActivity(), true);
+            dismiss();
+            return;
+        }
+
+        // Validation succeeded, let user enter the name
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View dialogView = inflater.inflate(R.layout.dialog_newapplication_name, null);
+
+        ((TextView) dialogView.findViewById(R.id.dialog_newapplication_user)).append(parsedQR.getUser());
+        ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).setText(parsedQR.getLabel());
+
+        builder.setView(dialogView)
+                .setTitle(R.string.dialog_newapplication_title)
+                .setPositiveButton(R.string.dialog_newapplication_submit, (dialog, which) -> {})
+                .setNegativeButton(R.string.dialog_newapplication_cancel, (dialog, which) -> dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String applicationName = ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).getText().toString();
+
+            if ("".equals(applicationName)) {
+                ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_noname)), getActivity(), false);
+                return;
+            }
+
+            if (Application.labelExists(applicationName, getActivity())) {
+                // Label exists
+                ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateLabel)), getActivity(), false);
+                return;
+            }
+
+            Application.addApplication(new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser()), getActivity());
+            listener.onResult();
+            dialog.dismiss();
+            dismiss();
+        });
+    }
+
+    public interface onResultListener {
+        void onResult();
     }
 }

@@ -2,6 +2,7 @@ package com.fwest98.fingify;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,7 +15,7 @@ import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Settings.Constants;
 
 
-public class ApplicationsActivity extends Activity {
+public class ApplicationsActivity extends Activity implements NewApplicationFragment.onResultListener {
 
     private static ActionBar actionBar;
 
@@ -56,10 +57,18 @@ public class ApplicationsActivity extends Activity {
                 startActivity(preferencesIntent);
                 return true;
             case R.id.activity_applications_action_newapplication:
-                NewApplicationFragment fragment = new NewApplicationFragment();
+                NewApplicationFragment fragment = NewApplicationFragment.newInstance(this);
                 fragment.show(getFragmentManager(), "dialog");
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResult() {
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.activity_container);
+        if(fragment instanceof ApplicationsFragment) { // This is it
+            ((ApplicationsFragment) fragment).reCreateApplicationsList();
+        }
     }
 }

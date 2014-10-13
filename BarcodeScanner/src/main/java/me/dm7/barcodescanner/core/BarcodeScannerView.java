@@ -34,6 +34,7 @@ public abstract class BarcodeScannerView extends FrameLayout implements Camera.P
         relativeLayout.setGravity(Gravity.CENTER);
         relativeLayout.setBackgroundColor(Color.BLACK);
         relativeLayout.addView(mPreview);
+        //relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight()));
         addView(relativeLayout);
 
         addView(mViewFinderView);

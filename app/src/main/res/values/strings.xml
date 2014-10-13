@@ -9,6 +9,27 @@
     <string name="activity_preferences_title">Settings</string>
     <string name="activity_preferences_headers_app">App settings</string>
 
+    <string name="fragment_newapplication_noQRButton">No QR code</string>
+    <string name="fragment_newapplication_title">Scan a QR code</string>
+    <string name="fragment_newapplication_cancel">Cancel</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_newapplication_text">Enter a name for this account</string>
+    <string name="dialog_newapplication_appname_hint">Accountname</string>
+    <string name="dialog_newapplication_user_text">This account is for user:</string>
+    <string name="dialog_newapplication_title">Enter account name</string>
+    <string name="dialog_newapplication_submit">Add account</string>
+    <string name="dialog_newapplication_cancel">Cancel</string>
+    <string name="dialog_newapplication_error_notsupported_text">This verification method is not yet supported</string>
+    <string name="dialog_newapplication_error_notsupported_title">Not supported</string>
+    <string name="dialog_newapplicatoin_error_notsupported_cancel">Cancel</string>
+    <string name="dialog_newapplication_error_invalid_text">This code is not valid. Please try again</string>
+    <string name="dialog_newapplication_error_invalid_title">Invalid code</string>
+    <string name="dialog_newapplication_error_invalid_tryAgain">Try again</string>
+    <string name="dialog_newapplication_error_noname">Account name is required</string>
+    <string name="dialog_newapplication_error_duplicateLabel">This label already exists. Pick a new one</string>
+    <string name="dialog_newapplication_error_duplicateSecret">This account already exists</string>
+
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Please verify to use the app</string>
     <string name="fingerprint_authentication_not_supported">Fingerprint authentication is not supported on this device</string>
@@ -21,4 +42,8 @@
     <!-- Settings -->
     <string name="settings_fingerprint_authentication_title">Use fingerprint scanner</string>
     <string name="settings_fingerprint_authentication_summary">Use the fingerprint scanner to authenticate the user</string>
+
+    <!-- Database -->
+    <string name="database_applications_save_error">Could not save the account</string>
+    <string name="database_applications_load_error">Could not load accounts</string>
 </resources>
