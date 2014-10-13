@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fwest98.fingify.Fragments.ApplicationsFragment;
+import com.fwest98.fingify.Fragments.NewApplicationFragment;
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Settings.Constants;
 
@@ -55,7 +56,8 @@ public class ApplicationsActivity extends Activity {
                 startActivity(preferencesIntent);
                 return true;
             case R.id.activity_applications_action_newapplication:
-
+                NewApplicationFragment fragment = new NewApplicationFragment();
+                fragment.show(getFragmentManager(), "dialog");
                 return true;
         }
         return super.onOptionsItemSelected(item);
