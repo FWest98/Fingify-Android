@@ -23,15 +23,6 @@
         android:measureWithLargestChild="true">
 
         <Button
-            android:id="@+id/fragment_newapplication_noqr"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="0dip"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/fragment_newapplication_noQRButton"/>
-
-        <Button
             android:id="@+id/fragment_newapplication_cancel"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -39,6 +30,15 @@
             android:layout_margin="0dip"
             style="?android:attr/buttonBarButtonStyle"
             android:text="@string/fragment_newapplication_cancel"/>
+
+        <Button
+            android:id="@+id/fragment_newapplication_noqr"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/fragment_newapplication_noQRButton"/>
 
     </LinearLayout>
 

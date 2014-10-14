@@ -14,13 +14,17 @@ import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import fj.data.Array;
 
 public class ApplicationsAdapter extends ArrayAdapter<Application> {
     private Context context;
     private List<Application> applications;
     private List<ExtendedTotp> TOTPs;
     private List<View> rowViews;
+    private List<Boolean> checked;
 
     public ApplicationsAdapter(Context context, int resource, List<Application> objects) {
         super(context, resource, objects);
@@ -31,6 +35,9 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
             TOTPs.add(new ExtendedTotp(application.getSecret(), new ExtendedClock()));
         }
         this.rowViews = new ArrayList<>(objects.size());
+        Boolean[] falses = new Boolean[objects.size()];
+        Arrays.fill(falses, false);
+        this.checked = Arrays.asList(falses);
     }
 
     @Override
@@ -44,6 +51,10 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         title.setText(applications.get(position).getLabel());
         code.setText(TOTPs.get(position).now());
         wheel.setProgress((int) (TOTPs.get(position).getTimeLeft() * 100));
+
+        if(checked.get(position) == true) {
+            rowView.setBackgroundResource(android.R.color.holo_blue_dark);
+        }
 
         rowViews.add(position, rowView);
 
@@ -61,5 +72,36 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
 
             ((ProgressWheel) rowView.findViewById(R.id.application_item_wheel)).setProgress((int) (totp.getTimeLeft() * 100));
         }
+    }
+
+    public void setChecked(int position, boolean isChecked) {
+        checked.set(position, isChecked);
+        View rowView = rowViews.get(position);
+
+        if(isChecked) {
+            rowView.setBackgroundResource(android.R.color.holo_blue_dark);
+        } else {
+            rowView.setBackgroundResource(android.R.color.background_light);
+        }
+    }
+
+    public int getCheckedCount() {
+        return Array.iterableArray(checked).filter(s -> s).length();
+    }
+
+    public void unCheckAll() {
+        Boolean[] falses = new Boolean[checked.size()];
+        Arrays.fill(falses, false);
+        checked = Arrays.asList(falses);
+    }
+
+    public List<Application> getCheckedApplications() {
+        List<Application> list = new ArrayList<>();
+        for(int i = 0; i < checked.size(); i++) {
+            if(checked.get(i)) {
+                list.add(applications.get(i));
+            }
+        }
+        return list;
     }
 }

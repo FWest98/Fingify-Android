@@ -13,6 +13,11 @@
     <string name="fragment_newapplication_title">Scan a QR code</string>
     <string name="fragment_newapplication_cancel">Cancel</string>
 
+    <string name="fragment_applications_context_title">selected</string>
+    <string name="fragment_applications_context_delete">Delete</string>
+    <string name="fragment_applications_context_edit">Edit</string>
+    <string name="fragment_applications_context_edit_error_nomultiple">You can only edit one account at a time</string>
+
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Enter a name for this account</string>
     <string name="dialog_newapplication_appname_hint">Accountname</string>
@@ -27,8 +32,17 @@
     <string name="dialog_newapplication_error_invalid_title">Invalid code</string>
     <string name="dialog_newapplication_error_invalid_tryAgain">Try again</string>
     <string name="dialog_newapplication_error_noname">Account name is required</string>
-    <string name="dialog_newapplication_error_duplicateLabel">This label already exists. Pick a new one</string>
+    <string name="dialog_newapplication_error_duplicateLabel">This name already exists. Pick a new one</string>
     <string name="dialog_newapplication_error_duplicateSecret">This account already exists</string>
+
+    <string name="dialog_editapplication_title">Edit accountname</string>
+    <string name="dialog_editapplication_cancel">Cancel</string>
+    <string name="dialog_editapplication_submit">Edit</string>
+
+    <string name="dialog_removeapplication_title">Are you sure you want to delete this/these account(s)? This cannot be undone</string>
+    <string name="dialog_removeapplication_cancel">Cancel</string>
+    <string name="dialog_removeapplication_submit">Delete</string>
+    <string name="dialog_removeapplication_notice">Account(s) deleted</string>
 
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Please verify to use the app</string>

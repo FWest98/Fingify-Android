@@ -112,7 +112,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_newapplication_name, null);
 
-        ((TextView) dialogView.findViewById(R.id.dialog_newapplication_user)).append(parsedQR.getUser());
+        ((TextView) dialogView.findViewById(R.id.dialog_newapplication_user)).append(" "+parsedQR.getUser());
         ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).setText(parsedQR.getLabel());
 
         builder.setView(dialogView)

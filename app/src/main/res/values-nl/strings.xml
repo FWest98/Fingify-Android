@@ -11,11 +11,17 @@
 
     <string name="fragment_newapplication_noQRButton">Geen QR-code?</string>
     <string name="fragment_newapplication_title">Scan een QR-code</string>
+    <string name="fragment_newapplication_cancel">Annuleer</string>
+
+    <string name="fragment_applications_context_title">geselecteerd</string>
+    <string name="fragment_applications_context_delete">Verwijder</string>
+    <string name="fragment_applications_context_edit">Bewerk</string>
+    <string name="fragment_applications_context_edit_error_nomultiple">Je kan maar één account tegelijk bewerken</string>
 
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Vul een naam in voor dit account</string>
     <string name="dialog_newapplication_appname_hint">Accountnaam</string>
-    <string name="dialog_newapplicatoin_user_text">Dit account is voor gebruiker: </string>
+    <string name="dialog_newapplication_user_text">Dit account is voor gebruiker: </string>
     <string name="dialog_newapplication_title">Geef een accountnaam</string>
     <string name="dialog_newapplication_submit">Toevoegen</string>
     <string name="dialog_newapplication_cancel">Annuleer</string>
@@ -25,6 +31,18 @@
     <string name="dialog_newapplication_error_invalid_text">Deze code is niet geldig. Probeer opnieuw</string>
     <string name="dialog_newapplication_error_invalid_title">Ongeldige code</string>
     <string name="dialog_newapplication_error_invalid_tryAgain">Opnieuw proberen</string>
+    <string name="dialog_newapplication_error_noname">Accountnaam is verplicht</string>
+    <string name="dialog_newapplication_error_duplicateLabel">Deze naam bestaat al. Kies een andere</string>
+    <string name="dialog_newapplication_error_duplicateSecret">Dit account bestaat al</string>
+
+    <string name="dialog_editapplication_title">Bewerk accountnaam</string>
+    <string name="dialog_editapplication_cancel">Annuleer</string>
+    <string name="dialog_editapplication_submit">Bewerk</string>
+
+    <string name="dialog_removeapplication_title">Weet je zeker dat je dit/deze account(s) wil verwijderen? Dit kan niet ongedaan gemaakt worden</string>
+    <string name="dialog_removeapplication_cancel">Annuleer</string>
+    <string name="dialog_removeapplication_submit">Verwijder</string>
+    <string name="dialog_removeapplication_notice">Account(s) verwijderd</string>
 
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Scan je vingerafdruk</string>
@@ -38,4 +56,8 @@
     <!-- Settings -->
     <string name="settings_fingerprint_authentication_title">Gebruik vingerafdrukcontrole</string>
     <string name="settings_fingerprint_authentication_summary">Gebruik de vingerafdrukscanner om de gebruikter te controleren</string>
+
+    <!-- Database -->
+    <string name="database_applications_save_error">Kon het account niet opslaan</string>
+    <string name="database_applications_load_error">Kon geen accounts laden</string>
 </resources>
