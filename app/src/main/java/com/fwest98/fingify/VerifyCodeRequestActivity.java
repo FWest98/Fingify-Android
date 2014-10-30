@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-public class VerifyCodeRequestActivity extends Activity {
+import com.fwest98.fingify.Fragments.NewApplicationFragment;
+
+public class VerifyCodeRequestActivity extends Activity implements NewApplicationFragment.onResultListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,13 +17,20 @@ public class VerifyCodeRequestActivity extends Activity {
                                 WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES |
                                 WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
-        /**/WindowManager.LayoutParams params = getWindow().getAttributes();
-        /**params.dimAmount = 1.0f;
-        params.alpha = 1.0f;/**/
-        /**params.width = 850;/**/
-        /**/params.height = 850;/**/
-        getWindow().setAttributes(params);/**/
+
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        getWindow().setAttributes(params);
 
         setContentView(R.layout.activity_verifycoderequest);
+
+        if(savedInstanceState == null) {
+            NewApplicationFragment fragment = NewApplicationFragment.newInstance(this);
+            fragment.show(getFragmentManager(), "dialog");
+        }
+    }
+
+    @Override
+    public void onResult() {
+
     }
 }
