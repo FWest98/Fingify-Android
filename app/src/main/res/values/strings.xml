@@ -9,6 +9,8 @@
     <string name="activity_preferences_title">Settings</string>
     <string name="activity_preferences_headers_app">App settings</string>
 
+    <string name="activity_verifycoderequest_title">Verify coderequest</string>
+
     <string name="fragment_newapplication_noQRButton">No QR code</string>
     <string name="fragment_newapplication_title">Scan a QR code</string>
     <string name="fragment_newapplication_cancel">Cancel</string>

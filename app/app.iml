@@ -88,6 +88,9 @@
     <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
     <orderEntry type="library" exported="" name="aerogear-otp-java-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="core-3.1.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-6.1.11" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="functionaljava-4.2-beta-1" level="project" />
     <orderEntry type="module" module-name="BarcodeScanner" exported="" />
   </component>

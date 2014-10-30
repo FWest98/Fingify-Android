@@ -9,4 +9,8 @@
     <item android:id="@+id/activity_applications_action_newapplication"
         android:title="@string/activity_applications_action_newapplication"
         android:showAsAction="never" />
+
+    <item android:id="@+id/activity_applications_action_verifydialog"
+        android:title="Twst"
+        android:showAsAction="never"/>
 </menu>

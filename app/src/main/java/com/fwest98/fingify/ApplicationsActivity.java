@@ -12,7 +12,11 @@ import android.view.MenuItem;
 import com.fwest98.fingify.Fragments.ApplicationsFragment;
 import com.fwest98.fingify.Fragments.NewApplicationFragment;
 import com.fwest98.fingify.Helpers.FingerprintManager;
+import com.fwest98.fingify.Services.GCMIntentService;
 import com.fwest98.fingify.Settings.Constants;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class ApplicationsActivity extends Activity implements NewApplicationFragment.onResultListener {
@@ -59,6 +63,11 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
             case R.id.activity_applications_action_newapplication:
                 NewApplicationFragment fragment = NewApplicationFragment.newInstance(this);
                 fragment.show(getFragmentManager(), "dialog");
+                return true;
+            case R.id.activity_applications_action_verifydialog:
+                Executors.newSingleThreadScheduledExecutor().schedule(() -> {
+                    GCMIntentService.createNotification(this, true);
+                }, 5, TimeUnit.SECONDS);
                 return true;
         }
         return super.onOptionsItemSelected(item);

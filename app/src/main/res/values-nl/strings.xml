@@ -9,6 +9,8 @@
     <string name="activity_preferences_title">Instellingen</string>
     <string name="activity_preferences_headers_app">Appvoorkeuren</string>
 
+    <string name="activity_verifycoderequest_title">Verifieer aanvraag</string>
+
     <string name="fragment_newapplication_noQRButton">Geen QR-code?</string>
     <string name="fragment_newapplication_title">Scan een QR-code</string>
     <string name="fragment_newapplication_cancel">Annuleer</string>
