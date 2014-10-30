@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Acitivities & Fragments -->
+    <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
     <string name="activity_applications_title">Fingify</string>
     <string name="activity_applications_action_newapplication">Add new account</string>
@@ -8,12 +8,6 @@
 
     <string name="activity_preferences_title">Settings</string>
     <string name="activity_preferences_headers_app">App settings</string>
-
-    <string name="activity_verifycoderequest_title">Verify coderequest</string>
-
-    <string name="fragment_newapplication_noQRButton">No QR code</string>
-    <string name="fragment_newapplication_title">Scan a QR code</string>
-    <string name="fragment_newapplication_cancel">Cancel</string>
 
     <string name="fragment_applications_context_title">selected</string>
     <string name="fragment_applications_context_delete">Delete</string>
@@ -24,9 +18,9 @@
     <string name="dialog_newapplication_text">Enter a name for this account</string>
     <string name="dialog_newapplication_appname_hint">Accountname</string>
     <string name="dialog_newapplication_user_text">This account is for user:</string>
-    <string name="dialog_newapplication_title">Enter account name</string>
-    <string name="dialog_newapplication_submit">Add account</string>
-    <string name="dialog_newapplication_cancel">Cancel</string>
+    <string name="dialog_newapplication_input_title">Enter account name</string>
+    <string name="dialog_newapplication_input_submit">Add account</string>
+    <string name="dialog_newapplication_input_cancel">Cancel</string>
     <string name="dialog_newapplication_error_notsupported_text">This verification method is not yet supported</string>
     <string name="dialog_newapplication_error_notsupported_title">Not supported</string>
     <string name="dialog_newapplicatoin_error_notsupported_cancel">Cancel</string>
@@ -36,6 +30,9 @@
     <string name="dialog_newapplication_error_noname">Account name is required</string>
     <string name="dialog_newapplication_error_duplicateLabel">This name already exists. Pick a new one</string>
     <string name="dialog_newapplication_error_duplicateSecret">This account already exists</string>
+    <string name="dialog_newapplication_noQRButton">No QR code</string>
+    <string name="dialog_newapplication_title">Scan a QR code</string>
+    <string name="dialog_newapplication_cancel">Cancel</string>
 
     <string name="dialog_editapplication_title">Edit accountname</string>
     <string name="dialog_editapplication_cancel">Cancel</string>
@@ -45,6 +42,8 @@
     <string name="dialog_removeapplication_cancel">Cancel</string>
     <string name="dialog_removeapplication_submit">Delete</string>
     <string name="dialog_removeapplication_notice">Account(s) deleted</string>
+
+    <string name="dialog_verifycoderequest_title">Verify code request</string>
 
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Please verify to use the app</string>

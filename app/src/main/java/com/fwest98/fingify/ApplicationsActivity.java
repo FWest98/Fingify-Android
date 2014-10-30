@@ -66,7 +66,7 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
                 return true;
             case R.id.activity_applications_action_verifydialog:
                 Executors.newSingleThreadScheduledExecutor().schedule(() -> {
-                    GCMIntentService.createNotification(this, true);
+                    GCMIntentService.createNotification(this, false);
                 }, 5, TimeUnit.SECONDS);
                 return true;
         }

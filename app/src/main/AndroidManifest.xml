@@ -45,9 +45,11 @@
 
         <activity
             android:name=".VerifyCodeRequestActivity"
-            android:label="@string/activity_verifycoderequest_title"
             android:theme="@style/DialogAcitivity"
-            android:showOnLockScreen="true">
+            android:showOnLockScreen="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:noHistory="true">
 
             </activity>
 

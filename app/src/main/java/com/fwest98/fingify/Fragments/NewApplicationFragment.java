@@ -38,7 +38,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setTitle(R.string.fragment_newapplication_title);
+        dialog.setTitle(R.string.dialog_newapplication_title);
         return dialog;
     }
 
@@ -116,9 +116,9 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
         ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).setText(parsedQR.getLabel());
 
         builder.setView(dialogView)
-                .setTitle(R.string.dialog_newapplication_title)
-                .setPositiveButton(R.string.dialog_newapplication_submit, (dialog, which) -> {})
-                .setNegativeButton(R.string.dialog_newapplication_cancel, (dialog, which) -> dismiss());
+                .setTitle(R.string.dialog_newapplication_input_title)
+                .setPositiveButton(R.string.dialog_newapplication_input_submit, (dialog, which) -> {})
+                .setNegativeButton(R.string.dialog_newapplication_input_cancel, (dialog, which) -> dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
