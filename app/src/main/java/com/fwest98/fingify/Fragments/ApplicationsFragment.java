@@ -6,14 +6,20 @@ import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.fwest98.fingify.Adapters.ApplicationsAdapter;
+import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.FingerprintManager;
@@ -21,6 +27,8 @@ import com.fwest98.fingify.Helpers.TotpCountdown;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ApplicationsFragment extends ListFragment {
     private static final String ISREADY_KEY = "isReady";
@@ -30,15 +38,29 @@ public class ApplicationsFragment extends ListFragment {
     private boolean isReady = false;
     private ArrayList<Application> applications;
 
+    private ApplicationsFragmentCallbacks callbacks = null;
+
     //region Setup
 
-    public static ApplicationsFragment newInstance() {
+    public static ApplicationsFragment newInstance(ApplicationsFragmentCallbacks callbacks) {
         ApplicationsFragment fragment = new ApplicationsFragment();
+        fragment.callbacks = callbacks;
 
         return fragment;
     }
 
     public ApplicationsFragment() {
+        callbacks = new ApplicationsFragmentCallbacks() {
+            @Override
+            public void onDisableMenu() {
+
+            }
+
+            @Override
+            public void onEnableMenu() {
+
+            }
+        };
     }
 
     //endregion
@@ -47,6 +69,7 @@ public class ApplicationsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        callbacks.onEnableMenu();
 
         if(savedInstanceState != null) {
             isReady = savedInstanceState.getBoolean(ISREADY_KEY, false);
@@ -54,7 +77,7 @@ public class ApplicationsFragment extends ListFragment {
         }
 
         if(!isReady) {
-        /* Verify fingerprint if needed */
+            /* Verify fingerprint if needed */
             FingerprintManager.authenticate(getActivity(), result -> {
                 if (result == FingerprintManager.FingerprintResponses.NOT_SUPPORTED) {
                     // Show a toast for information
@@ -65,7 +88,34 @@ public class ApplicationsFragment extends ListFragment {
                     isReady = true;
                     createApplicationsList();
                 } else if (result == FingerprintManager.FingerprintResponses.FAILED) {
-                    setEmptyText(getString(R.string.fingerprint_authentication_failed));
+                    /* Create view to notify the user of the failed authentication. Provide a retry button, disable further access */
+                    LinearLayout emptyLayout = new LinearLayout(getActivity());
+                    emptyLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    emptyLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                    emptyLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    TextView emptyText = new TextView(getActivity());
+                    emptyText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    emptyText.setText(R.string.fingerprint_authentication_failed);
+                    emptyText.setTextSize(22);
+
+                    Button retryButton = new Button(getActivity());
+                    retryButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    retryButton.setText(R.string.fingerprint_authentication_retry);
+                    retryButton.setOnClickListener(v -> {
+                        ((ViewGroup) getListView().getParent()).removeView(emptyLayout);
+                        onCreate(null);
+                    });
+
+                    emptyLayout.addView(emptyText);
+                    emptyLayout.addView(retryButton);
+
+                    getListView().setEmptyView(emptyLayout);
+                    ((ViewGroup) getListView().getParent()).addView(emptyLayout);
+                    setListAdapter(new ApplicationsAdapter(getActivity(), R.layout.application_list_item, new ArrayList<>()));
+
+                    // Hide menu
+                    callbacks.onDisableMenu();
                 } else {
                     isReady = true;
                     createApplicationsList();
@@ -160,7 +210,15 @@ public class ApplicationsFragment extends ListFragment {
 
                             Application oldApplication = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications().get(0);
                             Application.removeApplication(oldApplication, getActivity());
-                            Application.addApplication(new Application(applicationName, oldApplication.getSecret(), oldApplication.getUser()), getActivity());
+
+                            Application newApplication = new Application(applicationName, oldApplication.getSecret(), oldApplication.getUser());
+                            Application.addApplication(newApplication, getActivity());
+
+                            HashMap<Application, Application> changes = new HashMap<>();
+                            changes.put(oldApplication, newApplication);
+
+                            Account.getInstance(getActivity()).updateApplications(changes, result -> {});
+
                             reCreateApplicationsList();
                             dialog.dismiss();
                             mode.finish();
@@ -175,15 +233,19 @@ public class ApplicationsFragment extends ListFragment {
                         builder.setMessage(R.string.dialog_removeapplication_title)
                                 .setNegativeButton(R.string.dialog_removeapplication_cancel, (dialog, which) -> {})
                                 .setPositiveButton(R.string.dialog_removeapplication_submit, (dialog, which) -> {
-                            for (Application application : ((ApplicationsAdapter) getListAdapter()).getCheckedApplications()) {
-                                Application.removeApplication(application, getActivity());
-                            }
+                                    List<Application> applicationsToRemove = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications();
 
-                            ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_removeapplication_notice)), getActivity(), false);
+                                    for (Application application : applicationsToRemove) {
+                                        Application.removeApplication(application, getActivity());
+                                    }
 
-                            reCreateApplicationsList();
-                            mode.finish();
-                        });
+                                    Account.getInstance(getActivity()).removeApplications(applicationsToRemove, result -> {});
+
+                                    ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_removeapplication_notice)), getActivity(), false);
+
+                                    reCreateApplicationsList();
+                                    mode.finish();
+                                });
                         AlertDialog dialog = builder.create();
                         dialog.show();
                         return true;
@@ -242,4 +304,13 @@ public class ApplicationsFragment extends ListFragment {
         ApplicationsAdapter applicationsAdapter = (ApplicationsAdapter) getListAdapter();
         if(applicationsAdapter != null) applicationsAdapter.updateViews();
     }
+
+    //region Interfaces
+
+    public static interface ApplicationsFragmentCallbacks {
+        public void onDisableMenu();
+        public void onEnableMenu();
+    }
+
+    //endregion
 }

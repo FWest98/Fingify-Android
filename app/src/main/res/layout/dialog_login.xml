@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_login_tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="500dip">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TabWidget
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@android:id/tabs" />
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/dialog_login_tabs_userpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="17sp"
+                    android:text="@string/dialog_login_userpass_desc"/>
+
+                <EditText
+                    android:id="@+id/dialog_login_userpass_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="10dp"
+                    android:singleLine="true"
+                    android:hint="@string/dialog_login_userpass_username_hint"/>
+
+                <EditText
+                    android:id="@+id/dialog_login_userpass_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif"
+                    android:inputType="textPassword"
+                    android:hint="@string/dialog_login_userpass_password_hint"/>
+            </LinearLayout>
+
+            <!--<LinearLayout
+                android:id="@+id/dialog_login_tabs_social"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/dialog_login_social_gplus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>-->
+        </FrameLayout>
+    </LinearLayout>
+</TabHost>

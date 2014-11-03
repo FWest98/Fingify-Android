@@ -5,6 +5,7 @@
     <string name="activity_applications_title">Fingify</string>
     <string name="activity_applications_action_newapplication">Nieuw account</string>
     <string name="activity_applications_action_settings">Instellingen</string>
+    <string name="activity_applications_action_account">Fingify account</string>
 
     <string name="activity_preferences_title">Instellingen</string>
     <string name="activity_preferences_headers_app">Appvoorkeuren</string>
@@ -27,10 +28,15 @@
     <string name="dialog_newapplication_error_invalid_text">Deze code is niet geldig. Probeer opnieuw</string>
     <string name="dialog_newapplication_error_invalid_title">Ongeldige code</string>
     <string name="dialog_newapplication_error_invalid_tryAgain">Opnieuw proberen</string>
-    <string name="dialog_newapplication_error_noname">Accountnaam is verplicht</string>
+    <string name="dialog_newapplication_error_noname">Accountnaam is vereist</string>
     <string name="dialog_newapplication_error_duplicateLabel">Deze naam bestaat al. Kies een andere</string>
     <string name="dialog_newapplication_error_duplicateSecret">Dit account bestaat al</string>
     <string name="dialog_newapplication_noQRButton">Geen QR-code?</string>
+    <string name="dialog_newapplication_code_title">Vul code in</string>
+    <string name="dialog_newapplication_code_desc">Geef de code in zoals die op de website is gegeven, zonder spaties</string>
+    <string name="dialog_newapplication_code_hint">Code van 32 tekens</string>
+    <string name="dialog_newapplication_code_required">Code is vereist!</string>
+    <string name="dialog_newapplication_code_length">Code moet 32 tekens lang zijn!</string>
     <string name="dialog_newapplication_title">Scan een QR-code</string>
     <string name="dialog_newapplication_cancel">Annuleer</string>
 
@@ -45,6 +51,23 @@
 
     <string name="dialog_verifycoderequest_title">Verifieer aanvraag</string>
 
+    <string name="dialog_login_tabs_userpass">Fingify account</string>
+    <string name="dialog_login_tabs_social">Google+</string>
+    <string name="dialog_login_userpass_desc">Log in met je gebruikersnaam en wachtwoord</string>
+    <string name="dialog_login_userpass_username_hint">Gebruikersnaam</string>
+    <string name="dialog_login_userpass_password_hint">Wachtwoord</string>
+    <string name="dialog_login_buttons_login">Log in</string>
+    <string name="dialog_login_buttons_register">Registreer</string>
+    <string name="dialog_login_buttons_cancel">Annuleer</string>
+
+    <string name="dialog_register_title">Registreer</string>
+    <string name="dialog_register_username_hint">Gebruikersnaam</string>
+    <string name="dialog_register_password_hint">Wachtwoord</string>
+    <string name="dialog_register_password_repeat_hint">Wachtwoordbevestiging</string>
+    <string name="dialog_register_email_hint">E-mailadres</string>
+    <string name="dialog_register_buttons_register">Registreer</string>
+    <string name="dialog_register_buttons_cancel">Annuleer</string>
+
     <!-- Fingerprint authentication -->
     <string name="fingerprint_authentication_title">Scan je vingerafdruk</string>
     <string name="fingerprint_authentication_not_supported">Vingerafdrukcontrole niet ondersteund op dit apparaat</string>
@@ -52,7 +75,8 @@
     <string name="fingerprint_authentication_dialog_message">Er is een vingerafdrukscanner gevonden op uw apparaat. Vingerafdrukcontrole tijdens het starten van de app inschakelen?</string>
     <string name="fingerprint_authentication_dialog_enable_button">Inschakelen</string>
     <string name="fingerprint_authentication_dialog_cancel_button">Annuleer</string>
-    <string name="fingerprint_authentication_failed">Vingerafdrukcontrole mislukt. Herstart de app om opnieuw te proberen.</string>
+    <string name="fingerprint_authentication_failed">Vingerafdrukcontrole mislukt</string>
+    <string name="fingerprint_authentication_retry">Probeer opnieuw</string>
 
     <!-- Settings -->
     <string name="settings_fingerprint_authentication_title">Gebruik vingerafdrukcontrole</string>
@@ -61,4 +85,30 @@
     <!-- Database -->
     <string name="database_applications_save_error">Kon het account niet opslaan</string>
     <string name="database_applications_load_error">Kon geen accounts laden</string>
+
+    <!-- Account -->
+    <string name="account_initialize_breaking_change">Wijzigingen in de app vereisen opnieuw inloggen</string>
+    <string name="account_login_wrongtab">Kies het tabblad "Fingify account"</string>
+    <string name="account_login_usernamerequired">Gebruikersnaam is vereist!</string>
+    <string name="account_login_passwordrequired">Wachtwoord is vereist!</string>
+    <string name="account_login_unauthorized">Ongeldige inloggegevens</string>
+    <string name="account_login_missing_data">Missende gegevens</string>
+    <string name="account_login_unknownretry">Onbekende fout. Probeer het opnieuw</string>
+    <string name="account_login_unknown">Onbekende fout</string>
+    <string name="account_login_error_login">Fout tijdens inloggen</string>
+    
+    <string name="account_registration_username_required">Gebruikersnaam is vereist!</string>
+    <string name="account_registration_password_required">Wachtwoord is vereist!</string>
+    <string name="account_registration_passwords_equal">Wachtwoorden moeten gelijk zijn!</string>
+    <string name="account_registration_missing_data">Missende gegevens</string>
+    <string name="account_registration_conflict">Deze gebruikersnaam of dit e-mailadres bestaan al</string>
+    <string name="account_registration_servererror">Serverfout</string>
+    <string name="account_registration_unknown">Onbekende fout</string>
+    <string name="account_registration_error">Fout tijdens registreren</string>
+
+    <string name="account_applications_unauthorized">Ongeldig account, log opnieuw in</string>
+    <string name="account_applications_unknown">Onbekende fout, probeer het opnieuw</string>
+    <string name="account_applications_error">Fout tijdens verwerken</string>
+
+    <string name="account_webactions_no_internet_connection">Geen internetverbinding</string>
 </resources>

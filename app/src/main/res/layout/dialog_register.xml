@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="10dp">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_register_username"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/dialog_register_username_hint"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_register_password"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:layout_marginBottom="10dp"
+        android:inputType="textPassword"
+        android:hint="@string/dialog_register_password_hint"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_register_password_repeat"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:layout_marginBottom="10dp"
+        android:inputType="textPassword"
+        android:hint="@string/dialog_register_password_repeat_hint"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_register_email"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:layout_marginBottom="10dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/dialog_register_email_hint"/>
+</LinearLayout>

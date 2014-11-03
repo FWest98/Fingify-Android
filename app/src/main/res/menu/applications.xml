@@ -8,9 +8,14 @@
 
     <item android:id="@+id/activity_applications_action_newapplication"
         android:title="@string/activity_applications_action_newapplication"
-        android:showAsAction="never" />
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="ifRoom" />
 
     <item android:id="@+id/activity_applications_action_verifydialog"
-        android:title="Twst"
+        android:title="Test"
+        android:showAsAction="never"/>
+
+    <item android:id="@+id/activity_applications_action_account"
+        android:title="@string/activity_applications_action_account"
         android:showAsAction="never"/>
 </menu>

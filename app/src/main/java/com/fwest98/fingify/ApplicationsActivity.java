@@ -19,10 +19,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-public class ApplicationsActivity extends Activity implements NewApplicationFragment.onResultListener {
+public class ApplicationsActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks {
 
-    private static ActionBar actionBar;
-
+    private ActionBar actionBar;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
         }
 
         if(savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.activity_container, ApplicationsFragment.newInstance()).commit();
+            getFragmentManager().beginTransaction().add(R.id.activity_container, ApplicationsFragment.newInstance(this)).commit();
         }
     }
 
@@ -47,6 +47,7 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.applications, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -69,6 +70,9 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
                     GCMIntentService.createNotification(this, false);
                 }, 5, TimeUnit.SECONDS);
                 return true;
+            case R.id.activity_applications_action_account:
+                // Open My Account activity
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -78,6 +82,22 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
         Fragment fragment = getFragmentManager().findFragmentById(R.id.activity_container);
         if(fragment instanceof ApplicationsFragment) { // This is it
             ((ApplicationsFragment) fragment).reCreateApplicationsList();
+        }
+    }
+
+    @Override
+    public void onDisableMenu() {
+        if(menu == null) return;
+        for(int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setVisible(false);
+        }
+    }
+
+    @Override
+    public void onEnableMenu() {
+        if(menu == null) return;
+        for(int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setVisible(true);
         }
     }
 }

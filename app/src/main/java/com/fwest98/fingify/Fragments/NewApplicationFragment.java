@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.ExtendedTotp;
@@ -37,7 +38,6 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setTitle(R.string.dialog_newapplication_title);
         return dialog;
     }
@@ -53,7 +53,31 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
 
         mainView.findViewById(R.id.fragment_newapplication_cancel).setOnClickListener(v -> dismiss());
         mainView.findViewById(R.id.fragment_newapplication_noqr).setOnClickListener(v -> {
-            // TODO implement
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View dialogView = inflater.inflate(R.layout.dialog_newapplication_code, null);
+            builder.setView(dialogView)
+                    .setTitle(R.string.dialog_newapplication_code_title)
+                    .setPositiveButton("OK", (dialog, which) -> {})
+                    .setNegativeButton(R.string.dialog_newapplication_cancel, (dialog, which) -> dismiss());
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(c -> {
+                String code = ((EditText) dialogView.findViewById(R.id.dialog_newapplication_code)).getText().toString();
+
+                if("".equals(code)) {
+                    ExceptionHandler.handleException(new Exception(getString(R.string.dialog_newapplication_code_required)), getActivity(), false);
+                    return;
+                }
+                if(code.length() != 32) {
+                    ExceptionHandler.handleException(new Exception(getString(R.string.dialog_newapplication_code_length)), getActivity(), false);
+                    return;
+                }
+
+                finishResult(new Application("", code, code));
+                dismiss();
+            });
         });
 
         return mainView;
@@ -100,6 +124,10 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
             return;
         }
 
+        finishResult(parsedQR);
+    }
+
+    private void finishResult(Application parsedQR) {
         if(Application.secretExists(parsedQR.getSecret(), getActivity())) {
             // This application already exists. Notify the user
             ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateSecret)), getActivity(), true);
@@ -137,7 +165,12 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
                 return;
             }
 
-            Application.addApplication(new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser()), getActivity());
+            Application newApplication = new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser());
+
+            Application.addApplication(newApplication, getActivity());
+
+            Account.getInstance(getActivity()).setApplications(Arrays.asList(newApplication), s -> {});
+
             listener.onResult();
             dialog.dismiss();
             dismiss();
