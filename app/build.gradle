@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:0.14.0'
         classpath 'me.tatarka:gradle-retrolambda:1.+'
     }
 }
@@ -44,6 +44,8 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'org.functionaljava:functionaljava:4.2-beta-1'
     compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v4:+'
 }
 
 retrolambda {

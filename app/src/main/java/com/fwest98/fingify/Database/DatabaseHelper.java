@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fwest98.fingify.Data.Application;
+import com.fwest98.fingify.Data.Request;
 import com.fwest98.fingify.R;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -16,7 +17,7 @@ import java.util.Hashtable;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "fingify.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private Hashtable<String, Dao<?, Integer>> daoHashtable = new Hashtable<>();
 
@@ -28,6 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Application.class);
+            TableUtils.createTable(connectionSource, Request.class);
         } catch (SQLException e) {
             Log.e("DBHelper", "Error generating database", e);
             throw new RuntimeException(e);
@@ -37,11 +39,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            TableUtils.dropTable(connectionSource, Application.class, true);
-
-            onCreate(database, connectionSource);
+            if (oldVersion == 1) {
+                // Upgrade from 1 to 2
+                TableUtils.createTable(connectionSource, Request.class);
+            }
         } catch (SQLException e) {
-            Log.e("DBHelper", "Error removing database", e);
+            Log.e("DBHelper", "Error upgrading database", e);
             throw new RuntimeException(e);
         }
     }
