@@ -21,12 +21,17 @@ import com.fwest98.fingify.Settings.Constants;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -279,10 +284,19 @@ public class Account {
     //endregion
     //region Register
 
+    /**
+     * Register a new user. Creates a dialog with the form
+     * @param successCallback The callback function to execute when it's finished
+     */
     public void register(AsyncActionCallback successCallback) {
         register(successCallback, result -> {});
     }
 
+    /**
+     * Register a new user. Creates a dialog with the form
+     * @param successCallback The callback function to execute when it's finished
+     * @param errorCallback The callback function to execute when something's gone horribly wrong or the user just cancelled
+     */
     public void register(AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -320,6 +334,14 @@ public class Account {
         });
     }
 
+
+    /**
+     * Perform the actual webrequest(s) to register
+     * @param username The username
+     * @param password The password entered by the user
+     * @param email The emailaddress given by the user
+     * @param callback The callbak function to execute when it's done
+     */
     private void register(String username, String password, String email, AsyncActionCallback callback) {
         WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
             @Override
@@ -381,6 +403,11 @@ public class Account {
     //endregion
     //region Applications
 
+    /**
+     * Add applications to your account
+     * @param applications The list of applications to add
+     * @param callback The callbak function to execute when it's done
+     */
     public void setApplications(List<Application> applications, AsyncActionCallback callback) {
         if(!isSet()) return;
         if(applications == null || applications.size() == 0) {
@@ -397,6 +424,11 @@ public class Account {
         applications(postParameters, "POST", callback);
     }
 
+    /**
+     * Update applications in your account
+     * @param applicationList HashMap of Applications, Key = old application, Value = new application
+     * @param callback The callbak function to execute when it's done
+     */
     public void updateApplications(java.util.HashMap<Application, Application> applicationList, AsyncActionCallback callback) {
         if(!isSet()) return;
         if(applicationList == null || applicationList.size() == 0) {
@@ -416,6 +448,11 @@ public class Account {
         applications(postParameters, "PUT", callback);
     }
 
+    /**
+     * Remove applications from your account
+     * @param applications The list of applications to remove
+     * @param callback The callbak function to execute when it's done
+     */
     public void removeApplications(List<Application> applications, AsyncActionCallback callback) {
         if(!isSet()) return;
         if(applications == null || applications.size() == 0) {
@@ -432,6 +469,12 @@ public class Account {
         applications(postParameters, "DELETE", callback);
     }
 
+    /**
+     * The actual web things
+     * @param postParameters The data to send in the body
+     * @param requestMehod The HTTP method
+     * @param callback The callbak function to execute when it's done
+     */
     private void applications(List<NameValuePair> postParameters, String requestMehod, AsyncActionCallback callback) {
         if(!isSet()) return;
         if(postParameters == null || postParameters.size() == 0) {
@@ -475,6 +518,108 @@ public class Account {
             @Override
             public void onError(Exception exception) {
                 ExceptionHandler.handleException(new Exception(context.getString(R.string.account_applications_error) + ": " + exception.getMessage()), context, true);
+            }
+        };
+
+        new WebActions().execute(webRequestCallbacks);
+    }
+
+    //endregion
+    //region Requests
+
+    /**
+     * Get the list of requests from web or local storage
+     * @param successCallback The callback function to execute when it's finished
+     */
+    public void getRequests(AsyncActionCallback successCallback) {
+        getRequests(successCallback, ex -> {});
+    }
+
+    /**
+     * Get the list of requests from web or local storage
+     * @param successCallback The callback function to execute when it's finished
+     * @param errorCallback The callback function to execute when something's gone horribly wrong
+     */
+    public void getRequests(AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
+        if (HelperFunctions.hasInternetConnection(context) && isSet()) {
+            getRequestsFromWeb(successCallback, errorCallback);
+        } else {
+            ArrayList<Request> requests = Request.getRequests(context);
+            if(requests == null || requests.size() == 0) {
+                errorCallback.onFinished(null);
+            } else {
+                successCallback.onFinished(requests);
+            }
+        }
+    }
+
+    /**
+     * Get the list of requests from the web
+     * @param successCallback The callback function to execute when it's finished
+     * @param errorCallback The callback function to execute when something's gone horribly wrong
+     */
+    private void getRequestsFromWeb(AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
+        if(!isSet()) return;
+
+        WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
+            @Override
+            public HttpURLConnection onCreateConnection() throws Exception {
+                URL url = new URL(Constants.HTTP_BASE + "account/requests?key=" + getApiKey());
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+                return connection;
+            }
+
+            @Override
+            public String onValidateResponse(String content, int statusCode) throws Exception {
+                switch (statusCode) {
+                    case HttpURLConnection.HTTP_UNAUTHORIZED:
+                        throw new Exception(context.getString(R.string.account_applications_unauthorized));
+                    case HttpURLConnection.HTTP_OK:
+                        return content;
+                    default:
+                        throw new Exception(context.getString(R.string.account_applications_unknown));
+                }
+            }
+
+            @Override
+            public void onProcessData(String data) {
+                try {
+                    SimpleDateFormat webFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    ArrayList<Request> requests = new ArrayList<>();
+
+                    JSONArray base = new JSONArray(data);
+                    for(int i = 0; i < base.length(); i++) {
+                        JSONObject JSONRequest = base.getJSONObject(i);
+                        Date requestTime;
+
+                        try {
+                            requestTime = webFormat.parse(JSONRequest.getString("requestTime"));
+                        } catch (ParseException e) {
+                            requestTime = Calendar.getInstance().getTime();
+                        }
+
+                        Request request = new Request(
+                                JSONRequest.getString("applicationName"),
+                                requestTime,
+                                JSONRequest.getBoolean("isDone"),
+                                JSONRequest.getBoolean("isLocal")
+                        );
+                        requests.add(request);
+                    }
+
+                    successCallback.onFinished(requests);
+                } catch (JSONException e) {
+                    ExceptionHandler.handleException(new Exception("Couldn't process response", e), context, true);
+
+                    errorCallback.onFinished(e);
+                }
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                ExceptionHandler.handleException(new Exception(context.getString(R.string.account_applications_error) + ": " + exception.getMessage()), context, true);
+                errorCallback.onFinished(exception);
             }
         };
 

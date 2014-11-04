@@ -72,7 +72,6 @@ public class ApplicationsFragment extends ListFragment {
         callbacks.onEnableMenu();
 
         if(savedInstanceState != null) {
-            isReady = savedInstanceState.getBoolean(ISREADY_KEY, false);
             applications = (ArrayList<Application>) savedInstanceState.getSerializable(ARRAY_KEY);
         }
 

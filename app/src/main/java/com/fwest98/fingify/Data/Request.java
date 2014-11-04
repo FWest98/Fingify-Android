@@ -46,11 +46,14 @@ public class Request implements Serializable {
     /* DB */
 
     public static ArrayList<Request> getRequests(Context context) {
+        return getRequests(10000, context);
+    }
+    public static ArrayList<Request> getRequests(int limit, Context context) {
         DatabaseHelper helper = DatabaseManager.getHelper(context);
         try {
             Dao<Request, ?> dao = helper.getDaoWithCache(Request.class);
 
-            List<Request> result = dao.queryForAll();
+            List<Request> result = dao.queryBuilder().orderBy("requestTime", false).limit(limit).query();
             return new ArrayList<>(result);
         } catch (SQLException e) {
             ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_load_error), e), context, true);
@@ -58,5 +61,18 @@ public class Request implements Serializable {
         }
     }
 
+    public static void addRequest(Request request, Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Request, ?> dao = helper.getDao(Request.class);
 
+            dao.create(request);
+        } catch(SQLException e) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_save_error), e), context, true);
+        }
+    }
+
+    public static void removeRequest(Request request, Context context) {
+
+    }
 }
