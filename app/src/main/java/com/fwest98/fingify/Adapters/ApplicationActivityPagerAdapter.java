@@ -7,8 +7,11 @@ import android.support.v13.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
 public class ApplicationActivityPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragments = new ArrayList<>();
+    @Getter private List<Fragment> fragments = new ArrayList<>();
+    private int limit = 0;
 
     public ApplicationActivityPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -21,7 +24,7 @@ public class ApplicationActivityPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return (limit == 0 || limit > fragments.size()) ? fragments.size() : limit;
     }
 
     public void removeItem(int i) {
@@ -31,6 +34,11 @@ public class ApplicationActivityPagerAdapter extends FragmentPagerAdapter {
 
     public void addItem(Fragment fragment) {
         fragments.add(fragment);
+        notifyDataSetChanged();
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
         notifyDataSetChanged();
     }
 }

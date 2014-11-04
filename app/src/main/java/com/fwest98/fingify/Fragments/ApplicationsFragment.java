@@ -1,6 +1,5 @@
 package com.fwest98.fingify.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
@@ -35,8 +34,9 @@ public class ApplicationsFragment extends ListFragment {
     private static final String ARRAY_KEY = "array";
 
     private TotpCountdown countdown;
-    private boolean isReady = false;
     private ArrayList<Application> applications;
+    private boolean awaitingFingerprints = false;
+    private boolean isSetup = false;
 
     private ApplicationsFragmentCallbacks callbacks = null;
 
@@ -52,12 +52,12 @@ public class ApplicationsFragment extends ListFragment {
     public ApplicationsFragment() {
         callbacks = new ApplicationsFragmentCallbacks() {
             @Override
-            public void onDisableMenu() {
+            public void onDisable() {
 
             }
 
             @Override
-            public void onEnableMenu() {
+            public void onEnable() {
 
             }
         };
@@ -66,63 +66,72 @@ public class ApplicationsFragment extends ListFragment {
     //endregion
     //region Lifecycle
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        callbacks.onEnableMenu();
+        callbacks.onDisable();
+    }
 
-        if(savedInstanceState != null) {
-            applications = (ArrayList<Application>) savedInstanceState.getSerializable(ARRAY_KEY);
-        }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setEmptyText("No accounts yet! Get started and create a new one!");
 
-        if(!isReady) {
-            /* Verify fingerprint if needed */
-            FingerprintManager.authenticate(getActivity(), result -> {
-                if (result == FingerprintManager.FingerprintResponses.NOT_SUPPORTED) {
-                    // Show a toast for information
-                    ExceptionHandler.handleException(new Exception(getString(R.string.fingerprint_authentication_not_supported)), getActivity(), true);
-                    isReady = true;
-                    createApplicationsList();
-                } else if (result == FingerprintManager.FingerprintResponses.DISABLED) {
-                    isReady = true;
-                    createApplicationsList();
-                } else if (result == FingerprintManager.FingerprintResponses.FAILED) {
-                    /* Create view to notify the user of the failed authentication. Provide a retry button, disable further access */
-                    LinearLayout emptyLayout = new LinearLayout(getActivity());
-                    emptyLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                    emptyLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-                    emptyLayout.setOrientation(LinearLayout.VERTICAL);
+        //validateFingerprint();
+    }
 
-                    TextView emptyText = new TextView(getActivity());
-                    emptyText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    emptyText.setText(R.string.fingerprint_authentication_failed);
-                    emptyText.setTextSize(22);
+    private void validateFingerprint() {
+        /* Verify fingerprint if needed */
+        awaitingFingerprints = true;
+        FingerprintManager.authenticate(getActivity(), result -> {
+            awaitingFingerprints = false;
+            callbacks.onEnable();
+            if (result == FingerprintManager.FingerprintResponses.NOT_SUPPORTED) {
+                // Show a toast for information
+                ExceptionHandler.handleException(new Exception(getString(R.string.fingerprint_authentication_not_supported)), getActivity(), true);
+                createApplicationsList();
+            } else if (result == FingerprintManager.FingerprintResponses.DISABLED) {
+                createApplicationsList();
+            } else if (result == FingerprintManager.FingerprintResponses.FAILED) {
+                showFailedVerification();
+            } else {
+                createApplicationsList();
+            }
+        });
+    }
 
-                    Button retryButton = new Button(getActivity());
-                    retryButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    retryButton.setText(R.string.fingerprint_authentication_retry);
-                    retryButton.setOnClickListener(v -> {
-                        ((ViewGroup) getListView().getParent()).removeView(emptyLayout);
-                        onCreate(null);
-                    });
+    private void showFailedVerification() {
+        /* Create view to notify the user of the failed authentication. Provide a retry button, disable further access */
+        LinearLayout emptyLayout = new LinearLayout(getActivity());
+        emptyLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        emptyLayout.setOrientation(LinearLayout.VERTICAL);
 
-                    emptyLayout.addView(emptyText);
-                    emptyLayout.addView(retryButton);
+        TextView emptyText = new TextView(getActivity());
+        emptyText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        emptyText.setText(R.string.fingerprint_authentication_failed);
+        emptyText.setTextSize(22);
 
-                    getListView().setEmptyView(emptyLayout);
-                    ((ViewGroup) getListView().getParent()).addView(emptyLayout);
-                    setListAdapter(new ApplicationsAdapter(getActivity(), R.layout.application_list_item, new ArrayList<>()));
+        Button retryButton = new Button(getActivity());
+        retryButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        retryButton.setText(R.string.fingerprint_authentication_retry);
+        retryButton.setOnClickListener(v -> {
+            ((ViewGroup) getListView().getParent()).removeView(emptyLayout);
+            validateFingerprint();
+        });
 
-                    // Hide menu
-                    callbacks.onDisableMenu();
-                } else {
-                    isReady = true;
-                    createApplicationsList();
-                }
-            });
-        } else {
-            setListAdapter(new ApplicationsAdapter(getActivity(), R.layout.application_list_item, applications));
-        }
+        emptyLayout.addView(emptyText);
+        emptyLayout.addView(retryButton);
+
+        getListView().setEmptyView(emptyLayout);
+        setEmptyText("");
+
+        ((ViewGroup) getListView().getParent()).addView(emptyLayout);
+        setListAdapter(new ApplicationsAdapter(getActivity(), R.layout.application_list_item, new ArrayList<>()));
+
+        // Hide menu
+        callbacks.onDisable();
     }
 
     private void createApplicationsList() {
@@ -142,14 +151,21 @@ public class ApplicationsFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(isReady) startCountdown();
+        if(awaitingFingerprints && isSetup) {
+            // The fingerprints crashed.....
+            showFailedVerification();
+            awaitingFingerprints = false;
+        } else if(!awaitingFingerprints && isSetup) {
+            startCountdown();
+        }
+        if(!isSetup) isSetup = true;
     }
-
-
 
     @Override
     public void onStart() {
         super.onStart();
+        if(!isSetup) validateFingerprint();
+
         ListView listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -157,7 +173,7 @@ public class ApplicationsFragment extends ListFragment {
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 ((ApplicationsAdapter) getListAdapter()).setChecked(position, checked);
                 int count = ((ApplicationsAdapter) getListAdapter()).getCheckedCount();
-                if(count > 1) { // More than 1 item -> no edit button
+                if (count > 1) { // More than 1 item -> no edit button
                     mode.getMenu().findItem(R.id.fragment_applications_actions_edit).setVisible(false);
                 } else {
                     mode.getMenu().findItem(R.id.fragment_applications_actions_edit).setVisible(true);
@@ -179,7 +195,7 @@ public class ApplicationsFragment extends ListFragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.fragment_applications_actions_edit: {
                         /* The user wants to edit an application */
                         if (((ApplicationsAdapter) getListAdapter()).getCheckedCount() > 1) { // This is not supported
@@ -189,8 +205,10 @@ public class ApplicationsFragment extends ListFragment {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle(R.string.dialog_editapplication_title)
                                 .setView(getActivity().getLayoutInflater().inflate(R.layout.dialog_editapplication, null))
-                                .setNegativeButton(R.string.dialog_editapplication_cancel, (dialog, which) -> {})
-                                .setPositiveButton(R.string.dialog_editapplication_submit, (dialog, which) -> {});
+                                .setNegativeButton(R.string.dialog_editapplication_cancel, (dialog, which) -> {
+                                })
+                                .setPositiveButton(R.string.dialog_editapplication_submit, (dialog, which) -> {
+                                });
 
                         AlertDialog dialog = builder.create();
                         dialog.show();
@@ -216,7 +234,8 @@ public class ApplicationsFragment extends ListFragment {
                             HashMap<Application, Application> changes = new HashMap<>();
                             changes.put(oldApplication, newApplication);
 
-                            Account.getInstance(getActivity()).updateApplications(changes, result -> {});
+                            Account.getInstance(getActivity()).updateApplications(changes, result -> {
+                            });
 
                             reCreateApplicationsList();
                             dialog.dismiss();
@@ -230,7 +249,8 @@ public class ApplicationsFragment extends ListFragment {
                         /* The user wants to delete (an) application(s) */
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage(R.string.dialog_removeapplication_title)
-                                .setNegativeButton(R.string.dialog_removeapplication_cancel, (dialog, which) -> {})
+                                .setNegativeButton(R.string.dialog_removeapplication_cancel, (dialog, which) -> {
+                                })
                                 .setPositiveButton(R.string.dialog_removeapplication_submit, (dialog, which) -> {
                                     List<Application> applicationsToRemove = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications();
 
@@ -238,7 +258,8 @@ public class ApplicationsFragment extends ListFragment {
                                         Application.removeApplication(application, getActivity());
                                     }
 
-                                    Account.getInstance(getActivity()).removeApplications(applicationsToRemove, result -> {});
+                                    Account.getInstance(getActivity()).removeApplications(applicationsToRemove, result -> {
+                                    });
 
                                     ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_removeapplication_notice)), getActivity(), false);
 
@@ -264,24 +285,7 @@ public class ApplicationsFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(isReady) stopCountdown();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(ISREADY_KEY, isReady);
-        outState.putSerializable(ARRAY_KEY, applications);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+        stopCountdown();
     }
 
     private void startCountdown() {
@@ -307,8 +311,8 @@ public class ApplicationsFragment extends ListFragment {
     //region Interfaces
 
     public static interface ApplicationsFragmentCallbacks {
-        public void onDisableMenu();
-        public void onEnableMenu();
+        public void onDisable();
+        public void onEnable();
     }
 
     //endregion

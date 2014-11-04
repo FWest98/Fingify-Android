@@ -29,8 +29,9 @@ public class RequestsFragment extends ListFragment {
     //region Lifecycle
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setEmptyText("No requests found");
 
         Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
             // Set empty view
@@ -41,7 +42,6 @@ public class RequestsFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        setEmptyText("No requests found");
     }
 
     private void onRequestsLoaded(ArrayList<Request> requests) {

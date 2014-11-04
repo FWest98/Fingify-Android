@@ -37,6 +37,7 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
 
         /* Viewpager things */
         fragmentPagerAdapter = new ApplicationActivityPagerAdapter(getFragmentManager());
+
         viewPager = (ViewPager) findViewById(R.id.activity_viewPager);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -85,7 +86,9 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
                     .setTabListener(listener)
                     .setText("Requests"));
 
-        fragmentPagerAdapter.addItem(ApplicationsFragment.newInstance(this));
+        ApplicationsFragment fragment = ApplicationsFragment.newInstance(this);
+
+        fragmentPagerAdapter.addItem(fragment);
         fragmentPagerAdapter.addItem(new RequestsFragment());
 
         if(!PreferenceManager.getDefaultSharedPreferences(this).contains(Constants.FINGERPRINT_AUTHENTICATION_SETTING) &&
@@ -132,25 +135,30 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
 
     @Override
     public void onResult() {
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.activity_container);
-        if(fragment instanceof ApplicationsFragment) { // This is it
-            ((ApplicationsFragment) fragment).reCreateApplicationsList();
+        for(Fragment fragment : fragmentPagerAdapter.getFragments()) {
+            if(fragment instanceof ApplicationsFragment) {
+                ((ApplicationsFragment) fragment).reCreateApplicationsList();
+            }
         }
     }
 
     @Override
-    public void onDisableMenu() {
+    public void onDisable() {
         if(menu == null) return;
         for(int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setVisible(false);
         }
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        fragmentPagerAdapter.setLimit(1);
     }
 
     @Override
-    public void onEnableMenu() {
+    public void onEnable() {
         if(menu == null) return;
         for(int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setVisible(true);
         }
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        fragmentPagerAdapter.setLimit(0);
     }
 }
