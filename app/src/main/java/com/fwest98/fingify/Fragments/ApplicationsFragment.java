@@ -77,8 +77,6 @@ public class ApplicationsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText("No accounts yet! Get started and create a new one!");
-
-        //validateFingerprint();
     }
 
     private void validateFingerprint() {

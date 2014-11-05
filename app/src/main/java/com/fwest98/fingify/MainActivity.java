@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-public class ApplicationsActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks {
+public class MainActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks {
 
     private ActionBar actionBar;
     private Menu menu;
@@ -49,6 +49,7 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
             @Override
             public void onPageSelected(int i) {
                 actionBar.setSelectedNavigationItem(i);
+                invalidateOptionsMenu();
             }
 
             @Override
@@ -102,9 +103,22 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.applications, menu);
+        boolean applicationsList = viewPager.getCurrentItem() == 0;
+
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        menu.findItem(R.id.activity_applications_action_newapplication).setVisible(applicationsList);
+        menu.findItem(R.id.activity_applications_action_refresh).setVisible(!applicationsList);
+
         this.menu = menu;
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean applicationsList = viewPager.getCurrentItem() == 0;
+        menu.findItem(R.id.activity_applications_action_newapplication).setVisible(applicationsList);
+        menu.findItem(R.id.activity_applications_action_refresh).setVisible(!applicationsList);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -160,5 +174,6 @@ public class ApplicationsActivity extends Activity implements NewApplicationFrag
         }
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         fragmentPagerAdapter.setLimit(0);
+        invalidateOptionsMenu(); // for correct enabled/disabled
     }
 }

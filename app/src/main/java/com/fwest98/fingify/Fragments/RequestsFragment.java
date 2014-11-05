@@ -9,6 +9,7 @@ import com.fwest98.fingify.Data.Request;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RequestsFragment extends ListFragment {
     private ArrayList<Request> requests = new ArrayList<>();
@@ -33,11 +34,10 @@ public class RequestsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setEmptyText("No requests found");
 
-        Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
-            // Set empty view
-            setListAdapter(new RequestsAdapter(getActivity(), R.layout.application_list_item, new ArrayList<>()));
-        });
+        createRequestsList();
     }
+
+
 
     @Override
     public void onStart() {
@@ -46,7 +46,22 @@ public class RequestsFragment extends ListFragment {
 
     private void onRequestsLoaded(ArrayList<Request> requests) {
         this.requests = requests;
+        setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, requests));
     }
 
     //endregion
+
+    private void createRequestsList() {
+        Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
+            // Set empty view
+            ArrayList<Request> requests = new ArrayList<>();
+            requests.add(new Request("Some name", Calendar.getInstance().getTime(), true, false));
+            requests.add(new Request("Some name2", Calendar.getInstance().getTime(), false, true));
+            setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, requests));
+        });
+    }
+
+    public void reCreateRequestsList() {
+        createRequestsList();
+    }
 }

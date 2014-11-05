@@ -25,6 +25,7 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
     private List<ExtendedTotp> TOTPs;
     private List<View> rowViews;
     private List<Boolean> checked;
+    private int resource;
 
     public ApplicationsAdapter(Context context, int resource, List<Application> objects) {
         super(context, resource, objects);
@@ -37,6 +38,7 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         this.rowViews = new ArrayList<>(objects.size());
         Boolean[] falses = new Boolean[objects.size()];
         Arrays.fill(falses, false);
+        this.resource = resource;
         this.checked = Arrays.asList(falses);
     }
 

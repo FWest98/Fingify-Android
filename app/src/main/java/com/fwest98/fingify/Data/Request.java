@@ -1,6 +1,7 @@
 package com.fwest98.fingify.Data;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.fwest98.fingify.Database.DatabaseHelper;
 import com.fwest98.fingify.Database.DatabaseManager;
@@ -8,10 +9,12 @@ import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.R;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -62,17 +65,43 @@ public class Request implements Serializable {
     }
 
     public static void addRequest(Request request, Context context) {
+        addRequests(Arrays.asList(request), context);
+    }
+
+    public static void addRequests(List<Request> requests, Context context) {
         DatabaseHelper helper = DatabaseManager.getHelper(context);
         try {
-            Dao<Request, ?> dao = helper.getDao(Request.class);
+            Dao<Request, ?> dao = helper.getDaoWithCache(Request.class);
 
-            dao.create(request);
+            for(Request request : requests) {
+                dao.create(request);
+            }
         } catch(SQLException e) {
             ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_save_error), e), context, true);
         }
     }
 
     public static void removeRequest(Request request, Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Request, ?> dao = helper.getDaoWithCache(Request.class);
 
+            DeleteBuilder<Request, ?> deleteBuilder = dao.deleteBuilder();
+            deleteBuilder.where().eq("id", request.id);
+            deleteBuilder.delete();
+        } catch (SQLException e) {
+            Log.e("ERROR", "Could not remove request");
+        }
+    }
+
+    public static void removeAllRequests(Context context) {
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Request, ?> dao = helper.getDaoWithCache(Request.class);
+
+            dao.deleteBuilder().delete();
+        } catch (SQLException e) {
+            Log.e("ERROR", "Could not remove requests");
+        }
     }
 }

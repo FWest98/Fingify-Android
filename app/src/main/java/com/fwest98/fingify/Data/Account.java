@@ -542,7 +542,13 @@ public class Account {
      */
     public void getRequests(AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
         if (HelperFunctions.hasInternetConnection(context) && isSet()) {
-            getRequestsFromWeb(successCallback, errorCallback);
+            getRequestsFromWeb(data -> {
+                List<Request> requests = (List<Request>) data;
+                Request.removeAllRequests(context);
+                Request.addRequests(requests, context);
+
+                successCallback.onFinished(requests);
+            }, errorCallback);
         } else {
             ArrayList<Request> requests = Request.getRequests(context);
             if(requests == null || requests.size() == 0) {

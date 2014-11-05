@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:minHeight="60dp"
+    android:mode="twoLine">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/request_item_content"
+        android:minHeight="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/request_item_name"
+            android:text="Some Text"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="20sp"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/request_item_date_and_device"
+            android:textSize="14sp"
+            android:text="The code"
+            android:textColor="@android:color/secondary_text_light"
+            android:layout_below="@+id/request_item_name" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/request_item_state"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/request_item_buttons"
+        android:measureWithLargestChild="true"
+        android:layout_below="@+id/request_item_content">
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="REJECT"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_margin="0dp"/>
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ACCEPT"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_margin="0dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

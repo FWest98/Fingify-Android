@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_action_add"
         android:showAsAction="ifRoom" />
 
+    <item android:id="@+id/activity_applications_action_refresh"
+        android:title="Refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom" />
+
     <item android:id="@+id/activity_applications_action_verifydialog"
         android:title="Test"
         android:showAsAction="never"/>
