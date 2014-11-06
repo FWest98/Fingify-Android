@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Request;
 import com.fwest98.fingify.R;
 
@@ -41,7 +42,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
         Request request = requests.get(position);
 
         title.setText(request.getApplicationName());
-        dateDevice.setText((request.isThisDevice() ? "This device" : "Other device") + ", " + request.getRequestTime().toLocaleString());
+        dateDevice.setText((request.isThisDevice() ? context.getString(R.string.fragment_requests_list_item_thisdevice) : context.getString(R.string.fragment_requests_list_item_otherdevice)) + ", " + request.getRequestTime().toLocaleString());
         if(request.isAnswered() && request.isAccepted()) {
             state.setImageDrawable(context.getResources().getDrawable(R.drawable.state_done));
         } else if(request.isAnswered()) {
@@ -58,7 +59,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
         return rowView;
     }
 
-    public static class RequestResponseListener implements View.OnClickListener {
+    public class RequestResponseListener implements View.OnClickListener {
         private Request request;
         private boolean accept;
 
@@ -68,7 +69,11 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
         }
         @Override
         public void onClick(View v) {
+            Account.getInstance(context).handleRequest(accept, request, data -> {
 
+            }, exception -> {
+
+            });
         }
     }
 }

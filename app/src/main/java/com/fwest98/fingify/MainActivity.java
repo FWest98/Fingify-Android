@@ -80,12 +80,12 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
 
         actionBar.addTab(
                 actionBar.newTab()
-                    .setText("Accounts")
+                    .setText(getString(R.string.activity_applications_tab_accounts))
                     .setTabListener(listener));
         actionBar.addTab(
                 actionBar.newTab()
                     .setTabListener(listener)
-                    .setText("Requests"));
+                    .setText(getString(R.string.activity_applications_tab_requests)));
 
         ApplicationsFragment fragment = ApplicationsFragment.newInstance(this);
 

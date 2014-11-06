@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TabHost;
 
 import com.fwest98.fingify.Helpers.ExceptionHandler;
+import com.fwest98.fingify.Helpers.ExtendedClock;
+import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.Helpers.HelperFunctions;
 import com.fwest98.fingify.R;
 import com.fwest98.fingify.Settings.Constants;
@@ -253,12 +255,14 @@ public class Account {
                     case HttpURLConnection.HTTP_UNAUTHORIZED:
                         throw new Exception(context.getString(R.string.account_login_unauthorized));
                     case HttpURLConnection.HTTP_BAD_REQUEST:
-                        throw new Exception(context.getString(R.string.account_login_missing_data));
+                        throw new Exception(context.getString(R.string.account_webactions_missing_data));
+                    case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
-                        if("".equals(content)) throw new Exception(context.getString(R.string.account_login_unknownretry));
+                        if("".equals(content)) throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                         return content;
                     default:
-                        throw new Exception(context.getString(R.string.account_login_unknown));
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                 }
             }
 
@@ -368,16 +372,16 @@ public class Account {
             public String onValidateResponse(String content, int statusCode) throws Exception {
                 switch(statusCode) {
                     case HttpURLConnection.HTTP_BAD_REQUEST:
-                        throw new Exception(context.getString(R.string.account_registration_missing_data));
+                        throw new Exception(context.getString(R.string.account_webactions_missing_data));
                     case HttpURLConnection.HTTP_CONFLICT:
                         throw new Exception(context.getString(R.string.account_registration_conflict));
                     case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                        throw new Exception(context.getString(R.string.account_registration_servererror));
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
-                        if("".equals(content)) throw new Exception(context.getString(R.string.account_registration_unknown));
+                        if("".equals(content)) throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                         return content;
                     default:
-                        throw new Exception(context.getString(R.string.account_registration_unknown));
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                 }
             }
 
@@ -502,7 +506,9 @@ public class Account {
             public String onValidateResponse(String content, int statusCode) throws Exception {
                 switch(statusCode) {
                     case HttpURLConnection.HTTP_UNAUTHORIZED:
-                        throw new Exception(context.getString(R.string.account_applications_unauthorized));
+                        throw new Exception(context.getString(R.string.account_webactions_unauthorized));
+                    case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
                         return content;
                     default:
@@ -580,11 +586,13 @@ public class Account {
             public String onValidateResponse(String content, int statusCode) throws Exception {
                 switch (statusCode) {
                     case HttpURLConnection.HTTP_UNAUTHORIZED:
-                        throw new Exception(context.getString(R.string.account_applications_unauthorized));
+                        throw new Exception(context.getString(R.string.account_webactions_unauthorized));
+                    case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
                         return content;
                     default:
-                        throw new Exception(context.getString(R.string.account_applications_unknown));
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                 }
             }
 
@@ -626,6 +634,67 @@ public class Account {
             @Override
             public void onError(Exception exception) {
                 ExceptionHandler.handleException(new Exception(context.getString(R.string.account_applications_error) + ": " + exception.getMessage()), context, true);
+                errorCallback.onFinished(exception);
+            }
+        };
+
+        new WebActions().execute(webRequestCallbacks);
+    }
+
+    public void handleRequest(boolean accept, Request request, AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
+        if(!isSet()) return;
+        if(request == null || request.isAnswered()) return;
+        if(!Application.labelExists(request.getApplicationName(), context)) return;
+
+        Application application = Application.getApplication(request.getApplicationName(), context);
+        ExtendedTotp totp = new ExtendedTotp(application.getSecret(), new ExtendedClock());
+
+        WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
+            @Override
+            public HttpURLConnection onCreateConnection() throws Exception {
+                URL url = new URL(Constants.HTTP_BASE + "request");
+                List<NameValuePair> parameters = new ArrayList<>();
+                parameters.add(new BasicNameValuePair("apiKey", getApiKey()));
+                parameters.add(new BasicNameValuePair("code", accept ?totp.now() : "0"));
+                parameters.add(new BasicNameValuePair("label", request.getApplicationName()));
+
+                UrlEncodedFormEntity data = new UrlEncodedFormEntity(parameters);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+                connection.setDoOutput(true);
+                connection.setFixedLengthStreamingMode((int) data.getContentLength());
+
+                data.writeTo(connection.getOutputStream());
+
+                return connection;
+            }
+
+            @Override
+            public String onValidateResponse(String content, int statusCode) throws Exception {
+                switch(statusCode) {
+                    case HttpURLConnection.HTTP_BAD_REQUEST:
+                        throw new Exception(context.getString(R.string.account_webactions_missing_data));
+                    case HttpURLConnection.HTTP_UNAUTHORIZED:
+                        throw new Exception(context.getString(R.string.account_webactions_unauthorized));
+                    case HttpURLConnection.HTTP_NOT_FOUND:
+                        throw new Exception(context.getString(R.string.account_requests_notfound));
+                    case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
+                    case HttpURLConnection.HTTP_OK:
+                        return content;
+                    default:
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
+                }
+            }
+
+            @Override
+            public void onProcessData(String data) {
+                successCallback.onFinished(data);
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                ExceptionHandler.handleException(new Exception(context.getString(R.string.account_requests_error) + ": " + exception.getMessage(), exception), context, true);
                 errorCallback.onFinished(exception);
             }
         };

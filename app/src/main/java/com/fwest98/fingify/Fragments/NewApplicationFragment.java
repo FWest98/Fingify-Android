@@ -57,8 +57,8 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
             View dialogView = inflater.inflate(R.layout.dialog_newapplication_code, null);
             builder.setView(dialogView)
                     .setTitle(R.string.dialog_newapplication_code_title)
-                    .setPositiveButton("OK", (dialog, which) -> {})
-                    .setNegativeButton(R.string.dialog_newapplication_cancel, (dialog, which) -> dismiss());
+                    .setPositiveButton(R.string.common_ok, (dialog, which) -> {})
+                    .setNegativeButton(R.string.common_cancel, (dialog, which) -> dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -102,14 +102,14 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
     public void handleResult(Result result) {
         final Application parsedQR;
         try {
-            parsedQR = ExtendedTotp.parseUri(result.getContents());
+            parsedQR = ExtendedTotp.parseUri(result.getContents(), getActivity());
         } catch(IllegalArgumentException e) {
             if(e.getCause() != null && e.getCause() instanceof UnsupportedOperationException) { // HOTP or another code
                 // Build AlertDialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(R.string.dialog_newapplication_error_notsupported_text)
                         .setTitle(R.string.dialog_newapplication_error_notsupported_title)
-                        .setPositiveButton(R.string.dialog_newapplicatoin_error_notsupported_cancel, (dialog, which) -> this.dismiss());
+                        .setPositiveButton(R.string.common_cancel, (dialog, which) -> this.dismiss());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else {
@@ -117,7 +117,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(R.string.dialog_newapplication_error_invalid_text)
                         .setTitle(R.string.dialog_newapplication_error_invalid_title)
-                        .setPositiveButton(R.string.dialog_newapplication_error_invalid_tryAgain, (dialog, which) -> scannerView.startCamera());
+                        .setPositiveButton(R.string.common_tryagain, (dialog, which) -> scannerView.startCamera());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -146,7 +146,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
         builder.setView(dialogView)
                 .setTitle(R.string.dialog_newapplication_input_title)
                 .setPositiveButton(R.string.dialog_newapplication_input_submit, (dialog, which) -> {})
-                .setNegativeButton(R.string.dialog_newapplication_input_cancel, (dialog, which) -> dismiss());
+                .setNegativeButton(R.string.common_cancel, (dialog, which) -> dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();

@@ -6,28 +6,17 @@ import android.util.Log;
 import com.fwest98.fingify.Database.DatabaseHelper;
 import com.fwest98.fingify.Database.DatabaseManager;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
-import com.fwest98.fingify.Helpers.ExtendedClock;
-import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.R;
-import com.fwest98.fingify.Settings.Constants;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.Serializable;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import lombok.Getter;
 
@@ -73,7 +62,7 @@ public class Request implements Serializable {
             List<Request> result = dao.queryBuilder().orderBy("requestTime", false).limit(limit).query();
             return new ArrayList<>(result);
         } catch (SQLException e) {
-            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_load_error), e), context, true);
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_requests_load_error), e), context, true);
             return new ArrayList<>();
         }
     }
@@ -91,7 +80,7 @@ public class Request implements Serializable {
                 dao.create(request);
             }
         } catch(SQLException e) {
-            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_save_error), e), context, true);
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_requests_save_error), e), context, true);
         }
     }
 
@@ -104,7 +93,7 @@ public class Request implements Serializable {
             deleteBuilder.where().eq("id", request.id);
             deleteBuilder.delete();
         } catch (SQLException e) {
-            Log.e("ERROR", "Could not remove request");
+            Log.e("ERROR", context.getString(R.string.database_requests_remove_error));
         }
     }
 
@@ -115,52 +104,8 @@ public class Request implements Serializable {
 
             dao.deleteBuilder().delete();
         } catch (SQLException e) {
-            Log.e("ERROR", "Could not remove requests");
+            Log.e("ERROR", context.getString(R.string.database_requests_remove_error));
         }
-    }
-
-    //endregion
-    //region Webrequests
-
-    public static void processRequest(boolean accept, Request request, Context context) throws Exception {
-        if(request == null) return;
-        if(request.isAnswered()) return;
-        if(!Application.labelExists(request.getApplicationName(), context)) {
-            return;
-        }
-
-        /* Send accept request */
-        /* Get TOTP code */
-        Application application = Application.getApplication(request.getApplicationName(), context);
-        ExtendedTotp totp = new ExtendedTotp(application.getSecret(), new ExtendedClock());
-
-        URL url = new URL(Constants.HTTP_BASE + "request");
-        List<NameValuePair> postParameters = new ArrayList<>();
-        postParameters.add(new BasicNameValuePair("apiKey", Account.getApiKey()));
-        postParameters.add(new BasicNameValuePair("code", totp.now()));
-        postParameters.add(new BasicNameValuePair("label", request.getApplicationName()));
-
-        UrlEncodedFormEntity data = new UrlEncodedFormEntity(postParameters);
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-
-        connection.setDoOutput(true);
-        connection.setFixedLengthStreamingMode((int) data.getContentLength());
-
-        data.writeTo(connection.getOutputStream());
-
-        String content = "";
-        try {
-            Scanner scanner = new Scanner(connection.getInputStream());
-            while(scanner.hasNext()) {
-                content += scanner.nextLine();
-            }
-        } catch (Exception e) {
-
-        } finally {
-            connection.disconnect();
-        }
-
-
     }
 
     //endregion

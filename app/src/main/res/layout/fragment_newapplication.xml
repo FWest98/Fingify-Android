@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:layout_margin="0dip"
             style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/dialog_newapplication_cancel"/>
+            android:text="@string/common_cancel"/>
 
         <Button
             android:id="@+id/fragment_newapplication_noqr"

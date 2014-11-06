@@ -97,7 +97,7 @@ public class Application implements Serializable {
             List<Application> results = dao.queryForEq("secret", secret);
             return results.size() > 0;
         } catch (SQLException e) {
-            Log.e("ERROR", "Could not check for existing secrets", e);
+            Log.e("ERROR", context.getString(R.string.database_applications_secrets_nocheck), e);
             return false;
         }
     }
@@ -109,7 +109,7 @@ public class Application implements Serializable {
             List<Application> results = dao.queryForEq("label", label);
             return results.size() > 0;
         } catch(SQLException e) {
-            Log.e("ERROR", "Could not check for existing labels", e);
+            Log.e("ERROR", context.getString(R.string.database_applications_labels_nocheck), e);
             return false;
         }
     }
@@ -123,7 +123,7 @@ public class Application implements Serializable {
             deleteBuilder.where().eq("secret", application.getSecret());
             deleteBuilder.delete();
         } catch(SQLException e) {
-            Log.e("ERROR", "Could not remove application", e);
+            Log.e("ERROR", context.getString(R.string.database_applications_remove_error), e);
         }
     }
 

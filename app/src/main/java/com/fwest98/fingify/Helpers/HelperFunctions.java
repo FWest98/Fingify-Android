@@ -23,7 +23,7 @@ public class HelperFunctions {
             if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.i("PlayServices", "No psuhmessages");
+                Log.i("PlayServices", "No pushmessages");
             }
             return false;
         }

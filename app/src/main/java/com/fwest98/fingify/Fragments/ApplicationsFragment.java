@@ -76,7 +76,7 @@ public class ApplicationsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No accounts yet! Get started and create a new one!");
+        setEmptyText(getActivity().getString(R.string.fragment_applications_empty));
     }
 
     private void validateFingerprint() {
@@ -113,7 +113,7 @@ public class ApplicationsFragment extends ListFragment {
 
         Button retryButton = new Button(getActivity());
         retryButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        retryButton.setText(R.string.fingerprint_authentication_retry);
+        retryButton.setText(R.string.common_tryagain);
         retryButton.setOnClickListener(v -> {
             ((ViewGroup) getListView().getParent()).removeView(emptyLayout);
             validateFingerprint();
@@ -203,7 +203,7 @@ public class ApplicationsFragment extends ListFragment {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle(R.string.dialog_editapplication_title)
                                 .setView(getActivity().getLayoutInflater().inflate(R.layout.dialog_editapplication, null))
-                                .setNegativeButton(R.string.dialog_editapplication_cancel, (dialog, which) -> {
+                                .setNegativeButton(R.string.common_cancel, (dialog, which) -> {
                                 })
                                 .setPositiveButton(R.string.dialog_editapplication_submit, (dialog, which) -> {
                                 });
@@ -247,7 +247,7 @@ public class ApplicationsFragment extends ListFragment {
                         /* The user wants to delete (an) application(s) */
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage(R.string.dialog_removeapplication_title)
-                                .setNegativeButton(R.string.dialog_removeapplication_cancel, (dialog, which) -> {
+                                .setNegativeButton(R.string.common_cancel, (dialog, which) -> {
                                 })
                                 .setPositiveButton(R.string.dialog_removeapplication_submit, (dialog, which) -> {
                                     List<Application> applicationsToRemove = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications();

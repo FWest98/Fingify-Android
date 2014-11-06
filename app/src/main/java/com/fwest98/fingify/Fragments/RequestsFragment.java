@@ -32,7 +32,7 @@ public class RequestsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setEmptyText("No requests found");
+        setEmptyText(getActivity().getString(R.string.fragment_requests_empty));
 
         createRequestsList();
     }
