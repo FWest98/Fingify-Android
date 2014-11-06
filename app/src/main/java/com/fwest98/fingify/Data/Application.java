@@ -44,7 +44,7 @@ public class Application implements Serializable {
         this.user = user;
     }
 
-    /* DB functions */
+    //region Database
 
     public static ArrayList<Application> getApplications(Context context) {
         DatabaseHelper helper = DatabaseManager.getHelper(context);
@@ -56,6 +56,21 @@ public class Application implements Serializable {
         } catch (SQLException e) {
             ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_load_error), e), context, true);
             return new ArrayList<>();
+        }
+    }
+
+    public static Application getApplication(String label, Context context) {
+        if(!labelExists(label, context)) return null;
+        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        try {
+            Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
+
+            List<Application> result = dao.queryForEq("label", label);
+            if(result.size() == 0) return null;
+            return result.get(0);
+        } catch (SQLException e) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_load_error), e), context, true);
+            return null;
         }
     }
 
@@ -111,4 +126,6 @@ public class Application implements Serializable {
             Log.e("ERROR", "Could not remove application", e);
         }
     }
+
+    //endregion
 }

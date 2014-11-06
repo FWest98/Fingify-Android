@@ -609,7 +609,8 @@ public class Account {
                                 JSONRequest.getString("applicationName"),
                                 requestTime,
                                 JSONRequest.getBoolean("isDone"),
-                                JSONRequest.getBoolean("isLocal")
+                                JSONRequest.getBoolean("isLocal"),
+                                JSONRequest.getBoolean("isAccepted")
                         );
                         requests.add(request);
                     }

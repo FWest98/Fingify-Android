@@ -55,7 +55,8 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="REJECT"
+            android:text="Reject"
+            android:id="@+id/request_item_reject"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_margin="0dp"/>
 
@@ -63,7 +64,8 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ACCEPT"
+            android:text="Accept"
+            android:id="@+id/request_item_accept"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_margin="0dp"/>
 

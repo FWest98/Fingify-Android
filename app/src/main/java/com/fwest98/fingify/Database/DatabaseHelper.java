@@ -17,7 +17,7 @@ import java.util.Hashtable;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "fingify.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private Hashtable<String, Dao<?, Integer>> daoHashtable = new Hashtable<>();
 
@@ -40,7 +40,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             if (oldVersion == 1) {
-                // Upgrade from 1 to 2
+                // Upgrade from 1
+                TableUtils.createTable(connectionSource, Request.class);
+            }
+            if(oldVersion <= 2) {
+                // Upgrade from 1 or 2
+                TableUtils.dropTable(connectionSource, Request.class, true);
                 TableUtils.createTable(connectionSource, Request.class);
             }
         } catch (SQLException e) {

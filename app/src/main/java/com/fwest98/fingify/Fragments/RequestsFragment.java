@@ -55,8 +55,9 @@ public class RequestsFragment extends ListFragment {
         Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
             // Set empty view
             ArrayList<Request> requests = new ArrayList<>();
-            requests.add(new Request("Some name", Calendar.getInstance().getTime(), true, false));
-            requests.add(new Request("Some name2", Calendar.getInstance().getTime(), false, true));
+            requests.add(new Request("Some accepted", Calendar.getInstance().getTime(), true, false, true));
+            requests.add(new Request("Some todo", Calendar.getInstance().getTime(), false, true, false));
+            requests.add(new Request("Some todo", Calendar.getInstance().getTime(), true, true, false));
             setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, requests));
         });
     }
