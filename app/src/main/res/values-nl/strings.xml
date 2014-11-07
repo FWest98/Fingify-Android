@@ -23,9 +23,11 @@
     <string name="fragment_applications_context_edit_error_nomultiple">Je kan maar één account tegelijk bewerken</string>
     <string name="fragment_applications_empty">Nog geen accounts! Start door een nieuwe te maken!</string>
 
+    <string name="fragment_requests_empty">Geen codeverzoeken gevonden</string>
     <string name="fragment_requests_list_item_thisdevice">Dit apparaat</string>
     <string name="fragment_requests_list_item_otherdevice">Ander apparaat</string>
-    <string name="fragment_requests_empty">Geen codeverzoeken gevonden</string>
+    <string name="fragment_requests_list_item_button_reject">Weiger</string>
+    <string name="fragment_requests_list_item_button_accept">Accepteer</string>
 
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Vul een naam in voor dit account</string>
@@ -98,6 +100,8 @@
 
     <!-- Account & WebActions -->
     <string name="account_initialize_breaking_change">Wijzigingen in de app vereisen opnieuw inloggen</string>
+    <string name="account_general_notloggedin">Niet ingelogd!</string>
+
     <string name="account_login_wrongtab">Kies het tabblad "Fingify account"</string>
     <string name="account_login_usernamerequired">Gebruikersnaam is vereist!</string>
     <string name="account_login_passwordrequired">Wachtwoord is vereist!</string>
@@ -114,6 +118,8 @@
 
     <string name="account_requests_notfound">Verzoek bestaat niet (meer)</string>
     <string name="account_requests_error">Fout tijdens versturen van reactie</string>
+    <string name="account_requests_already_done">Codeverzoek al beantwoord!</string>
+    <string name="account_requests_application_not_exists">Account hiervoor bestaat niet (meer)!</string>
 
     <string name="account_webactions_no_internet_connection">Geen internetverbinding</string>
     <string name="account_webactions_unknown_error">Onbekende fout</string>

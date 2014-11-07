@@ -23,9 +23,11 @@
     <string name="fragment_applications_context_edit_error_nomultiple">You can only edit one account at a time</string>
     <string name="fragment_applications_empty">No accounts yet! Get started and create a new one!</string>
 
+    <string name="fragment_requests_empty">No coderequests found</string>
     <string name="fragment_requests_list_item_thisdevice">This device</string>
     <string name="fragment_requests_list_item_otherdevice">Other device</string>
-    <string name="fragment_requests_empty">No coderequests found</string>
+    <string name="fragment_requests_list_item_button_reject">Reject</string>
+    <string name="fragment_requests_list_item_button_accept">Accept</string>
 
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Enter a name for this account</string>
@@ -98,6 +100,8 @@
 
     <!-- Account & WebActions -->
     <string name="account_initialize_breaking_change">Breaking changes in the app require you to login again</string>
+    <string name="account_general_notloggedin">Not logged in!</string>
+
     <string name="account_login_wrongtab">Choose Fingify account tab first</string>
     <string name="account_login_usernamerequired">Username is required!</string>
     <string name="account_login_passwordrequired">Password is required!</string>
@@ -114,6 +118,8 @@
 
     <string name="account_requests_notfound">Request doesn\'t exist (anymore)</string>
     <string name="account_requests_error">Error during response</string>
+    <string name="account_requests_already_done">Coderequest already answered!</string>
+    <string name="account_requests_application_not_exists">Account does not exist (anymore)!</string>
 
     <string name="account_webactions_no_internet_connection">No internet connection</string>
     <string name="account_webactions_unknown_error">Unknown error</string>

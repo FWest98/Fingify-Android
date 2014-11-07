@@ -434,7 +434,11 @@ public class Account {
      * @param callback The callbak function to execute when it's done
      */
     public void updateApplications(java.util.HashMap<Application, Application> applicationList, AsyncActionCallback callback) {
-        if(!isSet()) return;
+        if(!isSet()) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.account_general_notloggedin)), context, false);
+            return;
+        }
+
         if(applicationList == null || applicationList.size() == 0) {
             callback.onFinished(null);
             return;
@@ -458,7 +462,11 @@ public class Account {
      * @param callback The callbak function to execute when it's done
      */
     public void removeApplications(List<Application> applications, AsyncActionCallback callback) {
-        if(!isSet()) return;
+        if(!isSet()) {
+            ExceptionHandler.handleException(new Exception(context.getString(R.string.account_general_notloggedin)), context, false);
+            return;
+        }
+
         if(applications == null || applications.size() == 0) {
             callback.onFinished(null);
             return;
@@ -480,7 +488,8 @@ public class Account {
      * @param callback The callbak function to execute when it's done
      */
     private void applications(List<NameValuePair> postParameters, String requestMehod, AsyncActionCallback callback) {
-        if(!isSet()) return;
+
+
         if(postParameters == null || postParameters.size() == 0) {
             callback.onFinished(null);
             return;
@@ -571,7 +580,10 @@ public class Account {
      * @param errorCallback The callback function to execute when something's gone horribly wrong
      */
     private void getRequestsFromWeb(AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
-        if(!isSet()) return;
+        if(!isSet()) {
+            errorCallback.onFinished(new Exception(context.getString(R.string.account_general_notloggedin)));
+            return;
+        }
 
         WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
             @Override
@@ -641,9 +653,18 @@ public class Account {
     }
 
     public void handleRequest(boolean accept, Request request, AsyncActionCallback successCallback, AsyncActionCallback errorCallback) {
-        if(!isSet()) return;
-        if(request == null || request.isAnswered()) return;
-        if(!Application.labelExists(request.getApplicationName(), context)) return;
+        if(!isSet()) {
+            errorCallback.onFinished(new Exception(context.getString(R.string.account_general_notloggedin)));
+            return;
+        }
+        if(request == null || request.isAnswered()) {
+            errorCallback.onFinished(new Exception(context.getString(R.string.account_requests_already_done)));
+            return;
+        }
+        if(!Application.labelExists(request.getApplicationName(), context)) {
+            errorCallback.onFinished(new Exception(context.getString(R.string.account_requests_application_not_exists)));
+            return;
+        }
 
         Application application = Application.getApplication(request.getApplicationName(), context);
         ExtendedTotp totp = new ExtendedTotp(application.getSecret(), new ExtendedClock());
