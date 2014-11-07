@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Request;
+import com.fwest98.fingify.Helpers.ExceptionHandler;
+import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.R;
 
 import java.util.List;
@@ -19,13 +21,11 @@ import java.util.List;
 public class RequestsAdapter extends ArrayAdapter<Request> {
     private Context context;
     private List<Request> requests;
-    private int resource;
 
     public RequestsAdapter(Context context, int resource, List<Request> objects) {
         super(context, resource, objects);
         this.context = context;
         this.requests = objects;
-        this.resource = resource;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
         if(request.isAnswered()) {
             buttons.setVisibility(View.GONE);
         } else {
-            acceptButton.setOnClickListener(new RequestResponseListener(request, true));
-            rejectButton.setOnClickListener(new RequestResponseListener(request, false));
+            acceptButton.setOnClickListener(new RequestResponseListener(request, true, position));
+            rejectButton.setOnClickListener(new RequestResponseListener(request, false, position));
         }
 
         return rowView;
@@ -62,17 +62,32 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
     public class RequestResponseListener implements View.OnClickListener {
         private Request request;
         private boolean accept;
+        private int position;
 
-        public RequestResponseListener(Request request, boolean accept) {
+        public RequestResponseListener(Request request, boolean accept, int position) {
             this.request = request;
             this.accept = accept;
+            this.position = position;
         }
         @Override
         public void onClick(View v) {
-            Account.getInstance(context).handleRequest(accept, request, data -> {
-
-            }, exception -> {
-
+            // Fingerprints if necessary
+            FingerprintManager.authenticate(context, s -> {
+                if(s == FingerprintManager.FingerprintResponses.FAILED) {
+                    // Fingerprint things failed
+                    ExceptionHandler.handleException(new Exception("Fingerprint authentication failed. Please try again"), context, false);
+                } else {
+                    // Handle response
+                    Account.getInstance(context).handleRequest(accept, request, data -> {
+                        // Success!
+                        // Disable buttons and set state
+                        Request newRequest = new Request(request.getApplicationName(), request.getRequestTime(), true, true, accept);
+                        requests.set(position, newRequest);
+                        notifyDataSetChanged();
+                    }, exception -> {
+                        ExceptionHandler.handleException((Exception) exception, context, true);
+                    });
+                }
             });
         }
     }
