@@ -59,7 +59,7 @@ public class Request implements Serializable {
         try {
             Dao<Request, ?> dao = helper.getDaoWithCache(Request.class);
 
-            List<Request> result = dao.queryBuilder().orderBy("requestTime", false).limit(limit).query();
+            List<Request> result = dao.queryBuilder().orderBy("requestTime", false).limit((long) limit).query();
             return new ArrayList<>(result);
         } catch (SQLException e) {
             ExceptionHandler.handleException(new Exception(context.getString(R.string.database_requests_load_error), e), context, true);

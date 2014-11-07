@@ -31,7 +31,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View rowView = inflater.inflate(R.layout.request_list_item, parent, false);
+        View rowView = (convertView == null) ? inflater.inflate(R.layout.request_list_item, parent, false) : convertView;
         TextView title = (TextView) rowView.findViewById(R.id.request_item_name);
         TextView dateDevice = (TextView) rowView.findViewById(R.id.request_item_date_and_device);
         ImageView state = (ImageView) rowView.findViewById(R.id.request_item_state);

@@ -126,7 +126,7 @@ public class FingerprintManager {
                         callback.onFinished(FingerprintResponses.SUCCEEDED);
                     }
                 });
-            } catch(SsdkUnsupportedException e) {}
+            } catch(SsdkUnsupportedException ignored) {}
         }
     }
 
@@ -140,7 +140,7 @@ public class FingerprintManager {
         try {
             spass.initialize(context);
             return true; // It worked
-        } catch (SsdkUnsupportedException e) {
+        } catch (SsdkUnsupportedException ignored) {
         }
 
         return false;
@@ -157,7 +157,7 @@ public class FingerprintManager {
         try {
             spass.initialize(context);
             return new SpassFingerprint(context).hasRegisteredFinger();
-        } catch(SsdkUnsupportedException e) {}
+        } catch(SsdkUnsupportedException ignored) {}
 
         return false;
     }

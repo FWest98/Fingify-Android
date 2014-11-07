@@ -110,7 +110,7 @@ public class Account {
 
         pref.putInt("oldVersion", currentVersion);
 
-        pref.commit();
+        pref.apply();
 
         setApplications(Application.getApplications(context), result -> {});
     }
@@ -175,7 +175,7 @@ public class Account {
         builder.setView(dialogView)
                 .setPositiveButton(R.string.dialog_login_buttons_login, (dialogInterface, id) -> {}) // No callbacks here because
                 .setNeutralButton(R.string.dialog_login_buttons_register, (dialogInterface, id) -> {}) // this will automatically
-                .setNegativeButton(R.string.dialog_login_buttons_cancel, (dialogInterface, id) -> {}); // dismiss dialog after execution
+                .setNegativeButton(R.string.common_cancel, (dialogInterface, id) -> {}); // dismiss dialog after execution
 
         AlertDialog loginDialog = builder.create();
         loginDialog.show();
@@ -186,7 +186,7 @@ public class Account {
             loginDialog.dismiss();
             try {
                 errorCallback.onFinished(null);
-            } catch(Exception e) {}
+            } catch(Exception ignored) {}
         });
         loginDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
             // Check for tab
@@ -310,7 +310,7 @@ public class Account {
 
         builder.setView(dialogView)
                 .setPositiveButton(R.string.dialog_register_buttons_register, (dialog, which) -> {})
-                .setNegativeButton(R.string.dialog_register_buttons_cancel, (dialog, which) -> {
+                .setNegativeButton(R.string.common_cancel, (dialog, which) -> {
                     dialog.dismiss();
                     errorCallback.onFinished(null);
                 });
@@ -512,7 +512,7 @@ public class Account {
                     case HttpURLConnection.HTTP_OK:
                         return content;
                     default:
-                        throw new Exception(context.getString(R.string.account_applications_unknown));
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
                 }
             }
 
@@ -577,9 +577,8 @@ public class Account {
             @Override
             public HttpURLConnection onCreateConnection() throws Exception {
                 URL url = new URL(Constants.HTTP_BASE + "account/requests?key=" + getApiKey());
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-                return connection;
+                return (HttpsURLConnection) url.openConnection();
             }
 
             @Override

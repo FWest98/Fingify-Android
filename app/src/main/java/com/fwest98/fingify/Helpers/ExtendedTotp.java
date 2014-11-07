@@ -41,7 +41,7 @@ public class ExtendedTotp extends Totp {
     /**
      * Parse and check an URI from a QR code
      * @param uriString The URI from the QR code
-     * @param context
+     * @param context The context
      * @return An application object
      * @throws IllegalArgumentException The error that occurred
      */

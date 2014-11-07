@@ -25,8 +25,6 @@ public class ProgressWheel extends View {
         invalidate();
     }
 
-    private int circleColor = 0x000000FF;
-
     private Paint circlePaint = new Paint();
     private Paint remainingPaint = new Paint();
 
@@ -40,6 +38,7 @@ public class ProgressWheel extends View {
         int defColor = DEFAULT_COLOR;
         Resources.Theme theme = context.getTheme();
         TypedArray appearance = theme.obtainStyledAttributes(attrs, R.styleable.ProgressWheel, 0, 0);
+        int circleColor = 0x000000FF;
         if(appearance != null) {
             int n = appearance.getIndexCount();
             for(int i = 0; i < n; i++) {

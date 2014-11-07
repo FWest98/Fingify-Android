@@ -112,14 +112,14 @@
 
     <string name="account_applications_error">Error while processing</string>
 
-    <string name="account_requests_notfound">Request doesn't exist (anymore)</string>
+    <string name="account_requests_notfound">Request doesn\'t exist (anymore)</string>
     <string name="account_requests_error">Error during response</string>
 
     <string name="account_webactions_no_internet_connection">No internet connection</string>
     <string name="account_webactions_unknown_error">Unknown error</string>
     <string name="account_webactions_missing_data">Missing data</string>
     <string name="account_webactions_servererror">Server error</string>
-    <string name="account_webactions_unauthorized">User account doesn't exist (anymore). Please log in again</string>
+    <string name="account_webactions_unauthorized">User account doesn\'t exist (anymore). Please log in again</string>
 
     <!-- TOTP parsing -->
     <string name="totp_parse_scheme_invalid">Invalid scheme</string>

@@ -25,7 +25,6 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
     private List<ExtendedTotp> TOTPs;
     private List<View> rowViews;
     private List<Boolean> checked;
-    private int resource;
 
     public ApplicationsAdapter(Context context, int resource, List<Application> objects) {
         super(context, resource, objects);
@@ -38,14 +37,13 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         this.rowViews = new ArrayList<>(objects.size());
         Boolean[] falses = new Boolean[objects.size()];
         Arrays.fill(falses, false);
-        this.resource = resource;
         this.checked = Arrays.asList(falses);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View rowView = inflater.inflate(R.layout.application_list_item, parent, false);
+        View rowView = (convertView != null) ? convertView : inflater.inflate(R.layout.application_list_item, parent, false);
         TextView title = (TextView) rowView.findViewById(R.id.application_item_label);
         ProgressWheel wheel = (ProgressWheel) rowView.findViewById(R.id.application_item_wheel);
         TextView code = (TextView) rowView.findViewById(R.id.application_item_code);
@@ -54,7 +52,7 @@ public class ApplicationsAdapter extends ArrayAdapter<Application> {
         code.setText(TOTPs.get(position).now());
         wheel.setProgress((int) (TOTPs.get(position).getTimeLeft() * 100));
 
-        if(checked.get(position) == true) {
+        if(checked.get(position)) {
             rowView.setBackgroundResource(android.R.color.holo_blue_dark);
         }
 
