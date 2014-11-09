@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.ExtendedTotp;
@@ -168,8 +167,6 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
             Application newApplication = new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser());
 
             Application.addApplication(newApplication, getActivity());
-
-            Account.getInstance(getActivity()).setApplications(Arrays.asList(newApplication), s -> {});
 
             listener.onResult();
             dialog.dismiss();

@@ -7,10 +7,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.fwest98.fingify.Helpers.HelperFunctions;
 import com.fwest98.fingify.R;
 import com.fwest98.fingify.Receivers.GCMBroadcastReceiver;
+import com.fwest98.fingify.Settings.Constants;
 import com.fwest98.fingify.VerifyCodeRequestActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -38,6 +40,12 @@ public class GCMIntentService extends IntentService {
     }
 
     public static void createNotification(String message, Context context, boolean openPopupWithoutNotification) {
+        String popupSetting = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.NOTIFICATION_POPUP_SETTING, "1");
+        boolean notificationSetting = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.NOTIFICATION_SETTING, true);
+
+        if(!notificationSetting) return;
+
+
         Intent verifyIntent = new Intent(Intent.ACTION_MAIN);
         verifyIntent.setClass(context, VerifyCodeRequestActivity.class);
         verifyIntent.putExtra("applicationName", message);
@@ -58,17 +66,17 @@ public class GCMIntentService extends IntentService {
         PendingIntent rejectPIntent = PendingIntent.getActivity(context, 0, rejectIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context)
-                .setContentText("Coderequest")
-                .setContentTitle("Coderequest")
+                .setContentText(context.getString(R.string.fragment_verifycoderequest_requesttext) + ": " + message)
+                .setContentTitle(context.getString(R.string.notification_title))
                 .setPriority(Notification.PRIORITY_MAX)
-                .setSmallIcon(R.drawable.ic_action_edit)
-                .setStyle(new Notification.BigTextStyle().bigText("test"))
-                .addAction(R.drawable.state_done, "Accept", acceptPIntent)
-                .addAction(R.drawable.state_rejected, "Reject", rejectPIntent);
+                .setSmallIcon(R.drawable.ic_notification_icon)
+                .setStyle(new Notification.BigTextStyle().bigText(context.getString(R.string.fragment_verifycoderequest_requesttext) + ": " + message))
+                .addAction(R.drawable.ic_action_accept, context.getString(R.string.fragment_requests_list_item_button_accept), acceptPIntent)
+                .addAction(R.drawable.ic_action_reject, context.getString(R.string.fragment_requests_list_item_button_reject), rejectPIntent);
 
-        if(openPopupWithoutNotification) {
+        if(openPopupWithoutNotification && popupSetting == "2") {
             context.startActivity(verifyIntent);
-        } else {
+        } else if(popupSetting != "0") {
             builder.setFullScreenIntent(pendingIntent, true);
         }
 

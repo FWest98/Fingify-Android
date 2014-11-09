@@ -543,8 +543,6 @@ public class Account {
      * @param callback The callbak function to execute when it's done
      */
     private void applications(List<NameValuePair> postParameters, String requestMehod, AsyncActionCallback callback) {
-
-
         if(postParameters == null || postParameters.size() == 0) {
             callback.onFinished(null);
             return;
@@ -556,9 +554,16 @@ public class Account {
                 UrlEncodedFormEntity data = new UrlEncodedFormEntity(postParameters);
 
                 URL url = new URL(Constants.HTTP_BASE + "account/applications");
+                String newRequestMethod = requestMehod;
+
+                if(requestMehod == "DELETE") {
+                    url = new URL(Constants.HTTP_BASE + "account/applicationsRemove");
+                    newRequestMethod = "POST";
+                }
+
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-                connection.setRequestMethod(requestMehod);
+                connection.setRequestMethod(newRequestMethod);
                 connection.setFixedLengthStreamingMode((int) data.getContentLength());
 
                 data.writeTo(connection.getOutputStream());

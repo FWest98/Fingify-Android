@@ -1,7 +1,8 @@
 package com.fwest98.fingify.Fragments;
 
 import android.os.Bundle;
-import android.preference.Preference;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
@@ -10,6 +11,9 @@ import com.fwest98.fingify.R;
 import com.fwest98.fingify.Settings.Constants;
 
 public class AppPreferencesFragment extends PreferenceFragment {
+    private CheckBoxPreference fingerprintPreference;
+    private ListPreference notificationPopupSetting;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +26,7 @@ public class AppPreferencesFragment extends PreferenceFragment {
             FingerprintManager.createAdviceDialog(getActivity());
         }
 
-        Preference fingerprintPreference = findPreference(Constants.FINGERPRINT_AUTHENTICATION_SETTING);
+        fingerprintPreference = (CheckBoxPreference) findPreference(Constants.FINGERPRINT_AUTHENTICATION_SETTING);
         fingerprintPreference.setEnabled(FingerprintManager.isFingerPrintSupported(getActivity()));
         fingerprintPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             // Preference changed
@@ -39,6 +43,13 @@ public class AppPreferencesFragment extends PreferenceFragment {
                 }, true);
             }
 
+            return true;
+        });
+
+        notificationPopupSetting = (ListPreference) findPreference(Constants.NOTIFICATION_POPUP_SETTING);
+        notificationPopupSetting.setSummary(notificationPopupSetting.getEntry());
+        notificationPopupSetting.setOnPreferenceChangeListener((preference, newValue) -> {
+            getActivity().recreate();
             return true;
         });
     }

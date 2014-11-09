@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_aerogearotp"></string>
+    <!-- Author section -->
+    <string name="library_aerogearotp_author">Aerogear</string>
+    <string name="library_aerogearotp_authorWebsite">aerogear.org</string>
+    <!-- Library section -->
+    <string name="library_aerogearotp_libraryName">Aerogear Android OTP</string>
+    <string name="library_aerogearotp_libraryDescription">A Java library for generating one time passwords according to RFC 4226</string>
+    <string name="library_aerogearotp_libraryWebsite">http://aerogear.org/android/</string>
+    <string name="library_aerogearotp_libraryVersion">1.0.0</string>
+    <!-- OpenSource section -->
+    <string name="library_aerogearotp_isOpenSource">true</string>
+    <string name="library_aerogearotp_repositoryLink">https://github.com/aerogear/aerogear-otp-java</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_aerogearotp_classPath">org.jboss.aerogear.security.otp</string>
+    <!-- License section -->
+    <string name="library_aerogearotp_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+</resources>
+

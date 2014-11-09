@@ -1,6 +1,7 @@
 package com.fwest98.fingify;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Data.Application;
@@ -68,6 +68,20 @@ public class VerifyCodeRequestActivity extends Activity {
         }
 
         if(savedInstanceState == null) {
+            // Show dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.dialog_verifycoderequest_title);
+            builder.setMessage(getString(R.string.fragment_verifycoderequest_requesttext) + ": " + application.getLabel());
+            builder.setNegativeButton(R.string.fragment_requests_list_item_button_reject, (dialog, which) -> {});
+            builder.setPositiveButton(R.string.fragment_requests_list_item_button_accept, (dialog, which) -> {});
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> handle(true));
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> handle(false));
+
+            /*
             VerifyCodeRequestFragment fragment = VerifyCodeRequestFragment.newInstance(new VerifyCodeRequestFragment.stateListener() {
                 @Override
                 public void onStopped() {
@@ -84,7 +98,7 @@ public class VerifyCodeRequestActivity extends Activity {
                     handle(true);
                 }
             }, application);
-            getFragmentManager().beginTransaction().add(fragment, "dialog").commit();
+            getFragmentManager().beginTransaction().add(fragment, "dialog").commit();*/
         }
     }
 
@@ -92,7 +106,7 @@ public class VerifyCodeRequestActivity extends Activity {
         FingerprintManager.authenticate(this, s -> {
             if(s == FingerprintManager.FingerprintResponses.FAILED) {
                 // Oh noes.......
-                ExceptionHandler.handleException(new Exception("Fingerprint authentication failed. Please try again"), this, false);
+                ExceptionHandler.handleException(new Exception(getString(R.string.fingerprint_authentication_failed_tryagain)), this, false);
             } else {
                 // Handle response
                 Request request = new Request(application.getLabel(), Calendar.getInstance().getTime(), false, true, false);
@@ -150,7 +164,7 @@ public class VerifyCodeRequestActivity extends Activity {
             mainView.findViewById(R.id.fragment_verifycoderequest_accept).setOnClickListener(v -> listener.onAccept());
             mainView.findViewById(R.id.fragment_verifycoderequest_reject).setOnClickListener(v -> listener.onReject());
 
-            ((TextView) mainView.findViewById(R.id.fragment_verifycoderequest_text)).setText(getString(R.string.fragment_verifycoderequest_requesttext) + ": " + application.getLabel());
+            //((TextView) mainView.findViewById(R.id.fragment_verifycoderequest_text)).setText(getString(R.string.fragment_verifycoderequest_requesttext) + ": " + application.getLabel());
 
             return mainView;
         }

@@ -2,6 +2,15 @@
 
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header
+        android:title="@string/activity_preferences_headers_account"
+        android:fragment="com.fwest98.fingify.Fragments.AccountPreferencesFragment"/>
+
+    <header
         android:fragment="com.fwest98.fingify.Fragments.AppPreferencesFragment"
         android:title="@string/activity_preferences_headers_app" />
+
+    <header
+        android:fragment="com.fwest98.fingify.Fragments.AboutLibsFragment"
+        android:title="@string/activity_preferences_headers_about"/>
+
 </preference-headers>

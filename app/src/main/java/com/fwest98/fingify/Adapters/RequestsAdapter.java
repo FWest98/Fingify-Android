@@ -49,7 +49,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
             state.setImageDrawable(context.getResources().getDrawable(R.drawable.state_rejected));
         }
 
-        if(request.isAnswered()) {
+        if(request.isAnswered() || !request.isThisDevice()) {
             buttons.setVisibility(View.GONE);
         } else {
             acceptButton.setOnClickListener(new RequestResponseListener(request, true, position));
@@ -75,7 +75,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
             FingerprintManager.authenticate(context, s -> {
                 if (s == FingerprintManager.FingerprintResponses.FAILED) {
                     // Fingerprint things failed
-                    ExceptionHandler.handleException(new Exception("Fingerprint authentication failed. Please try again"), context, false);
+                    ExceptionHandler.handleException(new Exception(context.getString(R.string.fingerprint_authentication_failed_tryagain)), context, false);
                 } else {
                     // Handle response
                     Account.getInstance(context).handleRequest(accept, request, data -> {

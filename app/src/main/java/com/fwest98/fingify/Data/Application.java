@@ -1,5 +1,6 @@
 package com.fwest98.fingify.Data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.Getter;
@@ -74,19 +76,22 @@ public class Application implements Serializable {
         }
     }
 
-    public static void addApplication(Application application, Context context) {
-        if(secretExists(application.getSecret(), context) || labelExists(application.getLabel(), context)) {
+    public static void addApplication(Application application, Activity activity) {
+        if(secretExists(application.getSecret(), activity) || labelExists(application.getLabel(), activity)) {
             // This already exists
             return;
         }
 
-        DatabaseHelper helper = DatabaseManager.getHelper(context);
+        DatabaseHelper helper = DatabaseManager.getHelper(activity);
         try {
             Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
 
             dao.create(application);
+
+            // Add to internetz
+            Account.getInstance(activity).setApplications(Arrays.asList(application), s -> {});
         } catch(SQLException e) {
-            ExceptionHandler.handleException(new Exception(context.getString(R.string.database_applications_save_error), e), context, true);
+            ExceptionHandler.handleException(new Exception(activity.getString(R.string.database_applications_save_error), e), activity, true);
         }
     }
 
@@ -114,16 +119,18 @@ public class Application implements Serializable {
         }
     }
 
-    public static void removeApplication(Application application, Context context) {
-        DatabaseHelper helper = DatabaseManager.getHelper(context);
+    public static void removeApplication(Application application, Activity activity) {
+        DatabaseHelper helper = DatabaseManager.getHelper(activity);
         try {
             Dao<Application, ?> dao = helper.getDaoWithCache(Application.class);
 
             DeleteBuilder<Application, ?> deleteBuilder = dao.deleteBuilder();
             deleteBuilder.where().eq("secret", application.getSecret());
             deleteBuilder.delete();
+
+            Account.getInstance(activity).removeApplications(Arrays.asList(application), v -> {});
         } catch(SQLException e) {
-            Log.e("ERROR", context.getString(R.string.database_applications_remove_error), e);
+            Log.e("ERROR", activity.getString(R.string.database_applications_remove_error), e);
         }
     }
 

@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:id="@+id/settings_fingerprint_authentication"
-        android:title="@string/settings_fingerprint_authentication_title"
-        android:summary="@string/settings_fingerprint_authentication_summary"
-        android:key="fingerprintAuthentication"
-        android:defaultValue="false" />
+
+    <PreferenceCategory
+        android:title="@string/settings_app_titles_protection">
+
+        <CheckBoxPreference
+            android:id="@+id/settings_fingerprint_authentication"
+            android:title="@string/settings_app_fingerprint_authentication_title"
+            android:summary="@string/settings_app_fingerprint_authentication_summary"
+            android:key="app_fingerprintAuthentication"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_app_titles_notifications">
+
+        <CheckBoxPreference
+            android:id="@+id/settings_notifications"
+            android:title="@string/settings_app_notification_title"
+            android:summary="@string/settings_app_notification_summary"
+            android:key="app_notifications"
+            android:defaultValue="true"/>
+
+        <ListPreference
+            android:dependency="app_notifications"
+            android:defaultValue="1"
+            android:title="@string/settings_app_notification_popup_options_setting_title"
+            android:entries="@array/settings_app_notification_popup_options_descs"
+            android:entryValues="@array/settings_app_notification_popup_options_vals"
+            android:key="app_notification_popup" />
+    </PreferenceCategory>
 </PreferenceScreen>

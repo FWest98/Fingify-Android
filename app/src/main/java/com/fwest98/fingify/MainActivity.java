@@ -17,19 +17,16 @@ import com.fwest98.fingify.Fragments.ApplicationsFragment;
 import com.fwest98.fingify.Fragments.NewApplicationFragment;
 import com.fwest98.fingify.Fragments.RequestsFragment;
 import com.fwest98.fingify.Helpers.FingerprintManager;
-import com.fwest98.fingify.Services.GCMIntentService;
 import com.fwest98.fingify.Settings.Constants;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-
-public class MainActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks {
+public class MainActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks, RequestsFragment.onLoadStateChangedListener {
 
     private ActionBar actionBar;
     private Menu menu;
     private ApplicationActivityPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
+    private MenuItem refreshItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +89,7 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
         ApplicationsFragment fragment = ApplicationsFragment.newInstance(this);
 
         fragmentPagerAdapter.addItem(fragment);
-        fragmentPagerAdapter.addItem(new RequestsFragment());
+        fragmentPagerAdapter.addItem(RequestsFragment.newInstance(this));
 
         if(!PreferenceManager.getDefaultSharedPreferences(this).contains(Constants.FINGERPRINT_AUTHENTICATION_SETTING) &&
                 FingerprintManager.isFingerPrintSupported(this)) {
@@ -109,7 +106,8 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
 
         getMenuInflater().inflate(R.menu.activity_main, menu);
         menu.findItem(R.id.activity_applications_action_newapplication).setVisible(applicationsList);
-        menu.findItem(R.id.activity_applications_action_refresh).setVisible(!applicationsList);
+        refreshItem = menu.findItem(R.id.activity_applications_action_refresh);
+        refreshItem.setVisible(!applicationsList);
 
         this.menu = menu;
         return true;
@@ -137,14 +135,10 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
                 NewApplicationFragment fragment = NewApplicationFragment.newInstance(this);
                 fragment.show(getFragmentManager(), "dialog");
                 return true;
-            case R.id.activity_applications_action_verifydialog:
-                Executors.newSingleThreadScheduledExecutor().schedule(() -> {
-                    GCMIntentService.createNotification("Google", this, false);
-                }, 5, TimeUnit.SECONDS);
-                return true;
-            case R.id.activity_applications_action_account:
-                // Open My Account activity
-                Account.getInstance(this).login(v -> {});
+            case R.id.activity_applications_action_refresh:
+                Fragment reqFragment = fragmentPagerAdapter.getItem(1);
+                if(reqFragment == null || !(reqFragment instanceof RequestsFragment)) return true;
+                ((RequestsFragment) reqFragment).reCreateRequestsList();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -178,5 +172,29 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         fragmentPagerAdapter.setLimit(0);
         invalidateOptionsMenu(); // for correct enabled/disabled
+    }
+
+    @Override
+    public void onLoadStart() {
+        setRefreshButtonState(true);
+    }
+
+    @Override
+    public void onLoadEnd() {
+        setRefreshButtonState(false);
+    }
+
+    @Override
+    public void onLoadCancel() {
+        setRefreshButtonState(false);
+    }
+
+    private void setRefreshButtonState(boolean loading) {
+        if(refreshItem == null) return;
+        if(loading) {
+            refreshItem.setActionView(R.layout.actionbar_refresh_progress);
+        } else {
+            refreshItem.setActionView(null);
+        }
     }
 }

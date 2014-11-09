@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_functionaljava"></string>
+    <!-- Author section -->
+    <string name="library_functionaljava_author">Functional Java</string>
+    <string name="library_functionaljava_authorWebsite">functionaljava.org</string>
+    <!-- Library section -->
+    <string name="library_functionaljava_libraryName">Functional Java</string>
+    <string name="library_functionaljava_libraryDescription">Functional Java is an open source library facilitating functional programming in Java. The library implements numerous basic and advanced programming abstractions that assist composition oriented development.</string>
+    <string name="library_functionaljava_libraryWebsite">http://www.functionaljava.org/</string>
+    <string name="library_functionaljava_libraryVersion">4.2</string>
+    <!-- OpenSource section -->
+    <string name="library_functionaljava_isOpenSource">true</string>
+    <string name="library_functionaljava_repositoryLink">https://github.com/functionaljava/functionaljava</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_functionaljava_classPath">org.functionaljava</string>
+    <!-- License section -->
+    <string name="library_functionaljava_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+</resources>

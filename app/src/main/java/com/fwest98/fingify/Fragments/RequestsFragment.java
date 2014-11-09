@@ -17,11 +17,28 @@ import java.util.ArrayList;
 
 public class RequestsFragment extends ListFragment {
     private ArrayList<Request> requests = new ArrayList<>();
+    private onLoadStateChangedListener listener = new onLoadStateChangedListener() {
+        @Override
+        public void onLoadStart() {
+
+        }
+
+        @Override
+        public void onLoadEnd() {
+
+        }
+
+        @Override
+        public void onLoadCancel() {
+
+        }
+    };
 
     //region Setup
 
-    public static RequestsFragment newInstance() {
+    public static RequestsFragment newInstance(onLoadStateChangedListener listener) {
         RequestsFragment fragment = new RequestsFragment();
+        fragment.listener = listener;
 
         return fragment;
     }
@@ -51,6 +68,7 @@ public class RequestsFragment extends ListFragment {
     private void onRequestsLoaded(ArrayList<Request> requests) {
         this.requests = requests;
         setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, requests));
+        listener.onLoadEnd();
     }
 
     //endregion
@@ -63,6 +81,7 @@ public class RequestsFragment extends ListFragment {
         Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
             // Set empty view
             setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, new ArrayList<>()));
+            listener.onLoadEnd();
         });
     }
 
@@ -99,6 +118,13 @@ public class RequestsFragment extends ListFragment {
     }
 
     public void reCreateRequestsList() {
+        listener.onLoadStart();
         createRequestsList();
+    }
+
+    public interface onLoadStateChangedListener {
+        void onLoadStart();
+        void onLoadEnd();
+        void onLoadCancel();
     }
 }

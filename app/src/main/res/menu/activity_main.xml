@@ -12,15 +12,7 @@
         android:showAsAction="ifRoom" />
 
     <item android:id="@+id/activity_applications_action_refresh"
-        android:title="Refresh"
+        android:title="@string/common_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom" />
-
-    <item android:id="@+id/activity_applications_action_verifydialog"
-        android:title="Test"
-        android:showAsAction="never"/>
-
-    <item android:id="@+id/activity_applications_action_account"
-        android:title="@string/activity_applications_action_account"
-        android:showAsAction="never"/>
 </menu>
