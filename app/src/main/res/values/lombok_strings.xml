@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_projectlombok"></string>
+    <!-- Author section -->
+    <string name="library_projectlombok_author">Project Lombok</string>
+    <string name="library_projectlombok_authorWebsite">projectlombok.org</string>
+    <!-- Library section -->
+    <string name="library_projectlombok_libraryName">Project Lombok</string>
+    <string name="library_projectlombok_libraryDescription">Very spicy additions to the Java programming language</string>
+    <string name="library_projectlombok_libraryWebsite">projectlombok.org</string>
+    <string name="library_projectlombok_libraryVersion">1.14.8</string>
+    <!-- OpenSource section -->
+    <string name="library_projectlombok_isOpenSource">true</string>
+    <string name="library_projectlombok_repositoryLink">https://github.com/rzwitserloot/lombok</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_projectlombok_classPath">lombok</string>
+    <!-- License section -->
+    <string name="library_projectlombok_licenseId">mit</string>
+    <!-- Custom variables section -->
+</resources>
+

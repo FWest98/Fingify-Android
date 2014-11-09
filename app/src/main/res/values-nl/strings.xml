@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common strings -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Annuleer</string>
+    <string name="common_tryagain">Probeer opnieuw</string>
+    <string name="common_login">Log in</string>
+    <string name="common_refresh">Herlaad</string>
+
+    <!-- Activities & Fragments -->
+    <string name="app_name">Fingify</string>
+    <string name="activity_applications_title">Fingify</string>
+    <string name="activity_applications_action_newapplication">Nieuw account</string>
+    <string name="activity_applications_action_settings">Instellingen</string>
+    <string name="activity_applications_tab_accounts">Accounts</string>
+    <string name="activity_applications_tab_requests">Codeverzoeken</string>
+
+    <string name="activity_preferences_title">Instellingen</string>
+    <string name="activity_preferences_headers_account">Fingify account</string>
+    <string name="activity_preferences_headers_app">Appvoorkeuren</string>
+    <string name="activity_preferences_headers_about">Over de app</string>
+
+    <string name="activity_verifycoderequest_noapplication">Geen account doorgegeven!</string>
+
+    <string name="fragment_applications_context_title">geselecteerd</string>
+    <string name="fragment_applications_context_delete">Verwijder</string>
+    <string name="fragment_applications_context_edit">Bewerk</string>
+    <string name="fragment_applications_context_edit_error_nomultiple">Je kan maar één account tegelijk bewerken</string>
+    <string name="fragment_applications_empty">Nog geen accounts! Start door een nieuwe te maken!</string>
+
+    <string name="fragment_requests_empty">Geen codeverzoeken gevonden</string>
+    <string name="fragment_requests_list_item_thisdevice">Dit apparaat</string>
+    <string name="fragment_requests_list_item_otherdevice">Ander apparaat</string>
+    <string name="fragment_requests_list_item_button_reject">Weiger</string>
+    <string name="fragment_requests_list_item_button_accept">Accepteer</string>
+    <string name="fragment_requests_login_required">Je moet ingelogd zijn om \ndit te kunnen gebruiken</string>
+
+    <string name="fragment_verifycoderequest_requesttext">Een website vraagt toestemming voor de code van</string>
+
+    <!-- Notifications -->
+    <string name="notification_title">Codeverzoek</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_newapplication_text">Vul een naam in voor dit account</string>
+    <string name="dialog_newapplication_appname_hint">Accountnaam</string>
+    <string name="dialog_newapplication_user_text">Dit account is voor gebruiker: </string>
+    <string name="dialog_newapplication_input_title">Geef een accountnaam</string>
+    <string name="dialog_newapplication_input_submit">Toevoegen</string>
+    <string name="dialog_newapplication_error_notsupported_text">Deze techniek is nog niet ondersteund</string>
+    <string name="dialog_newapplication_error_notsupported_title">Nog niet ondersteund</string>
+    <string name="dialog_newapplication_error_invalid_text">Deze code is niet geldig. Probeer opnieuw</string>
+    <string name="dialog_newapplication_error_invalid_title">Ongeldige code</string>
+    <string name="dialog_newapplication_error_noname">Accountnaam is vereist</string>
+    <string name="dialog_newapplication_error_duplicateLabel">Deze naam bestaat al. Kies een andere</string>
+    <string name="dialog_newapplication_error_duplicateSecret">Dit account bestaat al</string>
+    <string name="dialog_newapplication_noQRButton">Geen QR-code?</string>
+    <string name="dialog_newapplication_code_title">Vul code in</string>
+    <string name="dialog_newapplication_code_desc">Geef de code in zoals die op de website is gegeven, zonder spaties</string>
+    <string name="dialog_newapplication_code_hint">Code van 32 tekens</string>
+    <string name="dialog_newapplication_code_required">Code is vereist!</string>
+    <string name="dialog_newapplication_code_length">Code moet 32 tekens lang zijn!</string>
+    <string name="dialog_newapplication_title">Scan een QR-code</string>
+
+    <string name="dialog_editapplication_title">Bewerk accountnaam</string>
+    <string name="dialog_editapplication_submit">Bewerk</string>
+
+    <string name="dialog_removeapplication_title">Weet je zeker dat je dit/deze account(s) wil verwijderen? Dit kan niet ongedaan gemaakt worden</string>
+    <string name="dialog_removeapplication_submit">Verwijder</string>
+    <string name="dialog_removeapplication_notice">Account(s) verwijderd</string>
+
+    <string name="dialog_verifycoderequest_title">Verifieer aanvraag</string>
+
+    <string name="dialog_login_tabs_userpass">Fingify account</string>
+    <string name="dialog_login_tabs_social">Google+</string>
+    <string name="dialog_login_userpass_desc">Log in met je gebruikersnaam en wachtwoord</string>
+    <string name="dialog_login_userpass_username_hint">Gebruikersnaam</string>
+    <string name="dialog_login_userpass_password_hint">Wachtwoord</string>
+    <string name="dialog_login_buttons_register">Registreer</string>
+
+    <string name="dialog_register_title">Registreer</string>
+    <string name="dialog_register_username_hint">Gebruikersnaam</string>
+    <string name="dialog_register_password_hint">Wachtwoord</string>
+    <string name="dialog_register_password_repeat_hint">Wachtwoordbevestiging</string>
+    <string name="dialog_register_email_hint">E-mailadres</string>
+    <string name="dialog_register_buttons_register">Registreer</string>
+
+    <!-- Fingerprint authentication -->
+    <string name="fingerprint_authentication_title">Scan je vingerafdruk</string>
+    <string name="fingerprint_authentication_not_supported">Vingerafdrukcontrole niet ondersteund op dit apparaat</string>
+    <string name="fingerprint_authentication_dialog_title">Vingerafdrukcontrole</string>
+    <string name="fingerprint_authentication_dialog_message">Er is een vingerafdrukscanner gevonden op uw apparaat. Vingerafdrukcontrole tijdens het starten van de app inschakelen?</string>
+    <string name="fingerprint_authentication_dialog_enable_button">Inschakelen</string>
+    <string name="fingerprint_authentication_dialog_cancel_button">Annuleer</string>
+    <string name="fingerprint_authentication_failed">Vingerafdrukcontrole mislukt</string>
+    <string name="fingerprint_authentication_failed_tryagain">Vingerafdrukcontrole mislukt. Probeer het opnieuw</string>
+
+    <!-- Settings -->
+    <string name="settings_app_titles_protection">Beveiliging</string>
+    <string name="settings_app_titles_notifications">Meldingen</string>
+    <string name="settings_app_fingerprint_authentication_title">Gebruik vingerafdrukscanner</string>
+    <string name="settings_app_fingerprint_authentication_summary">Gebruik de vingerafdrukscanner om de gebruiker te verifiëren</string>
+    <string name="settings_app_notification_title">Meldingen voor codeverzoeken</string>
+    <string name="settings_app_notification_summary">Toon een melding als je een codeverzoek ontvangt</string>
+    <string name="settings_app_notification_popup_options_setting_title">Popup voor codeverzoeken</string>
+    <string-array name="settings_app_notification_popup_options_descs">
+        <item>Geen popups</item>
+        <item>Alleen als het scherm uit is</item>
+        <item>Altijd</item>
+    </string-array>
+    <string-array name="settings_app_notification_popup_options_vals">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="settings_account_myaccount_title">Mijn account</string>
+    <string name="settings_account_myaccount_summary_loggedin">Ingelogd als</string>
+    <string name="settings_account_myaccount_summary_notloggedin">Niet ingelogd</string>
+    <string name="settings_account_login_title">Log in</string>
+    <string name="settings_account_login_summary_loggedin">Log in als andere gebruiker</string>
+    <string name="settings_account_login_summary_notloggedin">Log in om alle features van de app te gebruiken</string>
+
+    <string name="settings_about_app_desc">Een app voor 2-factor-authentication met beveiliging van een vingerafdrukscanner</string>
+
+    <!-- Database -->
+    <string name="database_applications_save_error">Kon account(s) niet opslaan</string>
+    <string name="database_applications_load_error">Kon account(s) niet laden</string>
+    <string name="database_applications_secrets_nocheck">Kon niet controleren op bestaande namen</string>
+    <string name="database_applications_labels_nocheck">Kon niet controleren op bestaande namen</string>
+    <string name="database_applications_remove_error">Kon account(s) niet verwijderen</string>
+
+    <string name="database_requests_load_error">Kon codeverzoek(en) niet laden</string>
+    <string name="database_requests_save_error">Kon codeverzoek(en) niet opslaan</string>
+    <string name="database_requests_remove_error">Kon codeverzoek(en) niet verwijderen</string>
+
+    <!-- Account & WebActions -->
+    <string name="account_initialize_breaking_change">Wijzigingen in de app vereisen opnieuw inloggen</string>
+    <string name="account_general_notloggedin">Niet ingelogd!</string>
+
+    <string name="account_login_wrongtab">Kies het tabblad "Fingify account"</string>
+    <string name="account_login_usernamerequired">Gebruikersnaam is vereist!</string>
+    <string name="account_login_passwordrequired">Wachtwoord is vereist!</string>
+    <string name="account_login_unauthorized">Ongeldige inloggegevens</string>
+    <string name="account_login_error_login">Fout tijdens inloggen</string>
+
+    <string name="account_logout_error">Fout tijdens uitloggen</string>
+    
+    <string name="account_registration_username_required">Gebruikersnaam is vereist!</string>
+    <string name="account_registration_password_required">Wachtwoord is vereist!</string>
+    <string name="account_registration_passwords_equal">Wachtwoorden moeten gelijk zijn!</string>
+    <string name="account_registration_conflict">Deze gebruikersnaam of dit e-mailadres bestaan al</string>
+    <string name="account_registration_error">Fout tijdens registreren</string>
+
+    <string name="account_applications_error">Fout tijdens verwerken</string>
+
+    <string name="account_requests_notfound">Verzoek bestaat niet (meer)</string>
+    <string name="account_requests_error">Fout tijdens versturen van reactie</string>
+    <string name="account_requests_already_done">Codeverzoek al beantwoord!</string>
+    <string name="account_requests_application_not_exists">Account hiervoor bestaat niet (meer)!</string>
+
+    <string name="account_webactions_no_internet_connection">Geen internetverbinding</string>
+    <string name="account_webactions_unknown_error">Onbekende fout</string>
+    <string name="account_webactions_missing_data">Er missen gegevens</string>
+    <string name="account_webactions_servererror">Serverfout</string>
+    <string name="account_webactions_unauthorized">Gebruikersaccount bestaat niet (meer). Log opnieuw in</string>
+
+    <!-- TOTP parsing -->
+    <string name="totp_parse_scheme_invalid">Ongeldig schema</string>
+    <string name="totp_parse_authority_invalid">Ongeldige autoriteit</string>
+    <string name="totp_parse_only_totp_accepted">Alleen TOTP is ondersteund</string>
+    <string name="totp_parse_missing_userid">Gebruikersid mist</string>
+    <string name="totp_parse_secret_missing">Geen code gevonden</string>
+</resources>

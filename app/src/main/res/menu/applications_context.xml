@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fragment_applications_actions_edit"
+        android:title="@string/fragment_applications_context_edit"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_edit" />
+    <item android:id="@+id/fragment_applications_actions_delete"
+        android:title="@string/fragment_applications_context_delete"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_discard" />
+</menu>
