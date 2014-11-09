@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".VerifyCodeRequestActivity"
     android:id="@+id/activity_container"
-    android:background="@android:color/transparent">
+    android:background="@android:color/black">
 
 </RelativeLayout>

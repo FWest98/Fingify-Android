@@ -1,6 +1,6 @@
 package com.fwest98.fingify.Adapters;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +19,10 @@ import com.fwest98.fingify.R;
 import java.util.List;
 
 public class RequestsAdapter extends ArrayAdapter<Request> {
-    private Context context;
+    private Activity context;
     private List<Request> requests;
 
-    public RequestsAdapter(Context context, int resource, List<Request> objects) {
+    public RequestsAdapter(Activity context, int resource, List<Request> objects) {
         super(context, resource, objects);
         this.context = context;
         this.requests = objects;
@@ -73,7 +73,7 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
         public void onClick(View v) {
             // Fingerprints if necessary
             FingerprintManager.authenticate(context, s -> {
-                if(s == FingerprintManager.FingerprintResponses.FAILED) {
+                if (s == FingerprintManager.FingerprintResponses.FAILED) {
                     // Fingerprint things failed
                     ExceptionHandler.handleException(new Exception("Fingerprint authentication failed. Please try again"), context, false);
                 } else {

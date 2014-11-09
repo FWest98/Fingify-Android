@@ -1,7 +1,7 @@
 package com.fwest98.fingify.Data;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,6 +19,7 @@ import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.Helpers.HelperFunctions;
 import com.fwest98.fingify.R;
 import com.fwest98.fingify.Settings.Constants;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,8 +48,9 @@ public class Account {
     @Getter private static boolean isSet;
     @Getter private static String username;
     @Getter private static String apiKey;
+    @Getter private static boolean supportsPlayServices;
 
-    private Context context;
+    private Activity context;
     private WebRequestCallbacks callbacks;
     private static int currentVersion = 1;
 
@@ -59,7 +62,7 @@ public class Account {
      * Initialize account class, load the values from the storage to make sure everything is up-to-date
      * @param context The context
      */
-    public static void initialize(Context context) {
+    public static void initialize(Activity context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         int oldVersion;
         try {
@@ -89,6 +92,8 @@ public class Account {
         isSet = true;
         username = pref.getString("username", null);
         apiKey = key;
+
+        supportsPlayServices = HelperFunctions.checkPlayServices(false, context);
     }
 
     /**
@@ -97,6 +102,8 @@ public class Account {
      * @throws JSONException Sometimes something goes wrong
      */
     private void processLogin(String JSON) throws JSONException {
+        if(isSet()) logout(); // Remove all applications and APIKey
+
         JSONObject base = new JSONObject(JSON);
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(context).edit();
 
@@ -113,12 +120,13 @@ public class Account {
         pref.apply();
 
         setApplications(Application.getApplications(context), result -> {});
+        registerGCM();
     }
 
     //endregion
     //region Constructors
 
-    private Account(Context context) {
+    private Account(Activity context) {
         initialize(context);
         this.context = context;
     }
@@ -128,7 +136,7 @@ public class Account {
      * @param context The current context
      * @return An account instance for your context
      */
-    public static Account getInstance(Context context) {
+    public static Account getInstance(Activity context) {
         if(instance == null || !context.equals(instance.context)) {
             instance = new Account(context);
         }
@@ -173,7 +181,7 @@ public class Account {
 
         // Create dialog
         builder.setView(dialogView)
-                .setPositiveButton(R.string.dialog_login_buttons_login, (dialogInterface, id) -> {}) // No callbacks here because
+                .setPositiveButton(R.string.common_login, (dialogInterface, id) -> {}) // No callbacks here because
                 .setNeutralButton(R.string.dialog_login_buttons_register, (dialogInterface, id) -> {}) // this will automatically
                 .setNegativeButton(R.string.common_cancel, (dialogInterface, id) -> {}); // dismiss dialog after execution
 
@@ -236,6 +244,7 @@ public class Account {
                 postParameters.add(new BasicNameValuePair("username", username));
                 postParameters.add(new BasicNameValuePair("password", password));
                 postParameters.add(new BasicNameValuePair("TOTPcode", OTP));
+                postParameters.add(new BasicNameValuePair("isApp", "true"));
                 UrlEncodedFormEntity data = new UrlEncodedFormEntity(postParameters);
 
                 URL url = new URL(Constants.HTTP_BASE + "account/login");
@@ -405,6 +414,52 @@ public class Account {
     }
 
     //endregion
+    //region Logout
+
+    private void logout() {
+        WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
+            @Override
+            public HttpURLConnection onCreateConnection() throws Exception {
+                URL url = new URL(Constants.HTTP_BASE + "account/logout");
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+                UrlEncodedFormEntity data = new UrlEncodedFormEntity(Arrays.asList(new BasicNameValuePair("key", getApiKey())));
+
+                connection.setFixedLengthStreamingMode((int) data.getContentLength());
+                connection.setDoOutput(true);
+
+                data.writeTo(connection.getOutputStream());
+
+                return connection;
+            }
+
+            @Override
+            public String onValidateResponse(String content, int statusCode) throws Exception {
+                switch(statusCode) {
+                    case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                        throw new Exception(context.getString(R.string.account_webactions_servererror));
+                    case HttpURLConnection.HTTP_OK:
+                    case HttpURLConnection.HTTP_NO_CONTENT:
+                        return content;
+                    default:
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
+                }
+            }
+
+            @Override
+            public void onProcessData(String data) {
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                ExceptionHandler.handleException(new Exception(context.getString(R.string.account_logout_error) + ": " + exception.getMessage(), exception), context, true);
+            }
+        };
+
+        new WebActions().execute(webRequestCallbacks);
+    }
+
+    //endregion
     //region Applications
 
     /**
@@ -519,6 +574,7 @@ public class Account {
                     case HttpURLConnection.HTTP_INTERNAL_ERROR:
                         throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
+                    case HttpURLConnection.HTTP_NO_CONTENT:
                         return content;
                     default:
                         throw new Exception(context.getString(R.string.account_webactions_unknown_error));
@@ -601,6 +657,7 @@ public class Account {
                     case HttpURLConnection.HTTP_INTERNAL_ERROR:
                         throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
+                    case HttpURLConnection.HTTP_NO_CONTENT:
                         return content;
                     default:
                         throw new Exception(context.getString(R.string.account_webactions_unknown_error));
@@ -701,6 +758,7 @@ public class Account {
                     case HttpURLConnection.HTTP_INTERNAL_ERROR:
                         throw new Exception(context.getString(R.string.account_webactions_servererror));
                     case HttpURLConnection.HTTP_OK:
+                    case HttpURLConnection.HTTP_NO_CONTENT:
                         return content;
                     default:
                         throw new Exception(context.getString(R.string.account_webactions_unknown_error));
@@ -716,6 +774,65 @@ public class Account {
             public void onError(Exception exception) {
                 ExceptionHandler.handleException(new Exception(context.getString(R.string.account_requests_error) + ": " + exception.getMessage(), exception), context, true);
                 errorCallback.onFinished(exception);
+            }
+        };
+
+        new WebActions().execute(webRequestCallbacks);
+    }
+
+    //endregion
+    //region GCM
+
+    private void registerGCM() {
+        if(!HelperFunctions.checkPlayServices(true, context)) return;
+
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+
+        WebRequestCallbacks webRequestCallbacks = new WebRequestCallbacks() {
+            @Override
+            public HttpURLConnection onCreateConnection() throws Exception {
+                String regKey = gcm.register(Constants.PLAY_SENDER_ID);
+
+                URL url = new URL(Constants.HTTP_BASE + "account/gcm");
+
+                List<NameValuePair> postParameters = new ArrayList<>();
+                postParameters.add(new BasicNameValuePair("key", getApiKey()));
+                postParameters.add(new BasicNameValuePair("GCM", regKey));
+                UrlEncodedFormEntity data = new UrlEncodedFormEntity(postParameters);
+
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+                connection.setDoOutput(true);
+                connection.setFixedLengthStreamingMode((int) data.getContentLength());
+
+                data.writeTo(connection.getOutputStream());
+
+                return connection;
+            }
+
+            @Override
+            public String onValidateResponse(String content, int statusCode) throws Exception {
+                switch (statusCode) {
+                    case HttpURLConnection.HTTP_UNAUTHORIZED:
+                        throw new Exception(context.getString(R.string.account_webactions_unauthorized));
+                    case HttpURLConnection.HTTP_BAD_REQUEST:
+                        throw new Exception(context.getString(R.string.account_webactions_missing_data));
+                    case HttpURLConnection.HTTP_NO_CONTENT:
+                    case HttpURLConnection.HTTP_OK:
+                        return content;
+                    default:
+                        throw new Exception(context.getString(R.string.account_webactions_unknown_error));
+                }
+            }
+
+            @Override
+            public void onProcessData(String data) {
+                // success! yay!
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                ExceptionHandler.handleException(new Exception(context.getString(R.string.account_login_error_login) + ": " + exception.getMessage(), exception), context, true);
             }
         };
 

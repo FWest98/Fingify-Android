@@ -4,6 +4,7 @@
     <string name="common_ok">OK</string>
     <string name="common_cancel">Annuleer</string>
     <string name="common_tryagain">Probeer opnieuw</string>
+    <string name="common_login">Log in</string>
 
     <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
@@ -28,6 +29,7 @@
     <string name="fragment_requests_list_item_otherdevice">Ander apparaat</string>
     <string name="fragment_requests_list_item_button_reject">Weiger</string>
     <string name="fragment_requests_list_item_button_accept">Accepteer</string>
+    <string name="fragment_requests_login_required">Je moet ingelogd zijn om \ndit te kunnen gebruiken</string>
 
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Vul een naam in voor dit account</string>
@@ -64,7 +66,6 @@
     <string name="dialog_login_userpass_desc">Log in met je gebruikersnaam en wachtwoord</string>
     <string name="dialog_login_userpass_username_hint">Gebruikersnaam</string>
     <string name="dialog_login_userpass_password_hint">Wachtwoord</string>
-    <string name="dialog_login_buttons_login">Log in</string>
     <string name="dialog_login_buttons_register">Registreer</string>
 
     <string name="dialog_register_title">Registreer</string>
@@ -107,6 +108,8 @@
     <string name="account_login_passwordrequired">Wachtwoord is vereist!</string>
     <string name="account_login_unauthorized">Ongeldige inloggegevens</string>
     <string name="account_login_error_login">Fout tijdens inloggen</string>
+
+    <string name="account_logout_error">Fout tijdens uitloggen</string>
     
     <string name="account_registration_username_required">Gebruikersnaam is vereist!</string>
     <string name="account_registration_password_required">Wachtwoord is vereist!</string>

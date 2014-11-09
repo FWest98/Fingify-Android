@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fwest98.fingify.Adapters.ApplicationActivityPagerAdapter;
+import com.fwest98.fingify.Data.Account;
 import com.fwest98.fingify.Fragments.ApplicationsFragment;
 import com.fwest98.fingify.Fragments.NewApplicationFragment;
 import com.fwest98.fingify.Fragments.RequestsFragment;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applications);
+        Account.initialize(this);
 
         /* Viewpager things */
         fragmentPagerAdapter = new ApplicationActivityPagerAdapter(getFragmentManager());
@@ -137,11 +139,12 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
                 return true;
             case R.id.activity_applications_action_verifydialog:
                 Executors.newSingleThreadScheduledExecutor().schedule(() -> {
-                    GCMIntentService.createNotification(this, false);
+                    GCMIntentService.createNotification("Google", this, false);
                 }, 5, TimeUnit.SECONDS);
                 return true;
             case R.id.activity_applications_action_account:
                 // Open My Account activity
+                Account.getInstance(this).login(v -> {});
                 return true;
         }
         return super.onOptionsItemSelected(item);

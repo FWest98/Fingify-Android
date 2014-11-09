@@ -1,6 +1,7 @@
 package com.fwest98.fingify.Helpers;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,9 +18,9 @@ public class HelperFunctions {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public boolean checkPlayServices(Activity activity) {
+    public static boolean checkPlayServices(boolean showError, Activity activity) {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if(resultCode != ConnectionResult.SUCCESS) {
+        if(resultCode != ConnectionResult.SUCCESS && showError) {
             if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
@@ -28,5 +29,10 @@ public class HelperFunctions {
             return false;
         }
         return true;
+    }
+
+    public static boolean isScreenLocked(Context context) {
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        return keyguardManager.isKeyguardLocked();
     }
 }

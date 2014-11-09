@@ -4,6 +4,7 @@
     <string name="common_ok">OK</string>
     <string name="common_cancel">Cancel</string>
     <string name="common_tryagain">Try again</string>
+    <string name="common_login">Log in</string>
 
     <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
@@ -17,6 +18,8 @@
     <string name="activity_preferences_title">Settings</string>
     <string name="activity_preferences_headers_app">App settings</string>
 
+    <string name="activity_verifycoderequest_noapplication">No application given!</string>
+
     <string name="fragment_applications_context_title">selected</string>
     <string name="fragment_applications_context_delete">Delete</string>
     <string name="fragment_applications_context_edit">Edit</string>
@@ -28,6 +31,9 @@
     <string name="fragment_requests_list_item_otherdevice">Other device</string>
     <string name="fragment_requests_list_item_button_reject">Reject</string>
     <string name="fragment_requests_list_item_button_accept">Accept</string>
+    <string name="fragment_requests_login_required">You need to be logged in \nto use this feature</string>
+
+    <string name="fragment_verifycoderequest_requesttext">A website asks permission to get the current code for</string>
 
     <!-- Dialogs -->
     <string name="dialog_newapplication_text">Enter a name for this account</string>
@@ -64,7 +70,6 @@
     <string name="dialog_login_userpass_desc">Log in using your username &amp; password</string>
     <string name="dialog_login_userpass_username_hint">Username</string>
     <string name="dialog_login_userpass_password_hint">Password</string>
-    <string name="dialog_login_buttons_login">Log in</string>
     <string name="dialog_login_buttons_register">Register</string>
 
     <string name="dialog_register_title">Register</string>
@@ -107,6 +112,8 @@
     <string name="account_login_passwordrequired">Password is required!</string>
     <string name="account_login_unauthorized">Invalid credentials</string>
     <string name="account_login_error_login">Error during login</string>
+
+    <string name="account_logout_error">Error during logout</string>
 
     <string name="account_registration_username_required">Username is required!</string>
     <string name="account_registration_password_required">Password is required!</string>
