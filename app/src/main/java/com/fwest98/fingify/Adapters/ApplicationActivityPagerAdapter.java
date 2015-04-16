@@ -11,6 +11,7 @@ import lombok.Getter;
 
 public class ApplicationActivityPagerAdapter extends FragmentPagerAdapter {
     @Getter private List<Fragment> fragments = new ArrayList<>();
+    @Getter private List<String> titles = new ArrayList<>();
     private int limit = 0;
 
     public ApplicationActivityPagerAdapter(FragmentManager fm) {
@@ -33,12 +34,22 @@ public class ApplicationActivityPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void addItem(Fragment fragment) {
+        addItem(fragment, null);
+    }
+
+    public void addItem(Fragment fragment, String title) {
         fragments.add(fragment);
+        titles.add(title);
         notifyDataSetChanged();
     }
 
     public void setLimit(int limit) {
         this.limit = limit;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles.get(position);
     }
 }

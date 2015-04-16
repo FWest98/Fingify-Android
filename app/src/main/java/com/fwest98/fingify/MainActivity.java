@@ -1,15 +1,14 @@
 package com.fwest98.fingify;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.fwest98.fingify.Adapters.ApplicationActivityPagerAdapter;
 import com.fwest98.fingify.Data.Account;
@@ -19,14 +18,18 @@ import com.fwest98.fingify.Fragments.RequestsFragment;
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Settings.Constants;
 
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
 
-public class MainActivity extends Activity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks, RequestsFragment.onLoadStateChangedListener {
 
-    private ActionBar actionBar;
+public class MainActivity extends ActionBarActivity implements NewApplicationFragment.onResultListener, ApplicationsFragment.ApplicationsFragmentCallbacks, RequestsFragment.onLoadStateChangedListener {
+
     private Menu menu;
     private ApplicationActivityPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
     private MenuItem refreshItem;
+    private MaterialTabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +37,17 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
         setContentView(R.layout.activity_applications);
         Account.initialize(this);
 
-        /* Viewpager things */
+        tabHost = (MaterialTabHost) findViewById(R.id.toolbar_tabs);
+
+        /* Viewpager & tab things */
         fragmentPagerAdapter = new ApplicationActivityPagerAdapter(getFragmentManager());
+
+        fragmentPagerAdapter.addItem(ApplicationsFragment.newInstance(this), getString(R.string.activity_applications_tab_accounts));
+        fragmentPagerAdapter.addItem(RequestsFragment.newInstance(this), getString(R.string.activity_applications_tab_requests));
 
         viewPager = (ViewPager) findViewById(R.id.activity_viewPager);
         viewPager.setAdapter(fragmentPagerAdapter);
+
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
@@ -47,7 +56,7 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
 
             @Override
             public void onPageSelected(int i) {
-                actionBar.setSelectedNavigationItem(i);
+                tabHost.setSelectedNavigationItem(i);
                 invalidateOptionsMenu();
             }
 
@@ -57,39 +66,27 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
             }
         });
 
-        /* Tabs */
-        actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ActionBar.TabListener listener = new ActionBar.TabListener() {
+        MaterialTabListener listener = new MaterialTabListener() {
             @Override
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                viewPager.setCurrentItem(tab.getPosition());
+            public void onTabSelected(MaterialTab materialTab) {
+                viewPager.setCurrentItem(materialTab.getPosition());
             }
 
             @Override
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabReselected(MaterialTab materialTab) {
 
             }
 
             @Override
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabUnselected(MaterialTab materialTab) {
 
             }
         };
 
-        actionBar.addTab(
-                actionBar.newTab()
-                    .setText(getString(R.string.activity_applications_tab_accounts))
-                    .setTabListener(listener));
-        actionBar.addTab(
-                actionBar.newTab()
-                    .setTabListener(listener)
-                    .setText(getString(R.string.activity_applications_tab_requests)));
-
-        ApplicationsFragment fragment = ApplicationsFragment.newInstance(this);
-
-        fragmentPagerAdapter.addItem(fragment);
-        fragmentPagerAdapter.addItem(RequestsFragment.newInstance(this));
+        for(int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
+            CharSequence tabTitle = fragmentPagerAdapter.getPageTitle(i);
+            tabHost.addTab(tabHost.newTab().setText(tabTitle).setTabListener(listener));
+        }
 
         if(!PreferenceManager.getDefaultSharedPreferences(this).contains(Constants.FINGERPRINT_AUTHENTICATION_SETTING) &&
                 FingerprintManager.isFingerPrintSupported(this)) {
@@ -159,7 +156,7 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
         for(int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setVisible(false);
         }
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        tabHost.setVisibility(View.INVISIBLE);
         fragmentPagerAdapter.setLimit(1);
     }
 
@@ -169,7 +166,7 @@ public class MainActivity extends Activity implements NewApplicationFragment.onR
         for(int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setVisible(true);
         }
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        tabHost.setVisibility(View.VISIBLE);
         fragmentPagerAdapter.setLimit(0);
         invalidateOptionsMenu(); // for correct enabled/disabled
     }

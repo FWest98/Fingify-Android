@@ -1,5 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.DeviceDefault.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--<item name="colorPrimary"></item>
+        <item name="colorPrimaryDark"></item>
+        <item name="colorAccent"></item>-->
     </style>
 
     <!-- Preference Theme -->
@@ -7,7 +11,7 @@
         <item name="android:actionBarStyle">@style/BackActionBar</item>
     </style>
 
-    <style name="BackActionBar" parent="android:Widget.DeviceDefault.Light.ActionBar">
+    <style name="BackActionBar" parent="Widget.AppCompat.Light.ActionBar">
         <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
     </style>
 

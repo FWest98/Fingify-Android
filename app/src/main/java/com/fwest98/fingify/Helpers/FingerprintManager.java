@@ -60,7 +60,7 @@ public class FingerprintManager {
             // Setup
             if(spass.isFeatureEnabled(Spass.DEVICE_FINGERPRINT_CUSTOMIZED_DIALOG)) {
                 // Let's edit the UI
-                spassFingerprint.setDialogTitle(context.getString(R.string.fingerprint_authentication_title), context.getResources().getColor(android.R.color.black));
+                spassFingerprint.setDialogTitle(context.getString(R.string.fingerprint_authentication_title), 0x000000);
             }
 
             // Identify
