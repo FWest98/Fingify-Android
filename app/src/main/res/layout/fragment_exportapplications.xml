@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/fragment_exportapplications_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:padding="20dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="0dp"
+        android:id="@+id/fragment_exportapplications_qr"
+        android:layout_below="@+id/fragment_exportapplications_description"/>
+
+    <EditText
+        android:layout_below="@+id/fragment_exportapplications_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="0dp"
+        android:inputType="number"
+        android:id="@+id/fragment_exportapplications_check"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_above="@+id/buttonbar"
+        android:background="?android:attr/dividerHorizontal"/>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="0dp"
+        android:layout_alignParentBottom="true"
+        android:measureWithLargestChild="true">
+
+        <Button
+            android:id="@+id/fragment_exportapplications_cancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/common_cancel"/>
+
+        <Button
+            android:id="@+id/fragment_exportapplications_continue"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/common_continue"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

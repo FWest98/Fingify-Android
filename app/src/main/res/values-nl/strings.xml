@@ -6,6 +6,8 @@
     <string name="common_tryagain">Probeer opnieuw</string>
     <string name="common_login">Log in</string>
     <string name="common_refresh">Herlaad</string>
+    <string name="common_continue">Volgende</string>
+    <string name="common_skip">Overslaan</string>
 
     <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
@@ -18,6 +20,8 @@
     <string name="activity_preferences_title">Instellingen</string>
     <string name="activity_preferences_headers_account">Fingify account</string>
     <string name="activity_preferences_headers_app">Appvoorkeuren</string>
+    <string name="activity_preferences_headers_export">Exporteer accounts</string>
+    <string name="activity_preferences_headers_export_sub">Exporteer alle accounts naar een nieuw apparaat</string>
     <string name="activity_preferences_headers_about">Over de app</string>
 
     <string name="activity_verifycoderequest_noapplication">Geen account doorgegeven!</string>
@@ -36,6 +40,13 @@
     <string name="fragment_requests_login_required">Je moet ingelogd zijn om \ndit te kunnen gebruiken</string>
 
     <string name="fragment_verifycoderequest_requesttext">Een website vraagt toestemming voor de code van</string>
+
+    <string name="fragment_exportapplications_startdesc">Klik op "Volgende" om een QR-code te tonen en scan die met je nieuwe telefoon. Zodra het nieuwe account is toegevoegd, vul de huidige code hieronder in ter controle</string>
+    <string name="fragment_exportapplications_codedesc_before">Scan onderstaande code om het account "</string>
+    <string name="fragment_exportapplications_codedesc_after">" te importeren</string>
+    <string name="fragment_exportapplications_error_totpcheck">De controlecode klopt niet!</string>
+    <string name="fragment_exportapplications_error_writer">QR-code kon niet gemaakt worden, probeer het opnieuw</string>
+    <string name="fragment_exportapplications_success">Exporteren geslaagd!</string>
 
     <!-- Notifications -->
     <string name="notification_title">Codeverzoek</string>

@@ -10,6 +10,11 @@
         android:title="@string/activity_preferences_headers_app" />
 
     <header
+        android:fragment="com.fwest98.fingify.Fragments.ExportApplicationsFragment"
+        android:title="@string/activity_preferences_headers_export"
+        android:summary="@string/activity_preferences_headers_export_sub"/>
+
+    <header
         android:fragment="com.fwest98.fingify.Fragments.AboutLibsFragment"
         android:title="@string/activity_preferences_headers_about"/>
 

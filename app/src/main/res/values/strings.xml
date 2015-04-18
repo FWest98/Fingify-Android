@@ -6,6 +6,8 @@
     <string name="common_tryagain">Try again</string>
     <string name="common_login">Log in</string>
     <string name="common_refresh">Refresh</string>
+    <string name="common_continue">Continue</string>
+    <string name="common_skip">Skip</string>
 
     <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
@@ -18,6 +20,8 @@
     <string name="activity_preferences_title">Settings</string>
     <string name="activity_preferences_headers_account">Fingify account</string>
     <string name="activity_preferences_headers_app">App settings</string>
+    <string name="activity_preferences_headers_export">Export all applications</string>
+    <string name="activity_preferences_headers_export_sub">Export all applications to a new device</string>
     <string name="activity_preferences_headers_about">About app</string>
 
     <string name="activity_verifycoderequest_noapplication">No account given!</string>
@@ -36,6 +40,13 @@
     <string name="fragment_requests_login_required">You need to be logged in \nto use this feature</string>
 
     <string name="fragment_verifycoderequest_requesttext">A website asks permission to get the current code for</string>
+
+    <string name="fragment_exportapplications_startdesc">Click \'Next\' to show a QR-code to scan on your new device. When you added the account, please enter the current code for validation to continue</string>
+    <string name="fragment_exportapplications_codedesc_before">Scan the following code to import the application "</string>
+    <string name="fragment_exportapplications_codedesc_after">"</string>
+    <string name="fragment_exportapplications_error_totpcheck">The check code is wrong!</string>
+    <string name="fragment_exportapplications_error_writer">QR-code could not be generated, please try again</string>
+    <string name="fragment_exportapplications_success">Export succeeded!</string>
 
     <!-- Notifications -->
     <string name="notification_title">Coderequest</string>

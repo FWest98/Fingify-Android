@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.fwest98.fingify.Data.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
-import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.R;
 
 import java.util.Arrays;
@@ -101,7 +100,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
     public void handleResult(Result result) {
         final Application parsedQR;
         try {
-            parsedQR = ExtendedTotp.parseUri(result.getContents(), getActivity());
+            parsedQR = Application.parseUri(result.getContents(), getActivity());
         } catch(IllegalArgumentException e) {
             if(e.getCause() != null && e.getCause() instanceof UnsupportedOperationException) { // HOTP or another code
                 // Build AlertDialog
