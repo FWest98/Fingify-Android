@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TabHost;
 
+import com.fwest98.fingify.Helpers.Apache.BasicNameValuePair;
+import com.fwest98.fingify.Helpers.Apache.NameValuePair;
+import com.fwest98.fingify.Helpers.Apache.UrlEncodedFormEntity;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.ExtendedClock;
 import com.fwest98.fingify.Helpers.ExtendedTotp;
@@ -21,9 +24,6 @@ import com.fwest98.fingify.R;
 import com.fwest98.fingify.Settings.Constants;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
