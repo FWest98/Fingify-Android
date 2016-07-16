@@ -2,7 +2,7 @@
 # generated on 2014/11/06 08:58:22
 #
 # --table-start--
-dataClass=com.fwest98.fingify.Data.Application
+dataClass=com.fwest98.fingify.Models.Application
 tableName=application
 # --table-fields-start--
 # --field-start--
@@ -25,7 +25,7 @@ fieldName=type
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.fwest98.fingify.Data.Request
+dataClass=com.fwest98.fingify.Models.Request
 tableName=request
 # --table-fields-start--
 # --field-start--

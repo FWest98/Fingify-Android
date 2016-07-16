@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fwest98.fingify.Adapters.ApplicationActivityPagerAdapter;
-import com.fwest98.fingify.Data.Account;
+import com.fwest98.fingify.Data.AccountManager;
 import com.fwest98.fingify.Fragments.ApplicationsFragment;
 import com.fwest98.fingify.Fragments.NewApplicationFragment;
 import com.fwest98.fingify.Fragments.RequestsFragment;
@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements NewApplicationFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applications);
-        Account.initialize(this);
+        AccountManager.initialize(this);
 
         tabHost = (MaterialTabHost) findViewById(R.id.toolbar_tabs);
 

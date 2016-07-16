@@ -12,7 +12,7 @@
     <!-- Activities & Fragments -->
     <string name="app_name">Fingify</string>
     <string name="activity_applications_title">Fingify</string>
-    <string name="activity_applications_action_newapplication">Nieuw account</string>
+    <string name="activity_applications_action_newapplication">Nieuwe code</string>
     <string name="activity_applications_action_settings">Instellingen</string>
     <string name="activity_applications_tab_accounts">Accounts</string>
     <string name="activity_applications_tab_requests">Codeverzoeken</string>
@@ -153,6 +153,8 @@
     <string name="account_login_passwordrequired">Wachtwoord is vereist!</string>
     <string name="account_login_unauthorized">Ongeldige inloggegevens</string>
     <string name="account_login_error_login">Fout tijdens inloggen</string>
+    <string name="account_login_progress_tile">Inloggen</string>
+    <string name="account_login_progress_desc">Even geduld...</string>
 
     <string name="account_logout_error">Fout tijdens uitloggen</string>
     
@@ -161,19 +163,38 @@
     <string name="account_registration_passwords_equal">Wachtwoorden moeten gelijk zijn!</string>
     <string name="account_registration_conflict">Deze gebruikersnaam of dit e-mailadres bestaan al</string>
     <string name="account_registration_error">Fout tijdens registreren</string>
+    <string name="account_registration_progress_title">Registreren</string>
+    <string name="account_registration_progress_desc">Even geduld...</string>
 
-    <string name="account_applications_error">Fout tijdens verwerken</string>
+    <string name="account_gcmreg_error">Kon pushmeldingen niet activeren</string>
+    <string name="account_gcmreg_playservices">Google Play Services niet bereikbaar</string>
 
-    <string name="account_requests_notfound">Verzoek bestaat niet (meer)</string>
-    <string name="account_requests_error">Fout tijdens versturen van reactie</string>
-    <string name="account_requests_already_done">Codeverzoek al beantwoord!</string>
-    <string name="account_requests_application_not_exists">Account hiervoor bestaat niet (meer)!</string>
+    <string name="account_migration_error">Kon account niet upgraden</string>
+    <string name="account_migration_error_detail">Kon account niet upgraden naar de nieuwste appversie</string>
+    <string name="account_migration_progress_title">Account upgraden</string>
+    <string name="account_migration_progress_desc">Account naar de nieuwste appversie upgraden...</string>
+    <string name="account_migration_error_relogin">Upgrade mislukt, log opnieuw in</string>
 
-    <string name="account_webactions_no_internet_connection">Geen internetverbinding</string>
-    <string name="account_webactions_unknown_error">Onbekende fout</string>
-    <string name="account_webactions_missing_data">Er missen gegevens</string>
-    <string name="account_webactions_servererror">Serverfout</string>
-    <string name="account_webactions_unauthorized">Gebruikersaccount bestaat niet (meer). Log opnieuw in</string>
+    <!-- Applications -->
+    <string name="applications_error">Fout tijdens verwerken</string>
+    <string name="application_duplicate">Account bestaat al!</string>
+
+    <!-- Requests -->
+    <string name="requests_notfound">Verzoek bestaat niet (meer)</string>
+    <string name="requests_error">Fout tijdens versturen van reactie</string>
+    <string name="requests_already_done">Codeverzoek al beantwoord!</string>
+    <string name="requests_application_not_exists">Account hiervoor bestaat niet (meer)!</string>
+    <string name="requests_error_incoming">Fout bij verwerken nieuw verzoek</string>
+
+    <!-- Internet things -->
+    <string name="apirequests_no_internet_connection">Geen internetverbinding</string>
+    <string name="apirequests_unknown_error">Onbekende fout</string>
+    <string name="apirequests_missing_data">Er missen gegevens</string>
+    <string name="apirequests_servererror">Serverfout</string>
+    <string name="apirequests_unauthorized">Gebruikersaccount bestaat niet (meer). Log opnieuw in</string>
+    <string name="apirequests_newapiversion">Een nieuwe update is beschikbaar!</string>
+    <string name="apirequests_invalid_response">Ongeldig antwoord van de server!</string>
+    <string name="apirequests_systemerror">Systeem niet compatibel!</string>
 
     <!-- TOTP parsing -->
     <string name="totp_parse_scheme_invalid">Ongeldig schema</string>

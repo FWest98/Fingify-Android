@@ -9,14 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fwest98.fingify.Adapters.RequestsAdapter;
-import com.fwest98.fingify.Data.Account;
-import com.fwest98.fingify.Data.Request;
+import com.fwest98.fingify.Data.AccountManager;
+import com.fwest98.fingify.Data.RequestManager;
+import com.fwest98.fingify.Models.Request;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RequestsFragment extends ListFragment {
-    private ArrayList<Request> requests = new ArrayList<>();
+    private List<Request> requests = new ArrayList<>();
     private onLoadStateChangedListener listener = new onLoadStateChangedListener() {
         @Override
         public void onLoadStart() {
@@ -65,7 +67,7 @@ public class RequestsFragment extends ListFragment {
         super.onStart();
     }
 
-    private void onRequestsLoaded(ArrayList<Request> requests) {
+    private void onRequestsLoaded(List<Request> requests) {
         this.requests = requests;
         setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, requests));
         listener.onLoadEnd();
@@ -74,15 +76,19 @@ public class RequestsFragment extends ListFragment {
     //endregion
 
     private void createRequestsList() {
-        if(!Account.isSet()) {
+        if(!AccountManager.isSet()) {
             showLoginRequired();
             return;
         }
-        Account.getInstance(getActivity()).getRequests(data -> onRequestsLoaded((ArrayList<Request>) data), ex -> {
-            // Set empty view
-            setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, new ArrayList<>()));
-            listener.onLoadEnd();
-        });
+        RequestManager.getRequests(result -> {
+            if(result.isRight()) {
+                onRequestsLoaded(result.right().value());
+            } else {
+                // Set empty view
+                setListAdapter(new RequestsAdapter(getActivity(), R.layout.request_list_item, new ArrayList<>()));
+                listener.onLoadEnd();
+            }
+        }, getActivity());
     }
 
     private void showLoginRequired() {
@@ -101,7 +107,7 @@ public class RequestsFragment extends ListFragment {
         loginButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         loginButton.setText(R.string.common_login);
         loginButton.setOnClickListener(v -> {
-            Account.getInstance(getActivity()).login(d -> {
+            AccountManager.getInstance(getActivity()).login(getActivity(), d -> {
                 ((ViewGroup) getListView().getParent()).removeView(loginLayout);
                 setEmptyText(getActivity().getString(R.string.fragment_requests_empty));
             });

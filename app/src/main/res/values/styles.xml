@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="dialog_textColor">#000</color>
+    <color name="colorPrimary">#000</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--<item name="colorPrimary"></item>
         <item name="colorPrimaryDark"></item>
@@ -7,7 +10,7 @@
     </style>
 
     <!-- Preference Theme -->
-    <style name="PreferenceTheme" parent="AppTheme">
+    <style name="PreferenceTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/BackActionBar</item>
     </style>
 
@@ -16,7 +19,7 @@
     </style>
 
     <!-- DialogActivities -->
-    <style name="DialogAcitivity" parent="android:Theme.DeviceDefault">
+    <style name="DialogAcitivity" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -25,5 +28,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+
     </style>
 </resources>

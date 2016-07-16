@@ -12,7 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fwest98.fingify.Data.Application;
+import com.fwest98.fingify.Data.ApplicationManager;
+import com.fwest98.fingify.Models.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.Helpers.HelperFunctions;
@@ -52,7 +53,7 @@ public class ExportApplicationsFragment extends Fragment {
         cancelButton.setOnClickListener((v) -> getActivity().finish());
         continueButton.setOnClickListener(continueListener);
 
-        applications = Application.getApplications(getActivity());
+        applications = ApplicationManager.getApplications(getActivity());
 
         return rootView;
     }

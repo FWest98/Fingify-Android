@@ -11,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fwest98.fingify.Data.Application;
+import com.fwest98.fingify.Data.ApplicationManager;
+import com.fwest98.fingify.Models.Application;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.R;
 
 import java.util.Arrays;
 
 import lombok.Setter;
+import lombok.SneakyThrows;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
@@ -126,7 +128,7 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
     }
 
     private void finishResult(Application parsedQR) {
-        if(Application.secretExists(parsedQR.getSecret(), getActivity())) {
+        if(ApplicationManager.secretExists(parsedQR.getSecret(), getActivity())) {
             // This application already exists. Notify the user
             ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateSecret)), getActivity(), true);
             dismiss();
@@ -149,27 +151,31 @@ public class NewApplicationFragment extends DialogFragment implements ZBarScanne
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
-            String applicationName = ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).getText().toString();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            @SneakyThrows(ApplicationManager.DuplicateApplicationException.class)
+            public void onClick(View v) {
+                String applicationName = ((EditText) dialogView.findViewById(R.id.dialog_newapplication_name)).getText().toString();
 
-            if ("".equals(applicationName)) {
-                ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_noname)), getActivity(), false);
-                return;
+                if ("".equals(applicationName)) {
+                    ExceptionHandler.handleException(new Exception(NewApplicationFragment.this.getActivity().getString(R.string.dialog_newapplication_error_noname)), NewApplicationFragment.this.getActivity(), false);
+                    return;
+                }
+
+                if (ApplicationManager.labelExists(applicationName, NewApplicationFragment.this.getActivity())) {
+                    // Label exists
+                    ExceptionHandler.handleException(new Exception(NewApplicationFragment.this.getActivity().getString(R.string.dialog_newapplication_error_duplicateLabel)), NewApplicationFragment.this.getActivity(), false);
+                    return;
+                }
+
+                Application newApplication = new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser());
+
+                ApplicationManager.addApplication(newApplication, NewApplicationFragment.this.getActivity());
+
+                listener.onResult();
+                dialog.dismiss();
+                NewApplicationFragment.this.dismiss();
             }
-
-            if (Application.labelExists(applicationName, getActivity())) {
-                // Label exists
-                ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateLabel)), getActivity(), false);
-                return;
-            }
-
-            Application newApplication = new Application(applicationName, parsedQR.getSecret(), parsedQR.getUser());
-
-            Application.addApplication(newApplication, getActivity());
-
-            listener.onResult();
-            dialog.dismiss();
-            dismiss();
         });
     }
 

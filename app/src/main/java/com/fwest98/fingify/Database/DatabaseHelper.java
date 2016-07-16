@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.fwest98.fingify.Data.Application;
-import com.fwest98.fingify.Data.Request;
+import com.fwest98.fingify.Models.Application;
+import com.fwest98.fingify.Models.Request;
 import com.fwest98.fingify.R;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -17,7 +17,7 @@ import java.util.Hashtable;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "fingify.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private Hashtable<String, Dao<?, Integer>> daoHashtable = new Hashtable<>();
 
@@ -45,6 +45,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
             if(oldVersion <= 2) {
                 // Upgrade from 1 or 2
+                TableUtils.dropTable(connectionSource, Request.class, true);
+                TableUtils.createTable(connectionSource, Request.class);
+            }
+            if(oldVersion <= 3) {
+                // Upgrade to 4
                 TableUtils.dropTable(connectionSource, Request.class, true);
                 TableUtils.createTable(connectionSource, Request.class);
             }

@@ -18,15 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fwest98.fingify.Adapters.ApplicationsAdapter;
-import com.fwest98.fingify.Data.Account;
-import com.fwest98.fingify.Data.Application;
+import com.fwest98.fingify.Data.ApplicationManager;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Helpers.TotpCountdown;
+import com.fwest98.fingify.Models.Application;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ApplicationsFragment extends ListFragment {
@@ -134,7 +133,7 @@ public class ApplicationsFragment extends ListFragment {
 
     private void createApplicationsList() {
         /* Create dummy application list */
-        applications = Application.getApplications(getActivity());
+        applications = ApplicationManager.getApplications(getActivity());
 
         setListAdapter(new ApplicationsAdapter(getActivity(),
                 R.layout.application_list_item, applications));
@@ -217,23 +216,16 @@ public class ApplicationsFragment extends ListFragment {
                                 return;
                             }
 
-                            if (Application.labelExists(applicationName, getActivity())) {
+                            if (ApplicationManager.labelExists(applicationName, getActivity())) {
                                 // Label exists
                                 ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_newapplication_error_duplicateLabel)), getActivity(), false);
                                 return;
                             }
 
                             Application oldApplication = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications().get(0);
-                            Application.removeApplication(oldApplication, getActivity());
-
                             Application newApplication = new Application(applicationName, oldApplication.getSecret(), oldApplication.getUser());
-                            Application.addApplication(newApplication, getActivity());
 
-                            HashMap<Application, Application> changes = new HashMap<>();
-                            changes.put(oldApplication, newApplication);
-
-                            Account.getInstance(getActivity()).updateApplications(changes, result -> {
-                            });
+                            ApplicationManager.updateApplication(oldApplication, newApplication, getActivity());
 
                             reCreateApplicationsList();
                             dialog.dismiss();
@@ -252,12 +244,7 @@ public class ApplicationsFragment extends ListFragment {
                                 .setPositiveButton(R.string.dialog_removeapplication_submit, (dialog, which) -> {
                                     List<Application> applicationsToRemove = ((ApplicationsAdapter) getListAdapter()).getCheckedApplications();
 
-                                    for (Application application : applicationsToRemove) {
-                                        Application.removeApplication(application, getActivity());
-                                    }
-
-                                    Account.getInstance(getActivity()).removeApplications(applicationsToRemove, result -> {
-                                    });
+                                    ApplicationManager.removeApplications(applicationsToRemove, getActivity());
 
                                     ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.dialog_removeapplication_notice)), getActivity(), false);
 

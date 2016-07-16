@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_login_tabhost"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_container"
     android:layout_width="match_parent"
-    android:layout_height="500dip">
+    android:layout_height="500dip"
+    android:orientation="vertical"
+    app:theme="@style/AlertDialogTheme">
 
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:tabMode="fixed" />
 
-        <TabWidget
+    <FrameLayout
+        android:id="@+id/tab_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:id="@+id/dialog_login_tabs_userpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@android:id/tabs" />
+            android:focusable="true"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/dialog_login_tabs_userpass"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:textSize="17sp"
+                android:text="@string/dialog_login_userpass_desc"
+                android:textColor="@color/dialog_textColor"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:textSize="17sp"
-                    android:text="@string/dialog_login_userpass_desc"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/dialog_login_userpass_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:fontFamily="sans-serif"
-                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
                     android:singleLine="true"
                     android:hint="@string/dialog_login_userpass_username_hint"/>
 
-                <EditText
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/dialog_login_userpass_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:fontFamily="sans-serif"
                     android:inputType="textPassword"
+                    android:paddingLeft="10dp"
                     android:hint="@string/dialog_login_userpass_password_hint"/>
-            </LinearLayout>
 
-            <!--<LinearLayout
-                android:id="@+id/dialog_login_tabs_social"
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <!--<LinearLayout
+            android:id="@+id/dialog_login_tabs_social"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/dialog_login_social_gplus"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/dialog_login_social_gplus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>-->
-        </FrameLayout>
-    </LinearLayout>
-</TabHost>
+                android:layout_height="wrap_content" />
+        </LinearLayout>-->
+    </FrameLayout>
+</LinearLayout>

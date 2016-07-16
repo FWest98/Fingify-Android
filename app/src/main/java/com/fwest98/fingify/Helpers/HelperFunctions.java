@@ -21,14 +21,24 @@ public class HelperFunctions {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public static boolean checkPlayServices(boolean showError, Activity activity) {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if(resultCode != ConnectionResult.SUCCESS && showError) {
-            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
+    public static boolean checkPlayServices(Context context) {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+        if(resultCode != ConnectionResult.SUCCESS) {
+            if(!GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 Log.i("PlayServices", "No pushmessages");
             }
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkPlayServices(Activity activity) {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+        if(resultCode != ConnectionResult.SUCCESS) {
+            if(!GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                Log.i("PlayServices", "No pushmessages");
+            }
+            GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             return false;
         }
         return true;

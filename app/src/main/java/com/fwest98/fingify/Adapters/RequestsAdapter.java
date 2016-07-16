@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fwest98.fingify.Data.Account;
-import com.fwest98.fingify.Data.Request;
+import com.fwest98.fingify.Data.RequestManager;
+import com.fwest98.fingify.Models.Request;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.R;
@@ -78,15 +78,17 @@ public class RequestsAdapter extends ArrayAdapter<Request> {
                     ExceptionHandler.handleException(new Exception(context.getString(R.string.fingerprint_authentication_failed_tryagain)), context, false);
                 } else {
                     // Handle response
-                    Account.getInstance(context).handleRequest(accept, request, data -> {
-                        // Success!
-                        // Disable buttons and set state
-                        Request newRequest = new Request(request.getApplicationName(), request.getRequestTime(), true, true, accept);
-                        requests.set(position, newRequest);
-                        notifyDataSetChanged();
-                    }, exception -> {
-                        ExceptionHandler.handleException((Exception) exception, context, true);
-                    });
+                    RequestManager.handleRequest(accept, request, result -> {
+                        if (result.isRight()) {
+                            // Success!
+                            // Disable buttons and set state
+                            Request newRequest = new Request(request.getId(), request.getApplicationName(), request.getRequestTime(), true, true, accept, request.getIpAddress(), request.getDeviceName(), request.getPlatform());
+                            requests.set(position, newRequest);
+                            notifyDataSetChanged();
+                        } else {
+                            ExceptionHandler.handleException(result.left().value(), context, true);
+                        }
+                    }, context);
                 }
             });
         }

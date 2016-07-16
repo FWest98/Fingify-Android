@@ -5,11 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.annotation.Nullable;
-import android.support.v7.internal.widget.TintCheckBox;
-import android.support.v7.internal.widget.TintCheckedTextView;
-import android.support.v7.internal.widget.TintEditText;
-import android.support.v7.internal.widget.TintRadioButton;
-import android.support.v7.internal.widget.TintSpinner;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -17,8 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 
 import com.fwest98.fingify.Fragments.AboutLibsFragment;
 import com.fwest98.fingify.Fragments.AccountPreferencesFragment;
@@ -92,11 +92,11 @@ public class PreferencesActivity extends PreferenceActivity {
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             switch(name) {
-                case "EditText": return new TintEditText(this, attrs);
-                case "Spinner": return new TintSpinner(this, attrs);
-                case "CheckBox": return new TintCheckBox(this, attrs);
-                case "RadioButton": return new TintRadioButton(this, attrs);
-                case "CheckedTextView": return new TintCheckedTextView(this, attrs);
+                case "EditText": return new EditText(this, attrs);
+                case "Spinner": return new Spinner(this, attrs);
+                case "CheckBox": return new CheckBox(this, attrs);
+                case "RadioButton": return new RadioButton(this, attrs);
+                case "CheckedTextView": return new CheckedTextView(this, attrs);
             }
         }
 

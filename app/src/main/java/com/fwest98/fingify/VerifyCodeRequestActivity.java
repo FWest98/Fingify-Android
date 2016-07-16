@@ -12,15 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.fwest98.fingify.Data.Account;
-import com.fwest98.fingify.Data.Application;
-import com.fwest98.fingify.Data.Request;
+import com.fwest98.fingify.Data.ApplicationManager;
+import com.fwest98.fingify.Data.RequestManager;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.Helpers.HelperFunctions;
+import com.fwest98.fingify.Models.Application;
+import com.fwest98.fingify.Models.Request;
 import com.fwest98.fingify.Services.GCMIntentService;
-
-import java.util.Calendar;
 
 import lombok.Setter;
 
@@ -29,14 +28,16 @@ public class VerifyCodeRequestActivity extends Activity {
     public static final String INTENT_REJECT = "CODE_REQUEST_REJECT";
 
     private Application application;
+    private Request request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
+        request = (Request) intent.getSerializableExtra("request");
 
-        if(intent.getStringExtra("applicationName") == null || (application = Application.getApplication(intent.getStringExtra("applicationName"), this)) == null) {
+        if(request == null || (application = ApplicationManager.getApplication(request.getApplicationName(), this)) == null) {
             ExceptionHandler.handleException(new Exception(getString(R.string.activity_verifycoderequest_noapplication)), this, true);
             GCMIntentService.removeNotification(this);
             finish();
@@ -109,14 +110,13 @@ public class VerifyCodeRequestActivity extends Activity {
                 ExceptionHandler.handleException(new Exception(getString(R.string.fingerprint_authentication_failed_tryagain)), this, false);
             } else {
                 // Handle response
-                Request request = new Request(application.getLabel(), Calendar.getInstance().getTime(), false, true, false);
-                Account.getInstance(this).handleRequest(accept, request, data -> {
+                RequestManager.handleRequest(accept, request, data -> {
                     // Finish activity and remove notification
-                    GCMIntentService.removeNotification(this);
-                    finish();
-                }, exception -> {
-                    ExceptionHandler.handleException((Exception) exception, this, true);
-                });
+                    if(data.isRight()) {
+                        GCMIntentService.removeNotification(this);
+                        finish();
+                    }
+                }, this);
             }
         });
     }

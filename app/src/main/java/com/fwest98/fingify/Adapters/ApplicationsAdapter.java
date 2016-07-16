@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.fwest98.fingify.CustomUI.ProgressWheel;
-import com.fwest98.fingify.Data.Application;
+import com.fwest98.fingify.Models.Application;
 import com.fwest98.fingify.Helpers.ExtendedClock;
 import com.fwest98.fingify.Helpers.ExtendedTotp;
 import com.fwest98.fingify.R;

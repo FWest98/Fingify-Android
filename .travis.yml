@@ -29,7 +29,7 @@ before_install:
  - export JAVA_HOME=$JAVA8_HOME
 
 script:
- - ./gradlew clean assemble
+ - ./gradlew :app:travisBuild
 
 sudo: required
 

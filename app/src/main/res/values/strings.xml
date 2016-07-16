@@ -144,7 +144,7 @@
     <string name="database_requests_save_error">Could not save coderequest(s)</string>
     <string name="database_requests_remove_error">Could not remove coderequest(s)</string>
 
-    <!-- Account & WebActions -->
+    <!-- Account -->
     <string name="account_initialize_breaking_change">Breaking changes in the app require you to login again</string>
     <string name="account_general_notloggedin">Not logged in!</string>
 
@@ -153,6 +153,8 @@
     <string name="account_login_passwordrequired">Password is required!</string>
     <string name="account_login_unauthorized">Invalid credentials</string>
     <string name="account_login_error_login">Error during login</string>
+    <string name="account_login_progress_tile">Logging in</string>
+    <string name="account_login_progress_desc">Please wait...</string>
 
     <string name="account_logout_error">Error during logout</string>
 
@@ -161,19 +163,38 @@
     <string name="account_registration_passwords_equal">Passwords should be the same!</string>
     <string name="account_registration_conflict">This username or email already exists</string>
     <string name="account_registration_error">Error during registration</string>
+    <string name="account_registration_progress_title">Registering</string>
+    <string name="account_registration_progress_desc">Please wait...</string>
 
-    <string name="account_applications_error">Error while processing</string>
+    <string name="account_gcmreg_error">Could not enable push messages</string>
+    <string name="account_gcmreg_playservices">Google Play Services not accessible</string>
 
-    <string name="account_requests_notfound">Request doesn\'t exist (anymore)</string>
-    <string name="account_requests_error">Error during response</string>
-    <string name="account_requests_already_done">Coderequest already answered!</string>
-    <string name="account_requests_application_not_exists">Account does not exist (anymore)!</string>
+    <string name="account_migration_error">Could not migrate account</string>
+    <string name="account_migration_error_detail">Could not migrate account to the new app version</string>
+    <string name="account_migration_progress_title">Migrating account</string>
+    <string name="account_migration_progress_desc">Migrating account to new app version...</string>
+    <string name="account_migration_error_relogin">Migration failed, please login again</string>
 
-    <string name="account_webactions_no_internet_connection">No internet connection</string>
-    <string name="account_webactions_unknown_error">Unknown error</string>
-    <string name="account_webactions_missing_data">Missing data</string>
-    <string name="account_webactions_servererror">Server error</string>
-    <string name="account_webactions_unauthorized">User account doesn\'t exist (anymore). Please log in again</string>
+    <!-- Applications -->
+    <string name="applications_error">Error while processing</string>
+    <string name="application_duplicate">Application already exists!</string>
+
+    <!-- Requests -->
+    <string name="requests_notfound">Request doesn\'t exist (anymore)</string>
+    <string name="requests_error">Error during response</string>
+    <string name="requests_already_done">Coderequest already answered!</string>
+    <string name="requests_application_not_exists">Account does not exist (anymore)!</string>
+    <string name="requests_error_incoming">Error handling incoming request</string>
+
+    <!-- Internet things -->
+    <string name="apirequests_no_internet_connection">No internet connection</string>
+    <string name="apirequests_unknown_error">Unknown error</string>
+    <string name="apirequests_missing_data">Missing data</string>
+    <string name="apirequests_servererror">Server error</string>
+    <string name="apirequests_unauthorized">User account doesn\'t exist (anymore). Please log in again</string>
+    <string name="apirequests_newapiversion">A new app update is available!</string>
+    <string name="apirequests_invalid_response">Invalid response from server!</string>
+    <string name="apirequests_systemerror">System not compatible!</string>
 
     <!-- TOTP parsing -->
     <string name="totp_parse_scheme_invalid">Invalid scheme</string>

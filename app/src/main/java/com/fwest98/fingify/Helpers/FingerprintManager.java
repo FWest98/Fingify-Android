@@ -82,6 +82,11 @@ public class FingerprintManager {
                 @Override
                 public void onStarted() {
                 }
+
+                @Override
+                public void onCompleted() {
+
+                }
             }, true);
 
             return; //End to prevent disabling fingerprints

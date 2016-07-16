@@ -1,48 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="10dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dialog_register_username"
-        android:focusable="true"
-        android:fontFamily="sans-serif"
-        android:singleLine="true"
         android:layout_marginBottom="10dp"
-        android:hint="@string/dialog_register_username_hint"/>
+        android:textSize="17sp"
+        android:text="Register now for a Fingify account and request 2FA codes from your browser!"
+        android:textColor="@color/dialog_textColor"/>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_register_password"
-        android:focusable="true"
-        android:fontFamily="sans-serif"
-        android:singleLine="true"
-        android:layout_marginBottom="10dp"
-        android:inputType="textPassword"
-        android:hint="@string/dialog_register_password_hint"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_register_password_repeat"
-        android:focusable="true"
-        android:fontFamily="sans-serif"
-        android:singleLine="true"
-        android:layout_marginBottom="10dp"
-        android:inputType="textPassword"
-        android:hint="@string/dialog_register_password_repeat_hint"/>
+        <android.support.v7.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_register_username"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/dialog_register_username_hint"/>
 
-    <EditText
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_register_email"
-        android:focusable="true"
-        android:fontFamily="sans-serif"
-        android:singleLine="true"
-        android:layout_marginBottom="10dp"
-        android:inputType="textEmailAddress"
-        android:hint="@string/dialog_register_email_hint"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_register_password"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPassword"
+            android:hint="@string/dialog_register_password_hint"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_register_password_repeat"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPassword"
+            android:hint="@string/dialog_register_password_repeat_hint"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_register_email"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/dialog_register_email_hint"/>
+
+    </android.support.design.widget.TextInputLayout>
 </LinearLayout>
