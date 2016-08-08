@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="dialog_textColor">#000</color>
-    <color name="colorPrimary">#000</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorPrimaryLight">#CFD8DC</color>
+    <!--<color name="colorAccent">#FFC400</color>
+    <color name="colorAccentDark">#FFAB00</color>
+    <color name="colorAccentLight">#FFE57F</color>-->
+    <color name="colorAccent">#AFB42B</color>
+    <color name="colorAccentDark">#9E9D24</color>
+    <color name="colorAccentLight">#DCE775</color>
+    <color name="windowBackground">#FAFAFA</color>
+
+    <!-- Base app theme -->
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!--<item name="colorPrimary"></item>
-        <item name="colorPrimaryDark"></item>
-        <item name="colorAccent"></item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
     </style>
 
     <!-- Preference Theme -->
     <style name="PreferenceTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionBarStyle">@style/BackActionBar</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
     </style>
 
     <style name="BackActionBar" parent="Widget.AppCompat.Light.ActionBar">
         <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+    </style>
+
+    <!-- Custom items -->
+    <style name="ToolbarNavigationButtonStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">72dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 
     <!-- DialogActivities -->

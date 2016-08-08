@@ -87,9 +87,9 @@ public class GCMIntentService extends IntentService {
                 .setContentText(context.getString(R.string.fragment_verifycoderequest_requesttext) + ": " + request.getApplicationName())
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setPriority(Notification.PRIORITY_MAX)
-                .setSmallIcon(R.drawable.ic_notification_icon)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setStyle(new Notification.BigTextStyle().bigText(context.getString(R.string.fragment_verifycoderequest_requesttext) + ": " + request.getApplicationName()))
-                .addAction(R.drawable.ic_action_accept, context.getString(R.string.fragment_requests_list_item_button_accept), acceptPIntent)
+                .addAction(R.drawable.ic_action_done, context.getString(R.string.fragment_requests_list_item_button_accept), acceptPIntent)
                 .addAction(R.drawable.ic_action_reject, context.getString(R.string.fragment_requests_list_item_button_reject), rejectPIntent);
 
         if(openPopupWithoutNotification && popupSetting == "2") {
