@@ -9,6 +9,7 @@ public class Constants {
     public static final String NOTIFICATION_POPUP_SETTING = "app_notification_popup";
     public static final String ACCOUNT_DESC_SETTING = "account_desc";
     public static final String ACCOUNT_LOGIN_SETTING = "account_login";
+    public static final String APPLICATIONS_CUSTOM_ORDER = "applications_order";
 
     public static final String HTTP_BASE_RELEASE = "https://api.fingify.nl/";
     public static final String HTTP_BASE_DEBUG = "http://fingify.testserver.test.home/api/";

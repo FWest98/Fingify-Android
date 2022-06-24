@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.preference.Preference
         android:key="account_desc"
         android:title="@string/settings_account_myaccount_title"/>
 
-    <Preference
+    <android.support.v7.preference.Preference
         android:key="account_login"
         android:title="@string/settings_account_login_title"/>
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.Menu;
 
 import com.fwest98.fingify.Settings.Constants;
 import com.google.android.gms.common.ConnectionResult;
@@ -59,5 +60,11 @@ public class HelperFunctions {
             }
         }
         return bmp;
+    }
+
+    public static void colorAllIcons(Menu menu, int color) {
+        for(int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).getIcon().setTint(color);
+        }
     }
 }

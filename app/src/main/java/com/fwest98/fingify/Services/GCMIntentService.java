@@ -15,7 +15,7 @@ import com.fwest98.fingify.Models.Request;
 import com.fwest98.fingify.R;
 import com.fwest98.fingify.Receivers.GCMBroadcastReceiver;
 import com.fwest98.fingify.Settings.Constants;
-import com.fwest98.fingify.VerifyCodeRequestActivity;
+import com.fwest98.fingify.Activities.VerifyCodeRequestActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONException;

@@ -1,10 +1,10 @@
 package com.fwest98.fingify.Fragments;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceManager;
 
 import com.fwest98.fingify.Helpers.FingerprintManager;
 import com.fwest98.fingify.R;
@@ -15,10 +15,13 @@ public class AppPreferencesFragment extends PreferenceFragment {
     private ListPreference notificationPopupSetting;
 
     @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(R.xml.preferences_app);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        addPreferencesFromResource(R.xml.preferences_app);
 
         if(!PreferenceManager.getDefaultSharedPreferences(getActivity()).contains(Constants.FINGERPRINT_AUTHENTICATION_SETTING) &&
                 FingerprintManager.isFingerPrintSupported(getActivity())) {

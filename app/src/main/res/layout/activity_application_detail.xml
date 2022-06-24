@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8000"
+    android:id="@+id/container">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:id="@+id/application_item_dialog"
+        android:transitionName="box"
+        android:clickable="true"
+        android:background="#FFF">
+
+        <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/toolbar"
+            android:layout_alignBottom="@+id/application_item"
+            android:background="#FFF"/>-->
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="eerste test"
+                android:id="@+id/toolbar_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/application_item"
+            android:layout_below="@+id/toolbar"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/fragment_application_title"
+                android:text="Account"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</FrameLayout>

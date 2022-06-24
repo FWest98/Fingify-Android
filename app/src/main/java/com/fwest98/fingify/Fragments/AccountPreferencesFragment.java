@@ -1,8 +1,8 @@
 package com.fwest98.fingify.Fragments;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v7.preference.Preference;
 
 import com.fwest98.fingify.Data.AccountManager;
 import com.fwest98.fingify.R;
@@ -12,10 +12,13 @@ public class AccountPreferencesFragment extends PreferenceFragment {
     private Preference accountDesc, accountLogin;
 
     @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(R.xml.preferences_account);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        addPreferencesFromResource(R.xml.preferences_account);
 
         accountDesc = findPreference(Constants.ACCOUNT_DESC_SETTING);
         accountLogin = findPreference(Constants.ACCOUNT_LOGIN_SETTING);

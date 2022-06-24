@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/contentPanel">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Applications"
+                android:textColor="?colorAccent"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp"
+                android:layout_margin="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
+                    app:ico_color="?colorAccent"
+                    app:ico_icon="gmd-sort"
+                    app:ico_size="14sp"
+                    android:layout_marginRight="8sp"
+                    android:layout_gravity="center_vertical"/>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_view" />
+    </LinearLayout>
+
+    <io.github.yavski.fabspeeddial.FabSpeedDial
+        android:id="@+id/fab_speeddial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:fabGravity="bottom_end"
+        app:fabMenu="@menu/applications_fab"
+        app:miniFabBackgroundTint="@android:color/white"
+        app:miniFabDrawableTint="?attr/colorPrimaryDark"
+        app:miniFabTitleTextColor="?attr/colorPrimaryDark"/>
+
+</android.support.design.widget.CoordinatorLayout>

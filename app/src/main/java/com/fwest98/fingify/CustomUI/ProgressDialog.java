@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.fwest98.fingify.R;
 
-import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
+import me.zhanghai.android.materialprogressbar.IndeterminateCircularProgressDrawable;
 
 public class ProgressDialog {
     public static AlertDialog create(String title, String message, Context context) {
@@ -18,7 +18,7 @@ public class ProgressDialog {
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_progress, null);
         ((TextView) dialogView.findViewById(android.R.id.content)).setText(message);
-        ((ProgressBar) dialogView.findViewById(R.id.dialog_progressbar)).setIndeterminateDrawable(new IndeterminateProgressDrawable(context));
+        ((ProgressBar) dialogView.findViewById(R.id.dialog_progressbar)).setIndeterminateDrawable(new IndeterminateCircularProgressDrawable(context));
 
         builder.setView(dialogView)
                 .setTitle(title)

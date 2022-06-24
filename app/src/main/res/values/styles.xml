@@ -10,36 +10,37 @@
     <color name="colorAccent">#AFB42B</color>
     <color name="colorAccentDark">#9E9D24</color>
     <color name="colorAccentLight">#DCE775</color>
-    <color name="windowBackground">#FAFAFA</color>
+    <color name="windowBackground">#EDEDED</color>
 
     <!-- Base app theme -->
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <!-- Preference Theme -->
-    <style name="PreferenceTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:actionBarStyle">@style/BackActionBar</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
-        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
+    <style name="PreferenceTheme" parent="AppTheme">
+        <item name="actionBarTheme">@style/PreferenceActionBar</item>
     </style>
 
-    <style name="BackActionBar" parent="Widget.AppCompat.Light.ActionBar">
-        <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+    <style name="PreferenceActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryLight</item>
     </style>
 
     <!-- Custom items -->
     <style name="ToolbarNavigationButtonStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="android:minWidth">72dp</item>
         <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Subheading" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textColor">@android:color/tertiary_text_light</item>
     </style>
 
     <!-- DialogActivities -->
@@ -52,6 +53,20 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="PopupActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

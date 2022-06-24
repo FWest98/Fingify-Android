@@ -1,34 +1,39 @@
 package com.fwest98.fingify.Fragments;
 
-import android.app.AlertDialog;
-import android.app.ListFragment;
-import android.content.DialogInterface;
+import android.app.ActivityOptions;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
-import com.fwest98.fingify.Adapters.ApplicationsAdapter;
+import com.fwest98.fingify.Activities.ApplicationDetailActivity;
+import com.fwest98.fingify.Adapters.NewApplicationsAdapter;
 import com.fwest98.fingify.Data.ApplicationManager;
 import com.fwest98.fingify.Helpers.ExceptionHandler;
 import com.fwest98.fingify.Helpers.FingerprintManager;
+import com.fwest98.fingify.Helpers.SortableRecyclerViewCallback;
 import com.fwest98.fingify.Helpers.TotpCountdown;
 import com.fwest98.fingify.Models.Application;
 import com.fwest98.fingify.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ApplicationsFragment extends ListFragment {
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
+
+public class ApplicationsFragment extends Fragment implements NewApplicationFragment.onResultListener {
     private static final String ISREADY_KEY = "isReady";
     private static final String ARRAY_KEY = "array";
 
@@ -38,6 +43,13 @@ public class ApplicationsFragment extends ListFragment {
     private boolean isSetup = false;
 
     private ApplicationsFragmentCallbacks callbacks = null;
+
+    private RecyclerView recyclerView;
+    private NewApplicationsAdapter applicationsAdapter;
+    private LinearLayoutManager layoutManager;
+    private SortableRecyclerViewCallback sortableRecyclerViewCallback;
+    private AppCompatSpinner sortingSpinner;
+    private FabSpeedDial fabSpeedDial;
 
     //region Setup
 
@@ -65,17 +77,115 @@ public class ApplicationsFragment extends ListFragment {
     //endregion
     //region Lifecycle
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         callbacks.onDisable();
+
+        applications = ApplicationManager.getApplications(getActivity());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_applications, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        // RecyclerView content manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Content
+        applicationsAdapter = new NewApplicationsAdapter(applications, getActivity());
+        applicationsAdapter.addOnItemClickListener((viewHolder, application) -> {
+            // Use fragment transition, iets met postpone!!
+
+            /*ApplicationDetailFragment newFragment = new ApplicationDetailFragment();
+            TransitionSet enterSet = new TransitionSet();
+            enterSet.addTransition(new ChangeBounds());
+            enterSet.addTransition(new ChangeTransform());
+
+            TransitionSet exitSet = new TransitionSet();
+            exitSet.addTransition(new ChangeBounds());
+            exitSet.addTransition(new ChangeTransform());
+            setSharedElementReturnTransition(exitSet);
+
+            setExitTransition(new Fade());
+
+            newFragment.setSharedElementEnterTransition(enterSet);
+            newFragment.setEnterTransition(new Fade());
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, newFragment)
+                    .addSharedElement(viewHolder.itemView.findViewById(R.id.application_item), "box")
+                    .addSharedElement(viewHolder.applicationName, "title")
+                    .*/
+
+            Intent i = new Intent(getActivity(), ApplicationDetailActivity.class);
+
+            Pair<View, String> boxPair = Pair.create(viewHolder.itemView.findViewById(R.id.application_item), "box");
+            Pair<View, String> titlePair = Pair.create(viewHolder.applicationName, "title");
+
+            ActivityOptions transition = ActivityOptions.makeSceneTransitionAnimation(getActivity(), titlePair, boxPair);
+            startActivity(i, transition.toBundle());
+        });
+        recyclerView.setAdapter(applicationsAdapter);
+
+        // Touch helper for sorting
+        sortableRecyclerViewCallback = new SortableRecyclerViewCallback(applicationsAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(sortableRecyclerViewCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
+
+        // Lines between applications
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        // Sorting of applications
+        sortingSpinner = (AppCompatSpinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<String> sortingAdapter = new ArrayAdapter<>(
+                getActivity(),
+                R.layout.spinner_title,
+                NewApplicationsAdapter.sortings.keySet().toArray(new String[]{})
+        );
+        sortingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortingSpinner.setAdapter(sortingAdapter);
+        sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int newSorting = NewApplicationsAdapter.sortings.get(sortingSpinner.getSelectedItem());
+                applicationsAdapter.setSorting(newSorting);
+                sortableRecyclerViewCallback.setAllowsDrag(newSorting == NewApplicationsAdapter.SORTING_CUSTOM);
+            }
+            @Override public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        // Floating Action Button Speed Dial
+        fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speeddial);
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                // Handle clicks
+                NewApplicationFragment fragment;
+                switch(menuItem.getItemId()) {
+                    case R.id.application_add_code:
+                        fragment = NewApplicationFragment.newInstance(ApplicationsFragment.this, NewApplicationFragment.AddMode.CODE);
+                        fragment.show(getFragmentManager(), "dialog");
+                        return true;
+                    case R.id.application_add_scan:
+                        fragment = NewApplicationFragment.newInstance(ApplicationsFragment.this, NewApplicationFragment.AddMode.SCAN);
+                        fragment.show(getFragmentManager(), "dialog");
+                        return true;
+                }
+                return super.onMenuItemSelected(menuItem);
+            }
+        });
+
+        return rootView;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setEmptyText(getActivity().getString(R.string.fragment_applications_empty));
+    public void onResult(Application newApplication) {
+        applicationsAdapter.addApplication(newApplication);
     }
 
     private void validateFingerprint() {
@@ -100,7 +210,7 @@ public class ApplicationsFragment extends ListFragment {
 
     private void showFailedVerification() {
         /* Create view to notify the user of the failed authentication. Provide a retry button, disable further access */
-        LinearLayout emptyLayout = new LinearLayout(getActivity());
+        /*LinearLayout emptyLayout = new LinearLayout(getActivity());
         emptyLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         emptyLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         emptyLayout.setOrientation(LinearLayout.VERTICAL);
@@ -128,17 +238,17 @@ public class ApplicationsFragment extends ListFragment {
         setListAdapter(new ApplicationsAdapter(getActivity(), R.layout.application_list_item, new ArrayList<>()));
 
         // Hide menu
-        callbacks.onDisable();
+        callbacks.onDisable();*/
     }
 
     private void createApplicationsList() {
         /* Create dummy application list */
-        applications = ApplicationManager.getApplications(getActivity());
+        /*applications = ApplicationManager.getApplications(getActivity());
 
         setListAdapter(new ApplicationsAdapter(getActivity(),
                 R.layout.application_list_item, applications));
 
-        startCountdown();
+        startCountdown();*/
     }
 
     public void reCreateApplicationsList() {
@@ -161,9 +271,9 @@ public class ApplicationsFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(!isSetup) validateFingerprint();
+        //if(!isSetup) validateFingerprint();
 
-        ListView listView = getListView();
+        /*ListView listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
@@ -194,7 +304,7 @@ public class ApplicationsFragment extends ListFragment {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.fragment_applications_actions_edit: {
-                        /* The user wants to edit an application */
+                        *//* The user wants to edit an application *//*
                         if (((ApplicationsAdapter) getListAdapter()).getCheckedCount() > 1) { // This is not supported
                             ExceptionHandler.handleException(new Exception(getActivity().getString(R.string.fragment_applications_context_edit_error_nomultiple)), getActivity(), false);
                             return false;
@@ -236,7 +346,7 @@ public class ApplicationsFragment extends ListFragment {
                     }
 
                     case R.id.fragment_applications_actions_delete: {
-                        /* The user wants to delete (an) application(s) */
+                        *//* The user wants to delete (an) application(s) *//*
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage(R.string.dialog_removeapplication_title)
                                 .setNegativeButton(R.string.common_cancel, (dialog, which) -> {
@@ -264,7 +374,7 @@ public class ApplicationsFragment extends ListFragment {
             public void onDestroyActionMode(ActionMode mode) {
                 ((ApplicationsAdapter) getListAdapter()).unCheckAll();
             }
-        });
+        });*/
     }
 
     @Override
@@ -289,8 +399,8 @@ public class ApplicationsFragment extends ListFragment {
     //endregion
 
     private void updateViews() {
-        ApplicationsAdapter applicationsAdapter = (ApplicationsAdapter) getListAdapter();
-        if(applicationsAdapter != null) applicationsAdapter.updateViews();
+        /*ApplicationsAdapter applicationsAdapter = (ApplicationsAdapter) getListAdapter();
+        if(applicationsAdapter != null) applicationsAdapter.updateViews();*/
     }
 
     //region Interfaces

@@ -14,7 +14,7 @@ import lombok.Getter;
 public class Application implements Serializable {
     private static final long serialVersionUID = 7865678;
 
-    @DatabaseField(generatedId = true) private int id;
+    @DatabaseField(generatedId = true) @Getter private int id;
 
     @DatabaseField @Getter private String label;
     @DatabaseField @Getter private String secret;
@@ -24,10 +24,7 @@ public class Application implements Serializable {
     public Application() {}
 
     public Application(String label, String secret, String user) {
-        this.label = label;
-        this.secret = secret;
-        this.user = user;
-        this.type = AuthenticationType.TOTP;
+        this(label, secret, user, AuthenticationType.TOTP);
     }
 
     public Application(String label, String secret, String user, AuthenticationType type) {

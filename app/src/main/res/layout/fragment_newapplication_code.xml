@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:text="@string/dialog_newapplication_code_desc"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:hint="@string/dialog_newapplication_code_hint"
+        android:maxLines="1"
+        android:id="@+id/fragment_newapplication_code"/>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="0dip"
+        android:measureWithLargestChild="true">
+
+        <Button
+            android:id="@+id/fragment_newapplication_cancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/common_cancel"/>
+
+        <Button
+            android:id="@+id/fragment_newapplication_ok"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/common_ok"/>
+
+    </LinearLayout>
+
+</LinearLayout>

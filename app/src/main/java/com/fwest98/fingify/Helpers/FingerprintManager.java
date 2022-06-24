@@ -6,9 +6,9 @@ import android.preference.PreferenceManager;
 
 import com.fwest98.fingify.R;
 import com.fwest98.fingify.Settings.Constants;
-import com.samsung.android.sdk.SsdkUnsupportedException;
-import com.samsung.android.sdk.pass.Spass;
-import com.samsung.android.sdk.pass.SpassFingerprint;
+//import com.samsung.android.sdk.SsdkUnsupportedException;
+//import com.samsung.android.sdk.pass.Spass;
+//import com.samsung.android.sdk.pass.SpassFingerprint;
 
 public class FingerprintManager {
 
@@ -51,7 +51,7 @@ public class FingerprintManager {
             return;
         }
 
-        Spass spass = new Spass();
+        /*Spass spass = new Spass();
         try {
             // Samsung device
             spass.initialize(context);
@@ -92,7 +92,7 @@ public class FingerprintManager {
             return; //End to prevent disabling fingerprints
         } catch(SsdkUnsupportedException e) {
             // Not supported, continue
-        }
+        }*/
 
         // No fingerprint-enabled device...
         // Disable fingerprint authentication
@@ -114,7 +114,7 @@ public class FingerprintManager {
             if (!isFingerPrintSupported(context)) {
                 callback.onFinished(FingerprintResponses.NOT_SUPPORTED);
             }
-
+/*
             Spass spass = new Spass();
             try {
                 // Samsung device
@@ -131,7 +131,7 @@ public class FingerprintManager {
                         callback.onFinished(FingerprintResponses.SUCCEEDED);
                     }
                 });
-            } catch(SsdkUnsupportedException ignored) {}
+            } catch(SsdkUnsupportedException ignored) {}*/
         }
     }
 
@@ -140,13 +140,13 @@ public class FingerprintManager {
      * @return if there is any fingerprint authentication possible
      */
     public static boolean isFingerPrintSupported(Context context) {
-        /* Check for all supported SDK's if it's supported on the device */
+        /* Check for all supported SDK's if it's supported on the device *
         Spass spass = new Spass();
         try {
             spass.initialize(context);
             return true; // It worked
         } catch (SsdkUnsupportedException ignored) {
-        }
+        }*/
 
         return false;
     }
@@ -158,11 +158,11 @@ public class FingerprintManager {
     public static boolean hasFingerPrints(Context context) {
         if(!isFingerPrintSupported(context)) return false; // No fingerprints supported, so no fingerprints registered
 
-        Spass spass = new Spass();
+        /*Spass spass = new Spass();
         try {
             spass.initialize(context);
             return new SpassFingerprint(context).hasRegisteredFinger();
-        } catch(SsdkUnsupportedException ignored) {}
+        } catch(SsdkUnsupportedException ignored) {}*/
 
         return false;
     }
